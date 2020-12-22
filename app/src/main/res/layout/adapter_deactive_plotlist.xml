@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/view_main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/f5"
+    app:cardCornerRadius="@dimen/_2sdp"
+    app:cardElevation="@dimen/_1sdp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.2"
+            android:background="@color/colorPrimary" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="9.9"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/f10"
+            android:paddingRight="@dimen/f5"
+            android:paddingBottom="@dimen/f5">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/f8"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5">
+
+                    <ImageView
+                        android:id="@+id/plot_soldout"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_marginLeft="@dimen/_160sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_toLeftOf="@+id/ivDelete"
+                        android:padding="@dimen/_5sdp"
+                        android:src="@drawable/rent_soldout"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/txt_site_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/blackText1"
+                        android:textSize="@dimen/f16"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/txt_site_name_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/blackText1"
+                        android:textSize="@dimen/f16" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:layout_gravity="right"
+                    android:gravity="right">
+
+                    <ImageView
+                        android:id="@+id/ivDeleteplot"
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:layout_toLeftOf="@+id/ivPopUp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/ic_delete" />
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/ivPopUp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:checked="false">
+
+                    </com.google.android.material.switchmaterial.SwitchMaterial>
+
+                </LinearLayout>
+
+
+             <!--   <ImageView
+                    android:id="@+id/ivPopUp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/f10"
+                    android:layout_marginRight="@dimen/f12"
+                    app:srcCompat="@drawable/ic_info" />-->
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txt_site_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/blackText2"
+                android:textSize="@dimen/f12"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:weightSum="2.5">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <TextView
+                        android:id="@+id/txt_site_size"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.7"
+                        android:text=""
+                        android:textColor="@color/blackText2"
+                        android:textSize="@dimen/f12" />
+
+
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_weight="0.75"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txt_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:text="Site Purchase Price : "
+                        android:textColor="@color/blackText2"
+                        android:textSize="@dimen/f12" />
+
+                    <TextView
+                        android:id="@+id/txt_site_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:text=""
+                        android:textColor="@color/blackText1"
+                        android:textSize="@dimen/f14"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

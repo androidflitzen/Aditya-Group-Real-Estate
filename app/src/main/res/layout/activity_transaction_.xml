@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/offWhite"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/_5sdp"
+    tools:context=".Activity.Transaction_Activity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:background="@color/colorPrimary"
+            android:theme="@style/ToolbarTheme">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <ImageView
+                    android:id="@+id/ivBack"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_weight="0.05"
+                    android:src="@drawable/ic_left_arrow"
+                    android:tint="@color/white" />
+
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.3"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:singleLine="true"
+                    android:text="Customer List"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15sdp" />
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.10">
+
+
+                    <ImageView
+                        android:id="@+id/TransCalender"
+                        android:layout_width="@dimen/_60sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:padding="@dimen/_7sdp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/_25sdp"
+                        android:src="@drawable/ic_trans_calendar" />
+
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:id="@+id/liTabmain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:background="@drawable/trans_tab_bg"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvTranstabActive"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/task_bg_title"
+                    android:gravity="center"
+                    android:text="Active"
+                    android:padding="@dimen/_5sdp"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15sdp" />
+
+                <TextView
+                    android:id="@+id/tvTranstabDeactive"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:gravity="center"
+                    android:text="Deactive"
+                    android:textColor="@color/white"
+                    android:background="@drawable/trans_tab_bg"
+                    android:padding="@dimen/_5sdp"
+                    android:textSize="@dimen/_15sdp" />
+
+
+            </LinearLayout>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/view_search"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="4dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="2dp"
+                android:visibility="gone"
+                app:cardElevation="3dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:animateLayoutChanges="true">
+
+                    <EditText
+                        android:id="@+id/edt_search"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:hint="Search Customer"
+                        android:imeOptions="actionSearch"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:singleLine="true"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="@color/blackText3" />
+
+                    <ImageView
+                        android:id="@+id/img_clear_search"
+                        android:layout_width="@dimen/search_bar_size"
+                        android:layout_height="@dimen/search_bar_size"
+                        android:layout_alignParentRight="true"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:padding="10dp"
+                        android:visibility="gone"
+                        app:srcCompat="@drawable/ic_close" />
+
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+
+
+            <FrameLayout
+                android:id="@+id/Trans_Cust_Fragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/_10sdp">
+
+            </FrameLayout>
+
+
+
+          <!--  <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/view_search">
+
+
+
+               &lt;!&ndash; <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_Transactionlist"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:paddingLeft="@dimen/f8"
+                    android:paddingTop="@dimen/f8"
+                    android:paddingRight="@dimen/f8"
+                    android:paddingBottom="@dimen/SizeImg100dp" />&ndash;&gt;
+
+            </android.support.v4.widget.SwipeRefreshLayout>-->
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add_TransCustomer1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="@dimen/f16"
+        android:layout_marginBottom="@dimen/f16"
+        android:padding="@dimen/f16"
+        android:visibility="gone"
+        app:backgroundTint="@color/colorAccent"
+        app:srcCompat="@drawable/ic_add" />
+
+
+
+</RelativeLayout>

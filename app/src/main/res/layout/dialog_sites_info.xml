@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/txt_site_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:gravity="center"
+        android:padding="@dimen/f16"
+        android:text=""
+        android:textAllCaps="true"
+        android:textColor="@color/whiteText1"
+        android:textSize="@dimen/f16" />
+
+    <TextView
+        android:text="Address : "
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/blackText1"
+        android:textSize="@dimen/f16"
+        android:paddingLeft="@dimen/f16"
+        android:paddingRight="@dimen/f16"
+        android:paddingTop="@dimen/f16" />
+
+    <TextView
+        android:id="@+id/txt_site_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/f16"
+        android:paddingLeft="@dimen/f16"
+        android:paddingRight="@dimen/f16"
+        android:paddingBottom="@dimen/f16"
+        android:textColor="@color/blackText2" />
+
+
+</LinearLayout>

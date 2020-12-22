@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="drawerWidth">240dp</dimen>
+
+    <dimen name="f2">2dp</dimen>
+    <dimen name="f3">3dp</dimen>
+    <dimen name="f4">4dp</dimen>
+    <dimen name="f5">5dp</dimen>
+    <dimen name="f8">8dp</dimen>
+    <dimen name="f9">9dp</dimen>
+    <dimen name="f10">10dp</dimen>
+    <dimen name="f12">12dp</dimen>
+    <dimen name="f14">14dp</dimen>
+    <dimen name="f16">16dp</dimen>
+    <dimen name="f18">18dp</dimen>
+    <dimen name="f20">20dp</dimen>
+    <dimen name="f22">22dp</dimen>
+    <dimen name="f24">24dp</dimen>
+    <dimen name="f28">28dp</dimen>
+
+    <dimen name="f200">200dp</dimen>
+
+    <dimen name="horizontal_margin_0dp">0dp</dimen>
+    <dimen name="horizontal_margin_10dp">8dp</dimen>
+    <dimen name="horizontal_margin_16dp">12dp</dimen>
+
+</resources>

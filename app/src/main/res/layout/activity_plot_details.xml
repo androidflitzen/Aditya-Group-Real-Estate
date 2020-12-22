@@ -1,0 +1,764 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/ll_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/all_bg_color"
+            android:orientation="vertical"
+            android:padding="@dimen/f16">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="@dimen/_2sdp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_45sdp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="@dimen/_5sdp"
+                            android:text="Plot No"
+                            android:textAlignment="center"
+                            android:textColor="@color/blackText2"
+                            android:textSize="@dimen/f16"
+                            tools:ignore="RtlCompat" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:paddingLeft="@dimen/f4"
+                            android:paddingRight="@dimen/f4"
+                            android:text=":"
+                            android:textAlignment="center"
+                            android:textColor="@color/blackText2"
+                            android:textSize="@dimen/f16"
+                            android:visibility="gone"
+                            tools:ignore="RtlCompat" />
+
+                        <TextView
+                            android:id="@+id/tvPlotNo2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:textColor="@color/blackText1"
+                            android:textSize="@dimen/f18"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/tvPlotNo"
+                            android:layout_width="match_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+
+                            android:gravity="center_vertical"
+                            android:text="w"
+                            android:textAlignment="center"
+                            android:textColor="@color/blackText1"
+                            android:textSize="@dimen/f16"
+                            android:textStyle="bold"
+                            tools:ignore="RtlCompat" />
+
+
+                        <ImageView
+                            android:id="@+id/ivEditPlotNo"
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
+                            android:layout_marginLeft="@dimen/_120sdp"
+                            android:padding="@dimen/f5"
+                            android:tint="@color/blackText1"
+                            android:visibility="gone"
+                            app:srcCompat="@drawable/ic_edit" />
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="@dimen/_1sdp"
+                        android:layout_height="match_parent"
+                        android:background="#000" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:gravity="center"
+                            android:text="Plot Size"
+                            android:textAlignment="center"
+                            android:textColor="@color/blackText2"
+                            android:textSize="@dimen/f16" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="@dimen/f4"
+                            android:paddingRight="@dimen/f4"
+                            android:text=":"
+                            android:textColor="@color/blackText2"
+                            android:textSize="@dimen/f16"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/tvPlotSize"
+                            android:layout_width="match_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="1"
+                            android:textAlignment="center"
+                            android:textColor="@color/blackText1"
+                            android:textSize="@dimen/f16"
+                            android:textStyle="bold"
+                            tools:ignore="RtlCompat" />
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="@dimen/_1sdp"
+                        android:layout_height="match_parent"
+                        android:background="#000" />
+
+                    <ImageView
+                        android:id="@+id/ivEditPlotSize1"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:padding="@dimen/_5sdp"
+                        android:tint="@color/blackText1"
+                        android:visibility="gone"
+                        app:srcCompat="@drawable/ic_edit" />
+
+                    <LinearLayout
+                        android:id="@+id/ivEditPlotSize"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/_5sdp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_28sdp"
+                            android:layout_alignParentRight="true"
+                            android:layout_weight="1"
+                            android:background="@drawable/round_btn_edit_demo">
+
+                            <ImageView
+                                android:layout_width="@dimen/_25sdp"
+                                android:layout_height="@dimen/_25sdp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="@dimen/_2sdp"
+                                android:padding="@dimen/_7sdp"
+                                android:src="@drawable/ic_edit"
+                                android:tint="@color/mdtp_light_gray"
+                                tools:ignore="VectorDrawableCompat" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"
+                                android:text="  Edit"
+                                android:textColor="@color/mdtp_light_gray"
+                                android:textSize="@dimen/_12sdp"
+                                android:textStyle="bold" />
+
+                        </RelativeLayout>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_3sdp">
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_85sdp"
+                            android:layout_marginRight="@dimen/_5sdp"
+                            android:text="Plot No"
+                            android:textColor="@color/blackText2"
+                            android:textSize="@dimen/f16" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="@dimen/f4"
+                            android:paddingRight="@dimen/f4"
+                            android:text=":"
+                            android:textColor="@color/blackText2"
+                            android:textSize="@dimen/f16" />
+
+                        <TextView
+                            android:id="@+id/tvPlotNo1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/blackText1"
+                            android:textSize="@dimen/f18"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/ivEditPlotNo1"
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
+                            android:layout_marginLeft="@dimen/_120sdp"
+                            android:padding="@dimen/f5"
+                            android:tint="@color/blackText1"
+                            android:visibility="gone"
+                            app:srcCompat="@drawable/ic_edit" />
+
+                    </LinearLayout>
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/_80sdp"
+                                android:gravity="center"
+                                android:text="Plot Size"
+                                android:textColor="@color/blackText2"
+                                android:textSize="@dimen/f16" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="fill_parent"
+                                android:layout_marginLeft="@dimen/_5sdp"
+                                android:gravity="center_vertical"
+                                android:paddingLeft="@dimen/f4"
+                                android:paddingRight="@dimen/f4"
+                                android:text=":"
+                                android:textColor="@color/blackText2"
+                                android:textSize="@dimen/f16" />
+
+                            <TextView
+                                android:id="@+id/tvPlotSize1"
+                                android:layout_width="match_parent"
+                                android:layout_height="fill_parent"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:textColor="@color/blackText1"
+                                android:textSize="@dimen/f16"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                app:cardCornerRadius="@dimen/_2sdp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="@dimen/_3sdp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1.5"
+                            android:gravity="center_vertical"
+                            android:text="Purchased By"
+                            android:textAlignment="center"
+                            android:textColor="@color/blackText2"
+                            android:textSize="@dimen/f14"
+                            tools:ignore="RtlCompat" />
+
+                        <!--  <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="fill_parent"
+                              android:gravity="center_vertical"
+                              android:paddingLeft="@dimen/f4"
+                              android:paddingRight="@dimen/f4"
+                              android:text=":"
+                              android:textColor="@color/blackText2"
+                              android:textSize="@dimen/f16" />-->
+
+                        <TextView
+                            android:id="@+id/txt_purchased_by"
+                            android:layout_width="match_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_marginTop="@dimen/_3sdp"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:textAlignment="center"
+                            android:textColor="@color/blackText1"
+                            android:textSize="@dimen/f16"
+                            android:textStyle="bold"
+                            tools:ignore="RtlCompat" />
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="@dimen/_1sdp"
+                        android:layout_height="match_parent"
+                        android:background="#000" />
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="@dimen/_3sdp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_gravity="right"
+                            android:text="Purchased On "
+                            android:textAlignment="center"
+                            android:textColor="@color/blackText2"
+                            android:textSize="@dimen/f14"
+                            tools:ignore="RtlCompat" />
+
+                        <!--  <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="fill_parent"
+                              android:gravity="center_vertical"
+                              android:paddingLeft="@dimen/f4"
+                              android:paddingRight="@dimen/f4"
+                              android:text=":"
+                              android:textColor="@color/blackText2"
+                              android:textSize="@dimen/f16" />
+  -->
+                        <TextView
+                            android:id="@+id/txt_purchased_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_3sdp"
+                            android:layout_weight="1"
+                            android:textAlignment="center"
+                            android:textColor="@color/blackText1"
+                            android:textSize="@dimen/f16"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                android:layout_marginTop="@dimen/_3sdp"
+                app:cardCornerRadius="@dimen/_2sdp">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:paddingLeft="@dimen/_1sdp"
+                        android:padding="@dimen/_3sdp">
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1.5"
+                            android:gravity="center_vertical"
+                            android:singleLine="true"
+
+                            android:text="Purchase Price"
+                            android:textAlignment="center"
+                            android:textColor="@color/blackText2"
+                            android:textSize="@dimen/f14"
+                            tools:ignore="RtlCompat" />
+
+
+                        <!--  <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="fill_parent"
+                              android:gravity="center_vertical"
+                              android:paddingLeft="@dimen/f4"
+                              android:paddingRight="@dimen/f4"
+                              android:text=":"
+                              android:textColor="@color/blackText2"
+                              android:textSize="@dimen/f16" />-->
+
+                        <TextView
+                            android:id="@+id/txt_purchased_price122"
+                            android:layout_width="match_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:textAlignment="center"
+                            android:textColor="@color/blackText1"
+                            android:textSize="@dimen/f16"
+                            android:textStyle="bold"
+                            android:visibility="gone"
+                            tools:ignore="RtlCompat" />
+
+                        <TextView
+                            android:id="@+id/txt_purchased_price"
+                            android:layout_width="match_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_marginTop="@dimen/_3sdp"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:singleLine="true"
+                            android:textAlignment="center"
+                            android:textColor="@color/blackText1"
+                            android:textSize="@dimen/f16"
+                            android:textStyle="bold"
+                            tools:ignore="RtlCompat" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="@dimen/_1sdp"
+                        android:layout_height="match_parent"
+                        android:background="#000" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_2sdp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:paddingLeft="@dimen/_1sdp"
+                        android:padding="@dimen/_3sdp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1.5"
+                            android:gravity="center_vertical"
+                            android:singleLine="true"
+                            android:text="Paid Amount"
+                            android:textAlignment="center"
+                            android:textColor="@color/blackText2"
+                            android:textSize="@dimen/f14"
+                            tools:ignore="RtlCompat" />
+
+                        <!-- <TextView
+                             android:layout_width="wrap_content"
+                             android:layout_height="fill_parent"
+                             android:gravity="center_vertical"
+                             android:paddingLeft="@dimen/f4"
+                             android:paddingRight="@dimen/f4"
+                             android:text=":"
+                             android:textColor="@color/blackText2"
+                             android:textSize="@dimen/f16" />-->
+
+                        <TextView
+                            android:id="@+id/txt_paid_amount"
+                            android:layout_width="match_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_marginTop="@dimen/_3sdp"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:singleLine="true"
+                            android:textAlignment="center"
+                            android:textColor="@color/blackText1"
+                            android:textSize="@dimen/f16"
+                            android:textStyle="bold"
+                            tools:ignore="RtlCompat" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="@dimen/_1sdp"
+                        android:layout_height="match_parent"
+                        android:background="#000" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_2sdp"
+                        android:layout_weight="1"
+                        android:padding="@dimen/_3sdp"
+                        android:orientation="vertical"
+                        android:paddingLeft="@dimen/_1sdp">
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_marginBottom="@dimen/_3sdp"
+                            android:layout_weight="1.5"
+                            android:gravity="center_vertical"
+                            android:singleLine="true"
+                            android:text="Pending Amount"
+                            android:textAlignment="center"
+                            android:textColor="@color/blackText2"
+                            android:textSize="@dimen/f14"
+                            tools:ignore="RtlCompat" />
+
+                        <!--<TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="@dimen/f4"
+                            android:paddingRight="@dimen/f4"
+                            android:text=":"
+                            android:textColor="@color/blackText2"
+                            android:textSize="@dimen/f16" />-->
+
+                        <TextView
+                            android:id="@+id/txt_pending_amount1212"
+                            android:layout_width="match_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:singleLine="true"
+                            android:textAlignment="center"
+                            android:textColor="@color/blackText1"
+                            android:textSize="@dimen/f16"
+
+                            android:textStyle="bold"
+                            android:visibility="gone"
+                            tools:ignore="RtlCompat" />
+
+                        <TextView
+                            android:id="@+id/txt_pending_amount"
+                            android:layout_width="match_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"
+                            android:background="@android:color/transparent"
+                            android:gravity="center_vertical"
+                            android:singleLine="true"
+                            android:text="1,46,400"
+                            android:textAlignment="center"
+                            android:textColor="@color/blackText1"
+                            android:textSize="@dimen/f16"
+                            android:textStyle="bold"
+                            tools:ignore="RtlCompat" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+            <RelativeLayout
+                android:id="@+id/ll_plot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/tvPlotPaymentList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Plot Payment List"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/f16"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvViewPaymentPDF1"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/pdf"
+                    android:text=""
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/_14sdp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <RelativeLayout
+                    android:id="@+id/tvViewPaymentPDF"
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="@dimen/_28sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:background="@drawable/round_btn_edit_demo">
+
+                    <ImageView
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/_2sdp"
+                        android:padding="@dimen/_5sdp"
+                        android:src="@drawable/ic_pdf_ravi"
+                        android:tint="@color/mdtp_light_gray"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:text="  View PDF"
+                        android:textColor="@color/mdtp_light_gray"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rec_purchased_plot_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/f10" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/f10"
+
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginRight="@dimen/f5"
+                    android:layout_weight="1">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/view_change_customer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:cardBackgroundColor="@color/colorPrimary"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="0dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:paddingLeft="@dimen/f28"
+                            android:paddingRight="@dimen/f28"
+                            android:text="Transfer\nPlot"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/f14" />
+
+                    </androidx.cardview.widget.CardView>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="@dimen/f5"
+                    android:layout_weight="1">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/view_remove_customer"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_gravity="center"
+                        app:cardBackgroundColor="@color/msg_fail"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="0dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:paddingLeft="@dimen/f28"
+                            android:paddingRight="@dimen/f28"
+                            android:text="Remove\nCustomer"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/f14" />
+
+                    </androidx.cardview.widget.CardView>
+                </RelativeLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</RelativeLayout>

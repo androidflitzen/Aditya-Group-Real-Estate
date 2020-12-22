@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "294710155099",
+    "firebase_url": "https://aditya-group-real-estate-default-rtdb.firebaseio.com",
+    "project_id": "aditya-group-real-estate",
+    "storage_bucket": "aditya-group-real-estate.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:294710155099:android:6adae9bd71276ad91e2c7e",
+        "android_client_info": {
+          "package_name": "com.flitzen.adityarealestate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "294710155099-35enl1d94mjp4867n85uojk4sr7ctcl0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.flitzen.adityarealestate",
+            "certificate_hash": "d1cf3f380ddcbc54a18a1d1b71c46a4c03304da8"
+          }
+        },
+        {
+          "client_id": "294710155099-9varng480qso9i0uefkjftcoc8ubj29u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBx0zbhowhPyj09Kazs7PQZu7l3ARtNp6w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "294710155099-9varng480qso9i0uefkjftcoc8ubj29u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

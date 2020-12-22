@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.CalenderView_Activity">
+
+
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:mcv_selectionColor="#00F"
+        android:layout_weight="0.7"
+        app:mcv_selectionMode="multiple"
+        app:mcv_showOtherDates="all"
+        app:mcv_weekDayTextAppearance="@style/CalendarHeaderTxt" />
+
+</RelativeLayout>

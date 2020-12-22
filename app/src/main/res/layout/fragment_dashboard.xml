@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/all_bg_color">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/f10">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical">
+
+
+               <!-- <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/f60"
+                    android:layout_marginRight="@dimen/f16"
+                    android:gravity="center"
+                    android:text="@string/welcome_msg"
+                    android:textColor="@color/blackText1"
+                    android:textSize="@dimen/f20"
+                    android:textStyle="bold" />-->
+
+                <TextView
+                    android:id="@+id/tvTitleLoginName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textAllCaps="true"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/f20"
+                    android:textStyle="bold"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"
+                    android:background="@color/colorAccent"
+                    android:layout_marginLeft="@dimen/_40sdp"
+                    android:layout_marginRight="@dimen/_40sdp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <androidx.cardview.widget.CardView
+
+                    android:layout_width="@dimen/_145sdp"
+                    android:layout_height="@dimen/_130sdp"
+                    android:layout_marginLeft="@dimen/f16"
+                    android:layout_marginTop="@dimen/f16"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="@dimen/_5sdp"
+                    app:cardElevation="@dimen/_2sdp"
+                    app:cardPreventCornerOverlap="true"
+                    android:layout_weight="1"
+                    app:cardUseCompatPadding="true">
+
+
+                    <LinearLayout
+                        android:id="@+id/btn_plots"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:paddingTop="@dimen/_15sdp"
+                        android:paddingBottom="@dimen/_15sdp"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/imgPlot"
+                            android:layout_width="@dimen/_45sdp"
+                            android:layout_height="@dimen/_45sdp"
+                            android:layout_gravity="center_horizontal"
+                            app:srcCompat="@drawable/ic_ploting" />
+
+                        <TextView
+                            android:id="@+id/txtPlot"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="10dp"
+                            android:gravity="center"
+                            android:paddingBottom="@dimen/_5sdp"
+                            android:paddingRight="@dimen/_5sdp"
+                            android:paddingLeft="@dimen/_5sdp"
+                            android:text="PLOTING"
+                            android:textColor="@android:color/black"
+                            android:textSize="15dp"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+
+                    android:layout_width="@dimen/_145sdp"
+                    android:layout_height="@dimen/_130sdp"
+                    android:layout_marginLeft="@dimen/f16"
+                    android:layout_marginTop="@dimen/f16"
+                    android:layout_marginRight="@dimen/f16"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="@dimen/_5sdp"
+                    app:cardElevation="@dimen/_2sdp"
+                    app:cardPreventCornerOverlap="true"
+                    android:layout_weight="1"
+                    app:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:id="@+id/btn_rents"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:paddingTop="@dimen/_15sdp"
+                        android:paddingBottom="@dimen/_15sdp"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/imgRent"
+                            android:layout_width="@dimen/_47sdp"
+                            android:layout_height="@dimen/_47sdp"
+                            android:layout_gravity="center_horizontal"
+                            app:srcCompat="@drawable/ic_rent" />
+
+                        <TextView
+                            android:id="@+id/txtRent"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:paddingBottom="@dimen/_5sdp"
+                            android:paddingRight="@dimen/_5sdp"
+                            android:paddingLeft="@dimen/_5sdp"
+                            android:text="RENTS"
+                            android:textColor="@android:color/black"
+                            android:textSize="15dp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            >
+
+            <androidx.cardview.widget.CardView
+
+                android:layout_width="@dimen/_145sdp"
+                android:layout_height="@dimen/_130sdp"
+                android:layout_marginLeft="@dimen/f16"
+                android:layout_marginTop="@dimen/f16"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="@dimen/_5sdp"
+                app:cardElevation="@dimen/_2sdp"
+                app:cardPreventCornerOverlap="true"
+                android:layout_weight="1"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:id="@+id/btn_Load_Application"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/_15sdp"
+                    android:paddingBottom="@dimen/_15sdp"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/imgLoan"
+                        android:layout_width="@dimen/_45sdp"
+                        android:layout_height="@dimen/_45sdp"
+                        android:layout_gravity="center_horizontal"
+                        app:srcCompat="@drawable/ic_loan" />
+
+                    <TextView
+                        android:id="@+id/txtLoan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingBottom="@dimen/_5sdp"
+                        android:text="LOAN \nAPPLICATIONS"
+                        android:textColor="@android:color/black"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+
+                android:layout_width="@dimen/_145sdp"
+                android:layout_height="@dimen/_130sdp"
+                android:layout_marginLeft="@dimen/f16"
+                android:layout_marginTop="@dimen/f16"
+                android:layout_marginRight="@dimen/f16"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="@dimen/_5sdp"
+                app:cardElevation="@dimen/_2sdp"
+                android:layout_weight="1"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:id="@+id/btn_transaction"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="@dimen/_15sdp"
+                    android:paddingBottom="@dimen/_15sdp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/imgTransaction"
+                        android:layout_width="@dimen/_47sdp"
+                        android:layout_height="@dimen/_47sdp"
+                        android:layout_gravity="center_horizontal"
+                        app:srcCompat="@drawable/ic_tansaction" />
+
+                    <TextView
+                        android:id="@+id/txtTransaction"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingBottom="@dimen/_5sdp"
+                        android:paddingRight="@dimen/_4sdp"
+                        android:paddingLeft="@dimen/_5sdp"
+                        android:text="TRANSACTIONS"
+                        android:textColor="@android:color/black"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <androidx.cardview.widget.CardView
+
+                    android:layout_width="@dimen/_145sdp"
+                    android:layout_height="@dimen/_130sdp"
+                    android:layout_marginLeft="@dimen/f16"
+                    android:layout_marginTop="@dimen/f16"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="@dimen/_5sdp"
+                    app:cardElevation="@dimen/_2sdp"
+                    app:cardPreventCornerOverlap="true"
+                    app:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:id="@+id/btn_Customer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingTop="@dimen/_15sdp"
+                        android:paddingBottom="@dimen/_15sdp"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/imgCustomer"
+                            android:layout_width="@dimen/_47sdp"
+                            android:layout_height="@dimen/_47sdp"
+                            android:layout_gravity="center_horizontal"
+                            app:srcCompat="@drawable/ic_customer" />
+
+                        <TextView
+                            android:id="@+id/txtCustomer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:paddingBottom="@dimen/_5sdp"
+                            android:paddingRight="@dimen/_5sdp"
+                            android:paddingLeft="@dimen/_5sdp"
+                            android:text="CUSTOMERS"
+                            android:textColor="@android:color/black"
+                            android:textSize="15dp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/btn_Tasks"
+                    android:layout_width="@dimen/_145sdp"
+                    android:layout_height="@dimen/_130sdp"
+                    android:layout_marginLeft="@dimen/f8"
+                    android:layout_marginTop="@dimen/f16"
+                    android:layout_marginRight="@dimen/f16"
+                    android:layout_weight="1"
+                    android:visibility="invisible"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="3dp"
+                    app:cardElevation="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:paddingTop="@dimen/_15sdp"
+                        android:paddingBottom="@dimen/_15sdp"
+                        android:padding="@dimen/_15sdp"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="@dimen/_45sdp"
+                            android:layout_height="@dimen/_45sdp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/f8"
+                            android:tint="@color/black"
+                            app:srcCompat="@drawable/ic_recovery_list" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="@dimen/f5"
+                            android:text="TASKS"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/f16"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btn_rents_payment"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/f16"
+                android:visibility="gone"
+                app:cardBackgroundColor="@color/box_bg"
+                app:cardCornerRadius="@dimen/_5sdp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/f28"
+                    android:paddingRight="@dimen/f28"
+                    android:text="ADD PAYMENT FOR RENTS"
+                    android:textAllCaps="true"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/f16" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btn_loan_payment"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/f16"
+                android:visibility="gone"
+                app:cardBackgroundColor="@color/box_bg"
+                app:cardCornerRadius="@dimen/_5sdp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/f28"
+                    android:paddingRight="@dimen/f28"
+                    android:text="ADD PAYMENT FOR LOAN"
+                    android:textAllCaps="true"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/f16" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btn_plots_payment"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/f16"
+                android:visibility="gone"
+                app:cardBackgroundColor="@color/color_green"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/f28"
+                    android:paddingRight="@dimen/f28"
+                    android:text="ADD PAYMENT FOR PLOTS"
+                    android:textAllCaps="true"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/f16" />
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

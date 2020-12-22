@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.85"
+                android:layout_height="@dimen/_35sdp"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_marginLeft="@dimen/_35sdp"
+                android:text="Calendar View"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_16sdp" />
+
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="0.2"
+                android:layout_height="wrap_content">
+
+
+
+                <ImageView
+                    android:id="@+id/ivAddReminder"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:src="@drawable/ic_plus" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:orientation="horizontal">
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/rvCalenderMonth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:background="@drawable/border_card"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvCalenderMonth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:drawableEnd="@drawable/ic_down_arrow"
+                        android:gravity="left|center_vertical"
+                        android:hint="-- Select Month --  "
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textColor="#000505"
+                        android:textSize="@dimen/_10sdp"
+                        android:drawableRight="@drawable/ic_down_arrow" />
+
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <RelativeLayout
+                    android:id="@+id/rvCalenderYear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:background="@drawable/border_card"
+                    android:orientation="vertical">
+
+
+                    <Spinner
+                        android:id="@+id/spinner1"
+                        android:layout_width="@dimen/_100sdp"
+                        android:layout_height="@dimen/_100sdp"
+                        android:layout_toRightOf="@+id/tvCalenderYear"
+                        android:tag="Select year"
+                        android:gravity="center"
+                        android:layout_centerVertical="true" />
+
+                    <TextView
+                        android:id="@+id/tvCalenderYear"
+                        android:layout_width="@dimen/_50sdp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:gravity="left|center_vertical"
+                        android:hint="--Year--"
+                        android:paddingLeft="@dimen/_15sdp"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textColor="@color/text_color1"
+                        android:textSize="@dimen/_10sdp"
+                        android:visibility="gone"/>
+
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            app:mcv_selectionColor="@color/colorPrimary"
+            app:mcv_selectionMode="multiple"
+            app:mcv_showOtherDates="none"
+            app:mcv_weekDayTextAppearance="@style/CalendarHeaderTxt" />
+
+
+        <!--
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_30sdp"
+                    android:background="@color/colorPrimary"
+                    android:textColor="@color/white"
+                    android:gravity="center" />-->
+
+    </LinearLayout>
+
+</RelativeLayout>

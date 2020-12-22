@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/offWhite"
+    tools:context=".Activity.Add_fab_Transaction_Activity"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_25sdp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Party:"
+            android:textSize="@dimen/_15sdp"
+            android:textColor="@color/colorAccent"/>
+
+        <RelativeLayout
+            android:id="@+id/rvTranCompnyspn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:background="@drawable/tran_border_card"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvTransCompanySpn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:drawableRight="@drawable/ic_down_arrow"
+                android:gravity="left|center_vertical"
+                android:hint="-- Select Party Name --"
+                android:paddingLeft="@dimen/_15sdp"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="@color/blackText1"
+                android:textSize="@dimen/_10sdp" />
+
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_15sdp">
+
+        <TextView
+            android:id="@+id/tvTransType1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Type:"
+            android:textSize="@dimen/_15sdp"
+            android:textColor="@color/colorAccent"/>
+
+        <RelativeLayout
+            android:id="@+id/rvTransTypespn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:background="@drawable/tran_border_card"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvTransTypespn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:drawableRight="@drawable/ic_down_arrow"
+                android:gravity="left|center_vertical"
+                android:hint="-- Select Payment Type --"
+                android:paddingLeft="@dimen/_15sdp"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="@color/blackText1"
+                android:textSize="@dimen/_10sdp" />
+
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="2.5"
+            android:gravity="center_vertical"
+            android:text="Paid On "
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/f16" />
+
+        <!--<TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" : "
+            android:textSize="@dimen/f16" />-->
+
+        <TextView
+            android:id="@+id/etTrans_Date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/f5"
+            android:layout_weight="1"
+            android:background="@drawable/bg_only_gray_border"
+            android:drawableRight="@drawable/ic_calendar"
+            android:padding="10dp"
+            android:textColor="@android:color/black" />
+
+    </LinearLayout>
+
+
+  <!--  <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:editable="false"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/etTrans_Date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Choose Date*"
+            android:singleLine="true"
+            android:editable="false"
+            android:textColor="@color/blackText1" />
+    </android.support.design.widget.TextInputLayout>-->
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/etTrans_Amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Amt(₹):"
+            android:inputType="number"
+            android:singleLine="true"
+            android:textColor="@color/blackText1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/etTrans_Note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Note:"
+            android:textColor="@color/blackText1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <TextView
+        android:id="@+id/btn_TransEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Update"
+        android:gravity="center"
+        android:paddingRight="@dimen/_10sdp"
+        android:paddingLeft="@dimen/_10sdp"
+        android:textSize="@dimen/_22sdp"
+        android:textColor="@color/white"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_80sdp"
+        android:background="@drawable/green_round_corner_button"/>
+
+
+
+</LinearLayout>

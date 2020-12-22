@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+
+    <LinearLayout
+        android:id="@+id/liTabmain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_5sdp"
+        android:background="@drawable/trans_tab_bg"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvTranstabPayment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@drawable/trans_tab_bg"
+            android:gravity="center"
+            android:text="Payment"
+            android:padding="@dimen/_5sdp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_15sdp" />
+
+        <TextView
+            android:id="@+id/tvTranstabRecevied"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:text="Received"
+            android:textColor="@color/white"
+            android:background="@drawable/trans_tab_bg"
+            android:padding="@dimen/_5sdp"
+            android:textSize="@dimen/_15sdp" />
+
+
+    </LinearLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+
+
+            <FrameLayout
+                android:id="@+id/Trans_frame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </FrameLayout>
+
+
+           <!-- <LinearLayout
+                android:id="@+id/ll_plot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/_50sdp"
+                android:visibility="visible">
+
+                &lt;!&ndash; <TextView
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_marginTop="@dimen/f10"
+                     android:text="Rent Payment List"
+                     android:textAllCaps="true"
+                     android:textColor="@color/colorAccent"
+                     android:textSize="@dimen/f16" />&ndash;&gt;
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvTrans_Payment_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/f10" />
+            </LinearLayout>-->
+        </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</LinearLayout>

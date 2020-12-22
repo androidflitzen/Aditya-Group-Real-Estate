@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:background="@color/white">
+
+  <androidx.appcompat.widget.Toolbar
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/_40sdp"
+      android:background="@color/colorPrimary"
+      android:theme="@style/ToolbarTheme">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+      <ImageView
+          android:id="@+id/ivBack"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/_8sdp"
+          android:layout_weight="0.05"
+          android:src="@drawable/ic_left_arrow"
+          android:tint="@color/white" />
+
+
+      <TextView
+          android:id="@+id/tvTitle"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/_8sdp"
+          android:layout_weight="0.5"
+          android:gravity="center"
+          android:singleLine="true"
+          android:text="Reminder List"
+          android:textColor="@color/white"
+          android:textSize="@dimen/_15sdp" />
+
+      <RelativeLayout
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="0.10">
+
+
+
+
+      </RelativeLayout>
+
+
+    </LinearLayout>
+
+  </androidx.appcompat.widget.Toolbar>
+
+  <Button
+    style="@style/widget"
+    android:id="@+id/add_alarm"
+    android:text="Add Reminder"
+    android:onClick="onAddAlarmClick" />
+
+  <ListView
+    style="@style/widget"
+    android:id="@+id/alarm_list" />
+
+</LinearLayout>
+

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txt_property_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:gravity="center"
+        android:padding="@dimen/f16"
+        android:text=""
+        android:textAllCaps="true"
+        android:textColor="@color/whiteText1"
+        android:textSize="@dimen/f16" />
+
+    <LinearLayout
+        android:id="@+id/ll_not_assign"
+        android:layout_marginTop="@dimen/f16"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/f16"
+            android:paddingRight="@dimen/f16"
+            android:text="Address : "
+            android:textColor="@color/blackText2"
+            android:textSize="@dimen/f16" />
+
+        <TextView
+            android:id="@+id/txt_property_address_m"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/f16"
+            android:paddingLeft="@dimen/f16"
+            android:paddingRight="@dimen/f16"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/f16" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_assign"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/f16"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.5"
+                android:gravity="center_vertical"
+                android:text="Address"
+                android:textColor="@color/blackText2"
+                android:textSize="@dimen/f16" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:text=":"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/f4"
+                android:paddingRight="@dimen/f4"
+                android:textSize="@dimen/f16"
+                android:textColor="@color/blackText2"/>
+            <TextView
+                android:id="@+id/txt_property_address"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/f16" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/f10"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.5"
+                android:gravity="center_vertical"
+                android:text="Customer Name"
+                android:textColor="@color/blackText2"
+                android:textSize="@dimen/f16" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:text=":"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/f4"
+                android:paddingRight="@dimen/f4"
+                android:textSize="@dimen/f16"
+                android:textColor="@color/blackText2"/>
+            <TextView
+                android:id="@+id/txt_cust_name"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/f16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="@dimen/f10"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:gravity="center_vertical"
+                android:text="Rent"
+                android:textColor="@color/blackText2"
+                android:textSize="@dimen/f16" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:text=":"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/f4"
+                android:paddingRight="@dimen/f4"
+                android:textSize="@dimen/f16"
+                android:textColor="@color/blackText2"/>
+
+            <TextView
+                android:id="@+id/txt_rent"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/f16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/f10"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.5"
+                android:gravity="center_vertical"
+                android:text="Hired Date"
+                android:textColor="@color/blackText2"
+                android:textSize="@dimen/f16" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:text=":"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/f4"
+                android:paddingRight="@dimen/f4"
+                android:textSize="@dimen/f16"
+                android:textColor="@color/blackText2"/>
+
+            <TextView
+                android:id="@+id/txt_hired_date"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/f16" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

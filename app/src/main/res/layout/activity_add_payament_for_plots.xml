@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true">
+
+    <!--<ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/btn_add_payment">-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/btn_add_payment"
+        android:layout_margin="@dimen/f16"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/spn_site"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/f10"
+            android:background="@drawable/bg_only_gray_border"
+            android:drawableRight="@drawable/ic_down_arrow"
+            android:padding="10dp"
+            android:text="Select Site"
+            android:textColor="@color/blackText1"
+            android:textSize="@dimen/f16" />
+
+        <TextView
+            android:id="@+id/spn_plot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/f10"
+            android:background="@drawable/bg_only_gray_border"
+            android:drawableRight="@drawable/ic_down_arrow"
+            android:padding="10dp"
+            android:text="Select Plot"
+            android:textColor="@color/blackText1"
+            android:textSize="@dimen/f16" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/f10"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="2.5"
+                android:text="Customer Name"
+                android:textColor="@color/blackText2"
+                android:textSize="@dimen/f16" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/f4"
+                android:paddingRight="@dimen/f4"
+                android:text=":"
+                android:textColor="@color/blackText2"
+                android:textSize="@dimen/f16" />
+
+            <TextView
+                android:id="@+id/txt_cust_name"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:text=""
+                android:textColor="@color/blackText1"
+                android:textSize="@dimen/f16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/f10"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="2.5"
+                android:text="Mobile No."
+                android:textColor="@color/blackText2"
+                android:textSize="@dimen/f16" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/f4"
+                android:paddingRight="@dimen/f4"
+                android:text=":"
+                android:textColor="@color/blackText2"
+                android:textSize="@dimen/f16" />
+
+            <TextView
+                android:id="@+id/txt_mobile_no"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:text=""
+                android:textColor="@color/blackText1"
+                android:textSize="@dimen/f16" />
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/f10">
+
+            <EditText
+                android:id="@+id/edt_paid_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Paid Amount"
+                android:inputType="number"
+                android:maxLength="10"
+                android:singleLine="true"
+                android:textSize="@dimen/f16" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Date"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/f14" />
+
+        <TextView
+            android:id="@+id/txt_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/f10"
+            android:background="@drawable/bg_only_gray_border"
+            android:drawableRight="@drawable/ic_calendar"
+            android:editable="false"
+            android:hint="Date"
+            android:padding="10dp"
+            android:textSize="@dimen/f16" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/f10">
+
+            <EditText
+                android:id="@+id/edt_remark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Remark"
+                android:singleLine="true"
+                android:textSize="@dimen/f16" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+    <!--</ScrollView>-->
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/btn_add_payment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:cardBackgroundColor="@color/colorAccent"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="0dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="Add Payment"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/f16"
+            android:textStyle="bold" />
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

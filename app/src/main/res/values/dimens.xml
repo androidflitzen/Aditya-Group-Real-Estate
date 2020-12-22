@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="f2">2dp</dimen>
+    <dimen name="f3">3dp</dimen>
+    <dimen name="f4">4dp</dimen>
+    <dimen name="f5">5dp</dimen>
+    <dimen name="f8">8dp</dimen>
+    <dimen name="f9">9dp</dimen>
+    <dimen name="f10">10dp</dimen>
+    <dimen name="f12">12dp</dimen>
+    <dimen name="f14">14dp</dimen>
+    <dimen name="f16">16dp</dimen>
+    <dimen name="f18">18dp</dimen>
+    <dimen name="f20">20dp</dimen>
+    <dimen name="f22">22dp</dimen>
+    <dimen name="f24">24dp</dimen>
+    <dimen name="f28">28dp</dimen>
+    <dimen name="f60">60dp</dimen>
+    <dimen name="f200">200dp</dimen>
+
+    <dimen name="SizeImg8dp">8dp</dimen>
+    <dimen name="SizeImg12dp">12dp</dimen>
+    <dimen name="SizeImg16dp">16dp</dimen>
+    <dimen name="SizeImg22dp">22dp</dimen>
+    <dimen name="SizeImg32dp">32dp</dimen>
+    <dimen name="SizeImg42dp">42dp</dimen>
+    <dimen name="SizeImg52dp">52dp</dimen>
+    <dimen name="SizeImg72dp">72dp</dimen>
+    <dimen name="SizeImg100dp">100dp</dimen>
+    <dimen name="SizeImg120dp">120dp</dimen>
+    <dimen name="SizeImg250dp">250dp</dimen>
+
+    <dimen name="horizontal_margin_0dp">0dp</dimen>
+    <dimen name="horizontal_margin_10dp">10dp</dimen>
+    <dimen name="horizontal_margin_16dp">16dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+    <dimen name="nav_header_height">176dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="search_bar_size">55dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+
+    <dimen name="day_label_text_size">11sp</dimen>
+    <dimen name="all_day_bottom_margin">8dip</dimen>
+    <dimen name="one_day_header_height">0dip</dimen>
+    <dimen name="day_header_bottom_margin">4dip</dimen>
+    <dimen name="date_header_text_size">16sp</dimen>
+    <dimen name="hours_text_size">12sp</dimen>
+    <dimen name="allday_text_size">12sp</dimen>
+    <dimen name="day_view_event_text_size">12sp</dimen>
+    <dimen name="week_view_event_text_size">12sp</dimen>
+    <dimen name="event_text_vertical_margin">2dp</dimen>
+    <dimen name="event_text_horizontal_margin">4dp</dimen>
+    <dimen name="event_min_height">24dip</dimen>
+    <!-- minimum size of hours column in day/week view -->
+    <dimen name="min_hours_width">24dip</dimen>
+    <!-- margins size of hours column in day/week view -->
+    <dimen name="hours_left_margin">4dip</dimen>
+    <dimen name="hours_right_margin">4dip</dimen>
+    <!-- size of day header in day and week views  -->
+    <dimen name="day_header_height">48dp</dimen>
+    <dimen name="widget_day_num_size">36sp</dimen>
+    <dimen name="widget_day_num_top_padding">-4dip</dimen>
+    <dimen name="action_bar_date_text_size">22sp</dimen>
+    <dimen name="new_event_hint_text_size">12sp</dimen>
+    <dimen name="edit_event_view_width">800dip</dimen>
+    <dimen name="edit_event_view_padding_left">80dip</dimen>
+    <dimen name="edit_event_view_padding_right">80dip</dimen>
+    <dimen name="edit_reminder_min_size">36dip</dimen>
+    <dimen name="event_info_text_size">14dip</dimen>
+    <dimen name="event_info_desc_margin_left">0dip</dimen>
+    <dimen name="event_info_desc_margin_right">0dip</dimen>
+    <dimen name="event_info_padding">0dip</dimen>
+    <dimen name="calendar_controls_width">280dip</dimen>
+    <dimen name="min_portrait_calendar_controls_width">300dip</dimen>
+    <dimen name="max_portrait_calendar_controls_width">350dip</dimen>
+    <dimen name="calendar_controls_height">300dip</dimen>
+    <dimen name="agenda_item_right_margin">4dip</dimen>
+    <dimen name="today_icon_text_size">12sp</dimen>
+    <dimen name="color_view_touch_area_increase">16dp</dimen>
+
+    <dimen name="recurrence_picker_height">340dp</dimen>
+    <dimen name="recurrence_picker_width">300dp</dimen>
+
+    <dimen name="standard_55">45dp</dimen>
+    <dimen name="standard_105">95dp</dimen>
+
+ <dimen name="task_card_half_spacing">5dp</dimen>
+    <dimen name="gutter">10dp</dimen>
+    <dimen name="task_card_elevation">6dp</dimen>
+    <dimen name="status_bar_height">25dp</dimen>
+
+
+    <dimen name="pdf_width">595px</dimen>
+    <dimen name="pdf_height">842px</dimen>
+    <dimen name="pdf_margin_horizontal">20px</dimen>
+    <dimen name="pdf_margin_vertical">30px</dimen>
+    <dimen name="text_size_large">20sp</dimen>
+    <dimen name="margin_small">4dp</dimen>
+    <dimen name="margin_normal">8dp</dimen>
+
+
+</resources>

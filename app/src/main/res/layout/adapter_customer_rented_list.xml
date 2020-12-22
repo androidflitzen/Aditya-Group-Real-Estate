@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/view_locker_main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/f5"
+    android:clickable="true"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="2dp"
+    app:cardElevation="@dimen/f3">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txt_property_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:padding="@dimen/f5"
+            android:text="name"
+            android:textColor="@color/whiteText1"
+            android:textSize="@dimen/f16" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/f5">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical"
+                android:layout_weight="2"
+                android:text="Date"
+                android:textColor="@color/blackText2"
+                android:textSize="@dimen/f16" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical"
+                android:text=" : "
+                android:textColor="@color/blackText2"
+                android:textSize="@dimen/f16" />
+
+
+            <TextView
+                android:id="@+id/txt_date"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical"
+                android:textColor="@color/blackText1"
+                android:layout_weight="1"
+                android:text=""
+                android:textSize="@dimen/f16" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:paddingLeft="@dimen/f5"
+            android:paddingRight="@dimen/f5"
+            android:paddingBottom="@dimen/f5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical"
+                android:layout_weight="2"
+                android:text="Rent"
+                android:textColor="@color/blackText2"
+                android:textSize="@dimen/f16" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical"
+                android:text=" : "
+                android:textColor="@color/blackText2"
+                android:textSize="@dimen/f16" />
+
+            <TextView
+                android:id="@+id/txt_rent"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical"
+                android:layout_weight="1"
+                android:text=""
+                android:textColor="@color/blackText1"
+                android:textSize="@dimen/f16" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:paddingLeft="@dimen/f5"
+            android:paddingRight="@dimen/f5"
+            android:paddingBottom="@dimen/f5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical"
+                android:layout_weight="2"
+                android:text="Address"
+                android:textColor="@color/blackText2"
+                android:textSize="@dimen/f16" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical"
+                android:textColor="@color/blackText2"
+                android:text=" : "
+                android:textSize="@dimen/f16" />
+
+            <TextView
+                android:id="@+id/txt_address"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical"
+                android:layout_weight="1"
+                android:text=""
+                android:textColor="@color/blackText1"
+                android:textSize="@dimen/f16" />
+
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

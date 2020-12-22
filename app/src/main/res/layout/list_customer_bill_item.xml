@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/f5"
+        android:id="@+id/mainView"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/f2"
+        app:cardElevation="@dimen/f3">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/f5">
+
+            <ImageView
+                android:id="@+id/ivBill"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/SizeImg120dp"
+                android:scaleType="centerCrop" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/_2sdp"
+                android:layout_below="@id/ivBill">
+
+                <TextView
+                    android:id="@+id/tvBillName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/f5"
+                    android:layout_toLeftOf="@id/ivDelete"
+                    android:text=""
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:textColor="@color/blackText1"
+                    android:textSize="@dimen/_9sdp" />
+
+                <TextView
+                    android:id="@+id/tvBillDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/f5"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:text=""
+                    android:layout_toLeftOf="@id/ivDelete"
+                    android:layout_below="@id/tvBillName"
+                    android:textColor="@color/blackText1"
+                    android:textSize="@dimen/_9sdp" />
+
+
+                <ImageView
+                    android:id="@+id/ivDelete"
+                    android:layout_width="@dimen/_16sdp"
+                    android:layout_height="@dimen/_16sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:padding="@dimen/f2"
+                    app:srcCompat="@drawable/ic_delete"
+                    android:tint="@color/blackText1" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

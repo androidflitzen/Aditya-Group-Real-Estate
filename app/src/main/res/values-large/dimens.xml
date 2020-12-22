@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="f2">4dp</dimen>
+    <dimen name="f3">5dp</dimen>
+    <dimen name="f4">6dp</dimen>
+    <dimen name="f5">7dp</dimen>
+    <dimen name="f8">10dp</dimen>
+    <dimen name="f9">11dp</dimen>
+    <dimen name="f10">12dp</dimen>
+    <dimen name="f12">14dp</dimen>
+    <dimen name="f14">16dp</dimen>
+    <dimen name="f16">18dp</dimen>
+    <dimen name="f18">20dp</dimen>
+    <dimen name="f20">22dp</dimen>
+    <dimen name="f22">24dp</dimen>
+    <dimen name="f24">26dp</dimen>
+    <dimen name="f28">30dp</dimen>
+
+    <dimen name="f200">300dp</dimen>
+
+    <dimen name="horizontal_margin_0dp">90dp</dimen>
+    <dimen name="horizontal_margin_10dp">100dp</dimen>
+    <dimen name="horizontal_margin_16dp">106dp</dimen>
+
+    <dimen name="search_bar_size">55dp</dimen>
+
+</resources>

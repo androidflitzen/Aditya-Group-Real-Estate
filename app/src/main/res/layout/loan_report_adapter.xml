@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/whiteText1"
+    android:id="@+id/view_loan_report_a_main"
+    android:orientation="horizontal"
+    android:paddingBottom="7dp"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:paddingTop="7dp">
+
+    <TextView
+        android:id="@+id/txt_loan_report_a_month"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minWidth="30dp"
+        android:text="1"
+        android:textColor="@color/text_color2" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="5">
+
+        <TextView
+            android:id="@+id/txt_loan_report_a_emi"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="-"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/blackText1" />
+
+        <TextView
+            android:id="@+id/txt_loan_report_a_interest"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="-"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/blackText1" />
+
+        <TextView
+            android:id="@+id/txt_loan_report_a_principal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="-"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/blackText1" />
+
+        <TextView
+            android:id="@+id/txt_loan_report_a_amount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="-"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/blackText1" />
+
+        <TextView
+            android:id="@+id/txt_loan_report_a_total_amount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="-"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/blackText1" />
+
+    </LinearLayout>
+
+</LinearLayout>

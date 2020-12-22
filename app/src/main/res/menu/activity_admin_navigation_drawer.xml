@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_home_admin"
+            android:checked="true"
+            android:icon="@drawable/ic_home"
+            android:title="Dashboard" />
+
+        <item
+            android:id="@+id/nav_applicants"
+            android:checkable="true"
+            android:icon="@drawable/nav_admin_applications"
+            android:title="Loan Applications" />
+
+        <item
+            android:id="@+id/nav_all_users_admin"
+            android:checkable="true"
+            android:icon="@drawable/icon_my_account"
+            android:title="App Users" />
+
+        <item
+            android:id="@+id/nav_admin_calculator"
+            android:checkable="true"
+            android:icon="@drawable/icon_calculator"
+            android:title="Calculator" />
+
+        <item
+            android:id="@+id/nav_logout_admin"
+            android:checkable="true"
+            android:icon="@drawable/ic_logout"
+            android:title="Logout" />
+
+    </group>
+
+</menu>

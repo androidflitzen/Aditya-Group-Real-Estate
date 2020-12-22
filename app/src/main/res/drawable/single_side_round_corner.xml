@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <!-- solid background -->
+            <solid android:color="@color/colorPrimary"/>
+            <!-- border-->
+            <stroke
+                android:color="#263359"
+                android:width="0dp"
+                />
+            <corners android:topLeftRadius="@dimen/_25sdp" android:topRightRadius="0.1dp"
+                android:bottomLeftRadius="@dimen/_25sdp" android:bottomRightRadius="0.1dp"/>
+            <!-- different corners with different radius-->
+            <!--corners
+                android:bottomLeftRadius="5dp"
+                android:topLeftRadius="10dp"
+                android:topRightRadius="15dp"
+                android:bottomRightRadius="20dp"
+                /-->
+        </shape>
+    </item>
+</selector>

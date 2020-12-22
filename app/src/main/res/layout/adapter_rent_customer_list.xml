@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:clickable="true"
+    app:cardCornerRadius="0dp">
+
+    <RelativeLayout
+        android:id="@+id/view_main"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/f60"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="@dimen/_5sdp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"/>
+
+        <LinearLayout
+            android:id="@+id/Linear1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/view"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginLeft="@dimen/f10"
+            android:layout_marginRight="@dimen/f10"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/txt_cust_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text=""
+                android:layout_weight="1"
+                android:layout_marginRight="@dimen/_3sdp"
+                android:textColor="@color/blackText1"
+                android:textSize="@dimen/f14" />
+
+            <TextView
+                android:id="@+id/txt_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textStyle="bold"
+                android:gravity="center_vertical"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:textColor="@color/blackText1"
+                android:textSize="@dimen/f16" />
+
+            <ImageView
+                android:id="@+id/ivRentHistoryDelete"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:padding="@dimen/_5sdp"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_delete" />
+
+        </LinearLayout>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

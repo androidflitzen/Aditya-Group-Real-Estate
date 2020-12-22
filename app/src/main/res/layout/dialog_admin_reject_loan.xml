@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="@android:color/white"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Reject Loan"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/blackText1"
+        android:textStyle="bold"
+        tools:ignore="MissingPrefix" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Remarks"/>
+
+    <EditText
+        android:id="@+id/edt_reject_loan_dialog_remarks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:textColor="@android:color/black" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:animateLayoutChanges="true"
+        android:gravity="right|center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_reject_loan_dialog_cancel"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="Cancel"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/blackText1" />
+
+        <Button
+            android:id="@+id/btn_reject_loan_dialog_reject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="REJECT LOAN"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:theme="@style/MyBtn_Accent" />
+
+    </LinearLayout>
+
+</LinearLayout>

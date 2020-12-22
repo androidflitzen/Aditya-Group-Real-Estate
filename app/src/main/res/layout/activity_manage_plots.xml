@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/offWhite"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/spn_site"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/f10"
+        android:layout_marginRight="@dimen/f10"
+        android:layout_marginTop="@dimen/f10"
+        android:background="@drawable/bg_only_gray_border"
+        android:drawableRight="@drawable/ic_down_arrow"
+        android:padding="10dp"
+        android:text="Select Site"
+        android:textColor="@color/blackText1"
+        android:textSize="@dimen/f16" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rec_plot_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/spn_site"
+        android:background="@color/offWhite"
+        android:padding="@dimen/f5" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add_plot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/f16"
+        android:layout_marginRight="@dimen/f16"
+        android:padding="@dimen/f16"
+        app:backgroundTint="@color/colorAccent"
+        android:src="@drawable/ic_add" />
+
+</RelativeLayout>

@@ -548,7 +548,7 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <com.flitzen.adityarealestate.Classes.TouchImageView
+    <com.flitzen.adityarealestate_new.Classes.TouchImageView
         android:id="@+id/expanded_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

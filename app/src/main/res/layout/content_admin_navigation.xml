@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.flitzen.adityarealestate.Activity.Activity_Admin_Navigation"
+    tools:context="com.flitzen.adityarealestate_new.Activity.Activity_Admin_Navigation"
     tools:showIn="@layout/app_bar_admin_navigation">
 
 </RelativeLayout>

@@ -26,7 +26,7 @@
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
 
-    <com.flitzen.adityarealestate.Classes.TouchImageView
+    <com.flitzen.adityarealestate_new.Classes.TouchImageView
         android:id="@+id/ivGallery"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.flitzen.adityarealestate.Activity.Admin_LoanDetail_Activity">
+    tools:context="com.flitzen.adityarealestate_new.Activity.Admin_LoanDetail_Activity">
 
     <ScrollView
         android:layout_width="match_parent"

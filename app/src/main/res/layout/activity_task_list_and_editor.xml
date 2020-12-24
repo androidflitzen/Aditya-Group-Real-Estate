@@ -23,7 +23,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:id="@+id/list_fragment"
-            android:name="com.flitzen.adityarealestate.Task_Reminder.fragment.TaskListFragment"/>
+            android:name="com.flitzen.adityarealestate_new.Task_Reminder.fragment.TaskListFragment"/>
 
         <FrameLayout
             android:layout_width="0dp"

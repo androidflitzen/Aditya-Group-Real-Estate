@@ -20,14 +20,14 @@
 
     <view
         android:id="@+id/agenda_sticky_header_list"
-        class="com.flitzen.adityarealestate.calendar.StickyHeaderListView"
+        class="com.flitzen.adityarealestate_new.calendar.StickyHeaderListView"
         android:layout_width="0px"
         android:layout_height="match_parent"
         android:layout_weight=".40">
 
         <view
             android:id="@+id/agenda_events_list"
-            class="com.flitzen.adityarealestate.calendar.agenda.AgendaListView"
+            class="com.flitzen.adityarealestate_new.calendar.agenda.AgendaListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fadingEdge="none" />

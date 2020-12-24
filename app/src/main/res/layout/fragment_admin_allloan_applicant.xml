@@ -57,6 +57,18 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/tvNoActiveCustomer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No Data"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_15sdp"/>
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_add_new_loan"
             android:layout_width="wrap_content"

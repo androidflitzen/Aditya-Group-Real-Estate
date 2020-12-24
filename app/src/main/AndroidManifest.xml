@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.flitzen.adityarealestate">
+    package="com.flitzen.adityarealestate_new">
 
     <supports-screens
         android:largeScreens="true"
         android:normalScreens="true"
         android:smallScreens="true"
         android:xlargeScreens="true" />
-
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -46,29 +45,28 @@
         android:largeHeap="true"
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@drawable/launcher_icon"
+        android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:replace="android:theme">
-
+        <activity android:name=".Activity.ViewPdfForAll"></activity>
         <activity
             android:name=".Task_Reminder.activity.TaskListActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
-            android:name="com.flitzen.adityarealestate.Task_Reminder.activity.TaskEditActivity"
+            android:name=".Task_Reminder.activity.TaskEditActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name="com.flitzen.adityarealestate.Task_Reminder.activity.PreferencesActivity" />
+        <activity android:name=".Task_Reminder.activity.PreferencesActivity" />
 
         <provider
-            android:name="com.flitzen.adityarealestate.Task_Reminder.provider.TaskProvider"
-            android:authorities="com.flitzen.adityarealestate.Task_Reminder.provider.TaskProvider"
+            android:name=".Task_Reminder.provider.TaskProvider"
+            android:authorities="com.flitzen.adityarealestate_new.Task_Reminder.provider.TaskProvider"
             android:exported="false" />
-
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.flitzen.adityarealestate.fileProvider"
+            android:authorities="com.flitzen.adityarealestate_new.fileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -77,10 +75,10 @@
         </provider>
 
         <receiver
-            android:name="com.flitzen.adityarealestate.Task_Reminder.receiver.OnAlarmReceiver"
+            android:name=".Task_Reminder.receiver.OnAlarmReceiver"
             android:exported="false" />
         <receiver
-            android:name="com.flitzen.adityarealestate.Task_Reminder.receiver.OnBootReceiver"
+            android:name=".Task_Reminder.receiver.OnBootReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -88,67 +86,55 @@
         </receiver>
 
         <activity
-            android:name="com.flitzen.adityarealestate.Task_Reminder.tablet.activity.TaskListAndEditorActivity"
+            android:name=".Task_Reminder.tablet.activity.TaskListAndEditorActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".Activity.ListPDFActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".Activity.PdfCreatorPlotActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".Activity.PdfCreatorRentActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".Activity.PdfCreatorTransactionActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".Activity.PdfCreatorCashPaymentActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".Activity.PdfCreatorCashReceivedActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme" />
-
-
         <activity
             android:name=".Activity.PdfCreatorLoanActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".Activity.PdfActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".Activity.GlobalPDFActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".Activity.GlobalListPDFActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".Activity.RentPaymentActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <!-- <receiver
+        <!--
+ <receiver
              android:name=".Task_Function.util.TimeAlarm"
              android:enabled="true"
              android:exported="true" />
@@ -176,24 +162,19 @@
          <activity
              android:name=".Task_Function.activity.Task_MainActivity"
              android:label="@string/app_name"
-             android:theme="@style/AppTheme" />-->
-
-
+             android:theme="@style/AppTheme" />
+        -->
         <activity
             android:name=".Activity.Activity_Plot_ActiveList"
             android:screenOrientation="sensorPortrait"
             android:windowSoftInputMode="stateHidden"
             tools:ignore="LockedOrientationActivity" />
-
-
         <activity
             android:name=".Activity.TransEditDetail_Activity"
             android:screenOrientation="sensorPortrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden"
-            tools:ignore="LockedOrientationActivity">
-
-        </activity>
+            tools:ignore="LockedOrientationActivity"></activity>
         <activity
             android:name=".Activity.TransCustomer_Add_Activity"
             android:screenOrientation="sensorPortrait"
@@ -212,7 +193,6 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden"
             tools:ignore="LockedOrientationActivity" />
-
         <activity
             android:name=".Activity.Edit_Transaction_Plot_Activity"
             android:screenOrientation="sensorPortrait"
@@ -291,7 +271,6 @@
             android:screenOrientation="sensorPortrait"
             android:theme="@style/AppTheme.NoActionBar"
             tools:ignore="LockedOrientationActivity">
-
             <intent-filter>
                 <action android:name="android.intent.action.GET_CONTENT" />
 
@@ -300,8 +279,6 @@
 
                 <data android:mimeType="*/*" />
             </intent-filter>
-
-
         </activity>
         <activity
             android:name=".Activity.Activity_Customer_List"
@@ -457,8 +434,8 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-
-        <!-- <receiver android:name=".reminder.AlarmSetter"
+        <!--
+ <receiver android:name=".reminder.AlarmSetter"
              android:exported="false"
              android:enabled="true">
              <intent-filter>
@@ -471,13 +448,13 @@
 
          <provider
              android:name=".reminder.ReminderContentProvider"
-             android:authorities="com.flitzen.adityarealestate"
+             android:authorities="com.flitzen.adityarealestate_new"
              android:exported="false"
              android:grantUriPermissions="true"
              android:label="LentItemsProvider"
-             android:readPermission="com.flitzen.adityarealestate.READ"
-             android:writePermission="com.flitzen.adityarealestate.WRITE" />-->
-
+             android:readPermission="com.flitzen.adityarealestate_new.READ"
+             android:writePermission="com.flitzen.adityarealestate_new.WRITE" />
+        -->
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="9aeb75889f437fec9ed8f9d2c7ea208db690060c" />
@@ -487,7 +464,6 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
     </application>
 
 </manifest>

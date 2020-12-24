@@ -88,6 +88,25 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/f5">
+
+            <EditText
+                android:id="@+id/txt_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Date"
+                android:inputType="number"
+                android:singleLine="true"
+                android:focusable="false"
+                android:textIsSelectable="false"
+                android:drawableRight="@drawable/ic_calendar"
+                android:textSize="@dimen/f16" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"

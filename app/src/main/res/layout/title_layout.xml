@@ -110,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
                     android:textSize="7dp"
-                    android:text="Site Name : : ">
+                    android:text="Site Name : ">
 
                 </TextView>
 

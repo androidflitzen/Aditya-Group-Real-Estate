@@ -16,7 +16,7 @@
 
 <resources>
     <!-- MultiStateButton doesn't define any special attributes -->
-    <declare-styleable name="com.flitzen.adityarealestate.calendar.MultiStateButton">
+    <declare-styleable name="com.flitzen.adityarealestate_new.calendar.MultiStateButton">
     </declare-styleable>
     <declare-styleable name="CustomWidget">
         <attr name="light_dark" format="color"/>

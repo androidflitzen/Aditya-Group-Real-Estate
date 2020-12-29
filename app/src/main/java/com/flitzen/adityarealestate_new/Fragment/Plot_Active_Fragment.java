@@ -145,19 +145,14 @@ public class Plot_Active_Fragment extends Fragment {
                             edt_site_name.setError("Site Name");
                             edt_site_name.requestFocus();
                             return;
-                        } else if (edt_site_address.getText().toString().trim().equals("")) {
-                            edt_site_address.setError("Site Address");
-                            edt_site_address.requestFocus();
-                            return;
-                        } else if (edt_site_purchase_price.getText().toString().trim().equals("")) {
-                            edt_site_purchase_price.setError("Site Purchase Price");
-                            edt_site_purchase_price.requestFocus();
-                            return;
-                        } else if (edt_site_size.getText().toString().trim().equals("")) {
-                            edt_site_size.setError("Site Size");
-                            edt_site_size.requestFocus();
-                            return;
                         } else {
+                            if(edt_site_purchase_price.getText().toString().trim().equals("")){
+                                edt_site_purchase_price.setText("0");
+                            }
+                            if(edt_site_size.getText().toString().trim().equals("")){
+                                edt_site_size.setText("0");
+                            }
+
                             alertDialog.dismiss();
                             addSite(edt_site_name.getText().toString().trim(), edt_site_address.getText().toString().trim(), edt_site_purchase_price.getText().toString().trim(), edt_site_size.getText().toString().trim());
                         }

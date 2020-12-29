@@ -2,10 +2,12 @@ package com.flitzen.adityarealestate_new.Activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -43,13 +45,17 @@ import com.google.firebase.database.ValueEventListener;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RentCustomerHistoryActivity extends AppCompatActivity {
-    public String property_id,property_name;
+    public String property_id, property_name;
     @BindView(R.id.rec_rent_list)
     RecyclerView recRentList;
     @BindView(R.id.swipe_refresh)
@@ -68,18 +74,18 @@ public class RentCustomerHistoryActivity extends AppCompatActivity {
 
     private void initUI() {
 
-       property_id = getIntent().getStringExtra("property_id");
-       // property_id = itemList.get(0).getProperty_id();
-        property_name=getIntent().getStringExtra("property_name");
-       // getSupportActionBar().setTitle(Html.fromHtml(property_name+" Customers"));
+        property_id = getIntent().getStringExtra("property_id");
+        // property_id = itemList.get(0).getProperty_id();
+        property_name = getIntent().getStringExtra("property_name");
+        // getSupportActionBar().setTitle(Html.fromHtml(property_name+" Customers"));
 
-        Utils.showLog("==pro_id"+property_id);
+        Utils.showLog("==pro_id" + property_id);
 
-       // getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        TextView tvtitle = (TextView)findViewById(R.id.tvtitle);
-        tvtitle.setText(property_name +" Customers" );
+        // getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        TextView tvtitle = (TextView) findViewById(R.id.tvtitle);
+        tvtitle.setText(property_name + " Customers");
 
-        ImageView ivEdit1 = (ImageView)findViewById(R.id.ivEdit1);
+        ImageView ivEdit1 = (ImageView) findViewById(R.id.ivEdit1);
         ivEdit1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,12 +102,12 @@ public class RentCustomerHistoryActivity extends AppCompatActivity {
             @Override
             public void onItemClick(int position) {
                 Intent intent = new Intent(RentCustomerHistoryActivity.this, Activity_Rent_Details.class);
-                intent.putExtra("position",position);
-                intent.putExtra("property_name",property_name);
-                intent.putExtra("property_id",property_id);
-                intent.putExtra("customer_id",itemList.get(position).getCustomer_id());
-                intent.putExtra("status",itemList.get(position).getRent_status());
-                intent.putExtra("pdf_code","0");
+                intent.putExtra("position", position);
+                intent.putExtra("property_name", property_name);
+                intent.putExtra("property_id", property_id);
+                intent.putExtra("customer_id", itemList.get(position).getCustomer_id());
+                intent.putExtra("status", itemList.get(position).getRent_status());
+                intent.putExtra("pdf_code", "0");
                 startActivity(intent);
             }
         });
@@ -121,29 +127,43 @@ public class RentCustomerHistoryActivity extends AppCompatActivity {
 
         swipeRefresh.setRefreshing(true);
 
-         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        Query query = databaseReference.child("Payments").orderByKey();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        Query query = databaseReference.child("RentHistory").orderByKey();
         //databaseReference.keepSynced(true);
         query.addValueEventListener(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 swipeRefresh.setRefreshing(false);
                 itemList.clear();
-                ArrayList<String> allCustomerID=new ArrayList<>();
+                ArrayList<String> allCustomerID = new ArrayList<>();
                 allCustomerID.clear();
                 try {
                     if (dataSnapshot.exists()) {
                         for (DataSnapshot npsnapshot : dataSnapshot.getChildren()) {
-                            if(npsnapshot.child("property_id").getValue().toString().equals(property_id)){
-                                if(allCustomerID.contains(npsnapshot.child("customer_id").getValue().toString())){
-
-                                }
-                                else {
+                            if (npsnapshot.child("property_id").getValue().toString().equals(property_id)) {
                                     allCustomerID.add(npsnapshot.child("customer_id").getValue().toString());
                                     Customer customer = new Customer();
                                     customer.setCustomer_id(npsnapshot.child("customer_id").getValue().toString());
                                     customer.setProperty_id(npsnapshot.child("property_id").getValue().toString());
-                                    customer.setRent_status(npsnapshot.child("rent_status").getValue().toString());
+                                    customer.setId(npsnapshot.child("id").getValue().toString());
+                                    //customer.setRent_status(npsnapshot.child("rent_status").getValue().toString());
+
+                                    customer.setStart_date(npsnapshot.child("start_date").getValue().toString());
+                                    customer.setEnd_date(npsnapshot.child("end_date").getValue().toString());
+
+                                    if(npsnapshot.child("end_date").getValue().toString().equals("0000-00-00")){
+                                        customer.setRent_status("0");
+                                    }
+                                    else {
+                                        customer.setRent_status("1");
+                                    }
+
+                                    //customer.setPayment_date(npsnapshot.child("payment_date").getValue().toString());
+
+                                   /* customer.setStart_date(npsnapshot.child("payment_date").getValue().toString());
+                                    customer.setEnd_date(npsnapshot.child("payment_date").getValue().toString());*/
+
                                     String customerId = npsnapshot.child("customer_id").getValue().toString();
 
                                     Query query = databaseReference.child("Customers").orderByKey();
@@ -164,6 +184,148 @@ public class RentCustomerHistoryActivity extends AppCompatActivity {
                                             } catch (Exception e) {
                                                 Log.e("Ex   ", e.toString());
                                             }
+
+                                            Collections.sort(itemList, new Comparator<Customer>() {
+                                                @Override
+                                                public int compare(Customer o1, Customer o2) {
+                                                    return o1.getStart_date().compareTo(o2.getStart_date());
+                                                }
+                                            }.reversed());
+                                            adapter.notifyDataSetChanged();
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            Log.e("error ", error.getMessage());
+                                        }
+                                    });
+                                    itemList.add(customer);
+                            }
+                            // }
+                        }
+
+                        Collections.sort(itemList, new Comparator<Customer>() {
+                            @Override
+                            public int compare(Customer o1, Customer o2) {
+                                return o1.getStart_date().compareTo(o2.getStart_date());
+                            }
+                        }.reversed());
+                        adapter.notifyDataSetChanged();
+                    }
+                } catch (Exception e) {
+                    Log.e("Test  ", e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("ViewAllSitesFragment", databaseError.getMessage());
+                new CToast(RentCustomerHistoryActivity.this).simpleToast(databaseError.getMessage().toString(), Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                swipeRefresh.setRefreshing(false);
+            }
+        });
+    }
+
+    public void getRentList2() {
+
+        swipeRefresh.setRefreshing(true);
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        Query query = databaseReference.child("Payments").orderByKey();
+        //databaseReference.keepSynced(true);
+        query.addValueEventListener(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                swipeRefresh.setRefreshing(false);
+                itemList.clear();
+                ArrayList<String> allCustomerID = new ArrayList<>();
+                allCustomerID.clear();
+                try {
+                    if (dataSnapshot.exists()) {
+                        for (DataSnapshot npsnapshot : dataSnapshot.getChildren()) {
+                            if (npsnapshot.child("property_id").getValue().toString().equals(property_id)) {
+                                if (allCustomerID.contains(npsnapshot.child("customer_id").getValue().toString())) {
+                                    for (int i = 0; i < itemList.size(); i++) {
+                                        if (itemList.get(i).getCustomer_id().equals(npsnapshot.child("customer_id").getValue().toString())) {
+                                           /* itemList.get(i).setEnd_date(npsnapshot.child("payment_date").getValue().toString());
+                                            if(itemList.get(i).getStart_date().equals("0000-00-00 00:00:00")){
+                                                itemList.get(i).setStart_date(npsnapshot.child("payment_date").getValue().toString());
+                                            }*/
+                                        }
+                                    }
+                                } else {
+                                    allCustomerID.add(npsnapshot.child("customer_id").getValue().toString());
+                                    Customer customer = new Customer();
+                                    customer.setCustomer_id(npsnapshot.child("customer_id").getValue().toString());
+                                    customer.setProperty_id(npsnapshot.child("property_id").getValue().toString());
+                                    customer.setRent_status(npsnapshot.child("rent_status").getValue().toString());
+                                    customer.setPayment_date(npsnapshot.child("payment_date").getValue().toString());
+
+                                   /* customer.setStart_date(npsnapshot.child("payment_date").getValue().toString());
+                                    customer.setEnd_date(npsnapshot.child("payment_date").getValue().toString());*/
+
+                                    String customerId = npsnapshot.child("customer_id").getValue().toString();
+
+                                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                                    Query queryR = databaseReference.child("RentHistory").orderByKey();
+                                    //databaseReference.keepSynced(true);
+                                    queryR.addValueEventListener(new ValueEventListener() {
+                                        @RequiresApi(api = Build.VERSION_CODES.N)
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            try {
+                                                if (dataSnapshot.exists()) {
+                                                    for (DataSnapshot npsnapshot2 : dataSnapshot.getChildren()) {
+                                                        if(npsnapshot2.child("property_id").getValue().toString().equals(property_id)){
+                                                            if(npsnapshot2.child("customer_id").getValue().toString().equals(customerId)){
+                                                                customer.setStart_date(npsnapshot2.child("start_date").getValue().toString());
+                                                                customer.setEnd_date(npsnapshot2.child("end_date").getValue().toString());
+                                                            }
+                                                        }
+                                                    }
+                                                    adapter.notifyDataSetChanged();
+                                                }
+                                            } catch (Exception e) {
+                                                Log.e("Test  ", e.getMessage());
+                                                e.printStackTrace();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+                                            Log.e("ViewAllSitesFragment", databaseError.getMessage());
+                                            new CToast(RentCustomerHistoryActivity.this).simpleToast(databaseError.getMessage().toString(), Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                                            swipeRefresh.setRefreshing(false);
+                                        }
+                                    });
+
+                                    Query query = databaseReference.child("Customers").orderByKey();
+                                    // databaseReference.keepSynced(true);
+                                    query.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            try {
+                                                if (dataSnapshot.exists()) {
+                                                    for (DataSnapshot npsnapshot1 : dataSnapshot.getChildren()) {
+                                                        if (npsnapshot1.child("id").getValue().toString().equals(customerId)) {
+                                                            String name = npsnapshot1.child("name").getValue().toString();
+                                                            Log.e("Name  ", name);
+                                                            customer.setCustomer_name(name);
+                                                        }
+                                                    }
+                                                }
+                                            } catch (Exception e) {
+                                                Log.e("Ex   ", e.toString());
+                                            }
+
+                                            Collections.sort(itemList, new Comparator<Customer>() {
+                                                @Override
+                                                public int compare(Customer o1, Customer o2) {
+                                                    return o1.getPayment_date().compareTo(o2.getPayment_date());
+                                                }
+                                            }.reversed());
                                             adapter.notifyDataSetChanged();
                                         }
 
@@ -176,8 +338,16 @@ public class RentCustomerHistoryActivity extends AppCompatActivity {
                                 }
                             }
                             // }
-
                         }
+
+                        Collections.sort(itemList, new Comparator<Customer>() {
+                            @Override
+                            public int compare(Customer o1, Customer o2) {
+                                return o1.getPayment_date().compareTo(o2.getPayment_date());
+                            }
+                        }.reversed());
+
+
                         adapter.notifyDataSetChanged();
                     }
                 } catch (Exception e) {
@@ -260,7 +430,7 @@ public class RentCustomerHistoryActivity extends AppCompatActivity {
         super.onBackPressed();
 
         //overridePendingTransition(R.anim.feed_in, R.anim.feed_out);
-        Intent intent = new Intent(RentCustomerHistoryActivity.this,Activity_Rent_List.class);
+        Intent intent = new Intent(RentCustomerHistoryActivity.this, Activity_Rent_List.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         overridePendingTransition(0, 0);

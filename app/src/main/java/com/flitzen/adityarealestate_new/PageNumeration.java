@@ -2,6 +2,7 @@ package com.flitzen.adityarealestate_new;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
@@ -16,6 +17,7 @@ import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -49,7 +51,13 @@ public class PageNumeration extends PdfPageEventHelper
             table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
 
             Drawable d= ContextCompat.getDrawable(mContext, R.drawable.header);
-            Bitmap bmp=((BitmapDrawable) d).getBitmap();
+            Bitmap bmp = Bitmap.createBitmap(d.getIntrinsicWidth(), d.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+
+            Canvas canvas = new Canvas(bmp);
+            d.setBounds(0,0,d.getIntrinsicWidth(),d.getIntrinsicHeight());
+            d.draw(canvas);
+
+            //Bitmap bmp=((BitmapDrawable) d).getBitmap();
             ByteArrayOutputStream stream=new ByteArrayOutputStream();
             bmp.compress(Bitmap.CompressFormat.PNG,100,stream);
             Image image = Image.getInstance(stream.toByteArray());
@@ -67,6 +75,7 @@ public class PageNumeration extends PdfPageEventHelper
             //document.add(image);
 
             table.addCell(cellImage);
+
             document.add(table);
 
         } catch (DocumentException e) {
@@ -75,6 +84,14 @@ public class PageNumeration extends PdfPageEventHelper
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private static  void addEmptyLine(Document document, int number) throws DocumentException
+    {
+        for (int i = 0; i < number; i++)
+        {
+            document.add(new Paragraph(" "));
         }
     }
 
@@ -88,8 +105,13 @@ public class PageNumeration extends PdfPageEventHelper
             table.setWidthPercentage(100);
             table.setWidths(new float[]{100});
 
-            Drawable d= ContextCompat.getDrawable(mContext, R.drawable.footer);
+            Drawable d= ContextCompat.getDrawable(mContext, R.drawable.qq2);
+          /*  Bitmap bmp = Bitmap.createBitmap(d.getIntrinsicWidth(), d.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bmp);
+            d.setBounds(0,0,d.getIntrinsicWidth(),d.getIntrinsicHeight());
+            d.draw(canvas);*/
             Bitmap bmp=((BitmapDrawable) d).getBitmap();
+
             ByteArrayOutputStream stream=new ByteArrayOutputStream();
             bmp.compress(Bitmap.CompressFormat.PNG,100,stream);
             Image image = Image.getInstance(stream.toByteArray());
@@ -103,6 +125,7 @@ public class PageNumeration extends PdfPageEventHelper
             table.addCell(cell);
             table.setTotalWidth(document.getPageSize().getWidth()-document.leftMargin()-document.rightMargin());
             table.writeSelectedRows(0,-1,document.leftMargin(),120,writer.getDirectContent());
+            //table.writeSelectedRows(0,-1,document.leftMargin(),writer.getPageSize().getBottom(document.bottomMargin()),writer.getDirectContent());
         }
         catch (Exception ex)
         {

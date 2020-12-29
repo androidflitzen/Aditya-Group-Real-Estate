@@ -69,7 +69,10 @@ import com.google.firebase.database.ValueEventListener;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -197,7 +200,6 @@ public class Activity_Rent_List extends AppCompatActivity {
                 });
 
                 alertDialog.show();
-
             }
         });
 
@@ -1254,6 +1256,36 @@ public class Activity_Rent_List extends AppCompatActivity {
 
         });
 
+
+
+        //insert new entry to payments table
+
+        String key1 = rootRef.child("RentHistory").push().getKey();
+        Map<String, Object> map1 = new HashMap<>();
+
+        map1.put("property_id", id);
+        map1.put("customer_id", cust_id);
+        map1.put("id", key1);
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateStart = new Date();
+
+        map1.put("start_date", dateFormat.format(dateStart));
+        map1.put("end_date", "0000-00-00");
+        map1.put("customer_status_for_property", 0);
+        //TODO
+        rootRef.child("RentHistory").child(key).setValue(map1).addOnCompleteListener(Activity_Rent_List.this, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+            }
+
+        }).addOnFailureListener(Activity_Rent_List.this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(Activity_Rent_List.this, "Please try later...", Toast.LENGTH_SHORT).show();
+            }
+
+        });
 
         //update data to Properties table
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();

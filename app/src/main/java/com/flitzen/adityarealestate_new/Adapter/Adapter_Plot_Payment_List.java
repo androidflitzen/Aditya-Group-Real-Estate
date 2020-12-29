@@ -86,17 +86,31 @@ public class Adapter_Plot_Payment_List extends RecyclerView.Adapter<Adapter_Plot
         holder.txt_amount.setText(context.getResources().getString(R.string.rupee) + Helper.getFormatPrice(Integer.parseInt(itemList.get(position).getAmount())));
         if (itemList.get(position).getNext_payment_date().equalsIgnoreCase("")){
             holder.txt_next_date.setText("-");
+        }else if(itemList.get(position).getNext_payment_date().equals("0000-00-00")){
+            holder.txt_next_date.setText("-");
         }else {
-            String[] date = itemList.get(position).getNext_payment_date().split("-");
-            String month = date[1];
-            String mm = Helper.getMonth(month);
-            holder.txt_next_date.setText(date[2] + " " + mm + " " + date[0]);
+            try {
+                String[] date = itemList.get(position).getNext_payment_date().split("-");
+                String month = date[1];
+                String mm = Helper.getMonth(month);
+                holder.txt_next_date.setText(date[2] + " " + mm + " " + date[0]);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+
           //  holder.txt_next_date.setText(itemList.get(position).getNext_payment_date());
         }
 
-        String[] date = itemList.get(position).getPayment_date().split("-");
-        String month = date[1];
-        String mm = Helper.getMonth(month);
+        try {
+            String[] date = itemList.get(position).getPayment_date().split("-");
+            String month = date[1];
+            String mm = Helper.getMonth(month);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
         //holder.txt_date.setText(date[0] + " " + mm + " " + date[2]);
 
         if(itemList.get(position).getPayment_date()!=null){

@@ -459,7 +459,9 @@ public class Activity_Plots_List extends AppCompatActivity {
                     if (dataSnapshot.exists()) {
                         for (DataSnapshot npsnapshot : dataSnapshot.getChildren()) {
                             if(npsnapshot.child("id").getValue().toString().equals(id)){
-                                siteSize=Integer.parseInt(npsnapshot.child("size").getValue().toString());
+                                if(!(npsnapshot.child("size").getValue().toString().equals(""))){
+                                    siteSize=Integer.parseInt(npsnapshot.child("size").getValue().toString());
+                                }
                             }
                             // }
                         }

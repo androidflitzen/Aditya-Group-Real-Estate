@@ -248,6 +248,13 @@ public class RentPaymentListFragment extends Fragment {
                 startActivity(intent);*/
 
 
+                int finalTotalAmount=0;
+                for (int i = 0; i < arrayListRentPayment.size(); i++) {
+                    if(arrayListRentPayment.get(i).getAmount()!=null && !(arrayListRentPayment.get(i).getAmount().equals(""))){
+                        finalTotalAmount=finalTotalAmount+Integer.parseInt(arrayListRentPayment.get(i).getAmount());
+                    }
+                }
+
                 Long tsLong = System.currentTimeMillis() / 1000;
                 String ts = tsLong.toString();
                 path = Environment.getExternalStorageDirectory().toString() + "/" + ts + "_payment_list.pdf";
@@ -261,7 +268,7 @@ public class RentPaymentListFragment extends Fragment {
                             intent.putExtra("path",path);
                             startActivity(intent);
                         }
-                    }, getSampleData(), path, true, rentDetailsForPDF);
+                    }, getSampleData(), path, true, rentDetailsForPDF,finalTotalAmount);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e("Error", "Error Creating Pdf");
@@ -279,6 +286,13 @@ public class RentPaymentListFragment extends Fragment {
                 intent.putExtra("paymentList",arrayListRentPayment);
                 startActivity(intent);*/
 
+                int finalTotalAmount=0;
+                for (int i = 0; i < arrayListRentPayment.size(); i++) {
+                    if(arrayListRentPayment.get(i).getAmount()!=null && !(arrayListRentPayment.get(i).getAmount().equals(""))){
+                        finalTotalAmount=finalTotalAmount+Integer.parseInt(arrayListRentPayment.get(i).getAmount());
+                    }
+                }
+
                 Long tsLong = System.currentTimeMillis() / 1000;
                 String ts = tsLong.toString();
                 path = Environment.getExternalStorageDirectory().toString() + "/" + ts + "_payment_list.pdf";
@@ -292,7 +306,7 @@ public class RentPaymentListFragment extends Fragment {
                             intent.putExtra("path",path);
                             startActivity(intent);
                         }
-                    }, getSampleData(), path, true, rentDetailsForPDF);
+                    }, getSampleData(), path, true, rentDetailsForPDF,finalTotalAmount);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e("Error", "Error Creating Pdf");
@@ -1646,12 +1660,15 @@ public class RentPaymentListFragment extends Fragment {
             holder.txt_amount.setText(context.getResources().getString(R.string.rupee) + Helper.getFormatPrice(Integer.parseInt(itemList.get(position).getAmount())));
             if (itemList.get(position).getNext_payment_date() != null && itemList.get(position).getNext_payment_date().equalsIgnoreCase("")) {
                 holder.txt_next_date.setText("-");
-            } else if (itemList.get(position).getNext_payment_date() != null) {
+            } else if(itemList.get(position).getNext_payment_date().equals("0000-00-00")){
+                holder.txt_next_date.setText("-");
+            }
+            else if (itemList.get(position).getNext_payment_date() != null) {
 
                 String[] date = itemList.get(position).getNext_payment_date().split("-");
                 String month = date[1];
                 String mm = Helper.getMonth(month);
-                holder.txt_next_date.setText(date[0] + " " + mm + " " + date[2]);
+                holder.txt_next_date.setText(date[2] + " " + mm + " " + date[0]);
 
                 //holder.txt_next_date.setText(itemList.get(position).getNext_payment_date());
             }

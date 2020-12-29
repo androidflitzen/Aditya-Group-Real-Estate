@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -29,6 +30,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.flitzen.adityarealestate_new.Classes.API;
 import com.flitzen.adityarealestate_new.Classes.CToast;
+import com.flitzen.adityarealestate_new.Classes.Helper;
 import com.flitzen.adityarealestate_new.Classes.Utils;
 import com.flitzen.adityarealestate_new.Fragment.TranPayment_Fragment;
 import com.flitzen.adityarealestate_new.Fragment.TransActiveCustomer_Fragment;
@@ -36,6 +38,8 @@ import com.flitzen.adityarealestate_new.Fragment.TransReceived_Payment;
 import com.flitzen.adityarealestate_new.Items.Item_Customer_List;
 import com.flitzen.adityarealestate_new.Items.Item_Loan_Details;
 import com.flitzen.adityarealestate_new.Items.Transcation;
+import com.flitzen.adityarealestate_new.PDFUtility_Transaction;
+import com.flitzen.adityarealestate_new.PDFUtility_Transaction_All;
 import com.flitzen.adityarealestate_new.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -47,11 +51,13 @@ import com.google.firebase.database.ValueEventListener;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -96,6 +102,9 @@ public class TransactionDetails_Activity extends AppCompatActivity {
     ArrayList<Transcation> transactionlist = new ArrayList<>();
     ArrayList<Transcation> transactionlistTemp = new ArrayList<>();
 
+    ArrayList<Transcation> transactionlistAll = new ArrayList<>();
+    ArrayList<Transcation> transactionlistTempAll = new ArrayList<>();
+
     private String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
     String uniqID;
     int action, selectedPosition;
@@ -107,11 +116,13 @@ public class TransactionDetails_Activity extends AppCompatActivity {
 
     public static TextView tvTransCustReceived;
     String ReceicedTotal="0";
+    String PaymentTotltal="0";
 
     @BindView(R.id.ivTransEditProfile)
     RelativeLayout ivTransEditProfile;
     @BindView(R.id.ivPdfAll)
     RelativeLayout ivPdfAll;
+    String path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,10 +178,37 @@ public class TransactionDetails_Activity extends AppCompatActivity {
                     downloadFile( action);
                 } */
 
-               /* file_url = API.TRANSACTION_BOTHPDF + "customer_id=" + customer_id;
+              /*  file_url = API.TRANSACTION_BOTHPDF + "customer_id=" + customer_id;
                 startActivity(new Intent(context, PdfViewActivity.class)
                         .putExtra("pdf_url", file_url));
                 Utils.showLog("=== file_url " + file_url);*/
+
+                int finalTotalAmount=0;
+                for (int i = 0; i < transactionlistAll.size(); i++) {
+                    if(transactionlistAll.get(i).getAmount()!=null && !(transactionlistAll.get(i).getAmount().equals(""))){
+                        finalTotalAmount=finalTotalAmount+Integer.parseInt(transactionlistAll.get(i).getAmount());
+                    }
+                }
+
+                Long tsLong = System.currentTimeMillis() / 1000;
+                String ts = tsLong.toString();
+                path = Environment.getExternalStorageDirectory().toString() + "/" + ts + "_payment_list.pdf";
+                System.out.println("========path  " + path);
+                try {
+                    PDFUtility_Transaction_All.createPdf(v.getContext(), new PDFUtility_Transaction_All.OnDocumentClose() {
+                        @Override
+                        public void onPDFDocumentClose(File file) {
+                            Toast.makeText(TransactionDetails_Activity.this, "Sample Pdf Created", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(TransactionDetails_Activity.this, ViewPdfForAll.class);
+                            intent.putExtra("path",path);
+                            startActivity(intent);
+                        }
+                    }, getSampleData(), path, true, customer_name, contact_no,finalTotalAmount);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e("Error", "Error Creating Pdf");
+                    Toast.makeText(v.getContext(), "Error Creating Pdf", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -394,6 +432,54 @@ public class TransactionDetails_Activity extends AppCompatActivity {
 
     }
 
+    private List<String[]> getSampleData() {
+
+        List<String[]> temp = new ArrayList<>();
+        int finalTotalAmount=0;
+        for (int i = 0; i < transactionlistAll.size(); i++) {
+
+            String data1="";
+            String data2="";
+            String data3="";
+            String data4="";
+
+
+            if (transactionlistAll.get(i).getTransactionDate() != null) {
+                SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd");
+                // SimpleDateFormat inputT = new SimpleDateFormat("hh:mm:ss");
+                SimpleDateFormat output = new SimpleDateFormat("dd MMMM yyyy");
+                // SimpleDateFormat outputT = new SimpleDateFormat("hh:mm a");
+                try {
+                    Date oneWayTripDate;
+                    Date oneWayTripDateT;
+                    oneWayTripDate = input.parse(transactionlistAll.get(i).getTransactionDate());  // parse input
+                    // oneWayTripDateT = inputT.parse(transactionlist.get(i).getTransactionTime());  // parse input
+                    data1=(output.format(oneWayTripDate));
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+            data2=transactionlistAll.get(i).getTransactionNote();
+
+            if(transactionlistAll.get(i).getPaymentType()!=null){
+                if(transactionlistAll.get(i).getPaymentType().equals("1")){
+                    data4=(getResources().getString(R.string.rupee)+Helper.getFormatPrice(Integer.parseInt(transactionlistAll.get(i).getAmount())));
+                    data3="";
+                }
+                else {
+                    data4="";
+                    data3=(getResources().getString(R.string.rupee)+Helper.getFormatPrice(Integer.parseInt(transactionlistAll.get(i).getAmount())));
+                }
+            }
+
+            temp.add(new String[] {data1,data2,data3,data4});
+        }
+        return temp;
+    }
+
 
     private void getReceivedlist() {
 
@@ -452,6 +538,73 @@ public class TransactionDetails_Activity extends AppCompatActivity {
                         }
                         else {
                             TransactionDetails_Activity.tvTransCustReceived.setText(ReceicedTotal);
+                        }
+                    }
+                } catch (Exception e) {
+                    Log.e("Ex   ", e.toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("error ", error.getMessage());
+            }
+        });
+    }
+
+    private void getAllPaymentList() {
+
+        System.out.println("=========getPaymentlist   "+customer_id);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        Query queryDocument = databaseReference.child("Transactions").orderByKey();
+        queryDocument.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                try {
+                    if (dataSnapshot.exists()) {
+                        transactionlistAll.clear();
+                        transactionlistTempAll.clear();
+                        int PaymentTotltal1=0;
+                        for (DataSnapshot npsnapshot5 : dataSnapshot.getChildren()) {
+                            if (npsnapshot5.child("customer_id").getValue().toString().equals(customer_id)) {
+                                    Transcation item1 = new Transcation();
+                                    item1.setTransactionId(npsnapshot5.child("transaction_id").getValue().toString());
+                                    item1.setCustomerId(npsnapshot5.child("customer_id").getValue().toString());
+                                    item1.setPaymentType(npsnapshot5.child("payment_type").getValue().toString());
+                                    item1.setTransactionDate(npsnapshot5.child("transaction_date").getValue().toString());
+                                    item1.setTransactionNote(npsnapshot5.child("transaction_note").getValue().toString());
+                                    item1.setAmount(npsnapshot5.child("amount").getValue().toString());
+
+                                    PaymentTotltal1=PaymentTotltal1+Integer.parseInt(npsnapshot5.child("amount").getValue().toString());
+                                    PaymentTotltal=String.valueOf(PaymentTotltal1);
+
+                                    Query queryCustomer = databaseReference.child("Transacation_Customers").orderByKey();
+                                    queryCustomer.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            try {
+                                                if (dataSnapshot.exists()) {
+                                                    for (DataSnapshot npsnapshotCustomer : dataSnapshot.getChildren()) {
+                                                        if (npsnapshotCustomer.child("id").getValue().toString().equals(customer_id)) {
+                                                            String name = npsnapshotCustomer.child("name").getValue().toString();
+                                                            item1.setCustomerName(name);
+                                                        }
+                                                    }
+                                                }
+                                            } catch (Exception e) {
+                                                Log.e("Ex   ", e.toString());
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            Log.e("error ", error.getMessage());
+                                        }
+                                    });
+                                    transactionlistAll.add(item1);
+                                    transactionlistTempAll.add(item1);
+
+                            }
                         }
                     }
                 } catch (Exception e) {
@@ -552,6 +705,7 @@ public class TransactionDetails_Activity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         getReceivedlist();
+        getAllPaymentList();
 
         tvTranstabPayment.setBackground(getResources().getDrawable(R.drawable.task_bg_title));
         tvTranstabRecevied.setBackground(getResources().getDrawable(R.drawable.trans_tab_bg));

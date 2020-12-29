@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +32,7 @@ import com.flitzen.adityarealestate_new.Activity.Activity_Customer_Add;
 import com.flitzen.adityarealestate_new.Activity.Activity_Rent_List;
 import com.flitzen.adityarealestate_new.Aditya;
 import com.flitzen.adityarealestate_new.Classes.API;
+
 import com.flitzen.adityarealestate_new.Classes.CToast;
 import com.flitzen.adityarealestate_new.Classes.Utils;
 import com.flitzen.adityarealestate_new.Items.Customer;
@@ -45,11 +47,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.itextpdf.text.pdf.parser.Line;
 
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -79,7 +85,7 @@ public class RentCustomerAdapter extends RecyclerView.Adapter<RentCustomerAdapte
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.txt_cust_name.setText(itemList.get(position).getCustomer_name());
 
-        if(itemList.get(position).getRent_status().equals("0")){
+        if (itemList.get(position).getRent_status().equals("0")) {
             holder.txt_status.setText("Current Customer");
             holder.txt_status.setTextColor(context.getResources().getColor(R.color.color_green));
             holder.ivRentHistoryDelete.setImageResource(R.drawable.ic_person_remove);
@@ -97,8 +103,8 @@ public class RentCustomerAdapter extends RecyclerView.Adapter<RentCustomerAdapte
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     Log.e("unAssign", "Property");
-                                    Log.e("cusomer id", itemList.get(position).getCustomer_id());
-                                    Log.e("cusomer name", itemList.get(position).getCustomer_name());
+                                    //  Log.e("cusomer id", itemList.get(position).getCustomer_id());
+                                    //  Log.e("cusomer name", itemList.get(position).getCustomer_name());
                                     unAssignProperty(itemList.get(position).getCustomer_id().toString(), Aditya.ID, position);
                                 }
                             });
@@ -115,8 +121,23 @@ public class RentCustomerAdapter extends RecyclerView.Adapter<RentCustomerAdapte
                     alertDialog.show();
                 }
             });
-        }
-        else {
+
+            holder.linEnd.setVisibility(View.GONE);
+            if (itemList.get(position).getStart_date() != null) {
+                try {
+                    SimpleDateFormat formatIn = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat formatOut = new SimpleDateFormat("dd MMM,yyyy");
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(formatIn.parse(itemList.get(position).getStart_date()));
+                    String newDate = formatOut.format(calendar.getTime());
+                    holder.txtStartDate.setText(newDate);
+
+                } catch (ParseException e) {
+                    System.out.println("=======e  getStart_date" + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        } else {
             holder.txt_status.setText("Old Customer");
 
             holder.ivRentHistoryDelete.setVisibility(View.VISIBLE);
@@ -130,6 +151,34 @@ public class RentCustomerAdapter extends RecyclerView.Adapter<RentCustomerAdapte
 
 
             holder.txt_status.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+            holder.linEnd.setVisibility(View.VISIBLE);
+            if (itemList.get(position).getStart_date() != null) {
+                try {
+                    SimpleDateFormat formatIn = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat formatOut = new SimpleDateFormat("dd MMM,yyyy");
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(formatIn.parse(itemList.get(position).getStart_date()));
+                    String newDate = formatOut.format(calendar.getTime());
+                    holder.txtStartDate.setText(newDate);
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (itemList.get(position).getEnd_date() != null) {
+                try {
+                    SimpleDateFormat formatIn = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat formatOut = new SimpleDateFormat("dd MMM,yyyy");
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(formatIn.parse(itemList.get(position).getEnd_date()));
+                    String newDate = formatOut.format(calendar.getTime());
+                    holder.txtEndDate.setText(newDate);
+
+                } catch (ParseException e) {
+                    System.out.println("=======e  getEnd_date" + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
         }
 
         holder.view_main.setOnClickListener(new View.OnClickListener() {
@@ -173,22 +222,44 @@ public class RentCustomerAdapter extends RecyclerView.Adapter<RentCustomerAdapte
         showPrd();
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+
+        Query applesR = ref.child("RentHistory");
+
+        applesR.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                hidePrd();
+                for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
+                    if (appleSnapshot.child("id").getValue().toString().equals(itemList.get(position).getId())) {
+                        appleSnapshot.getRef().removeValue();
+                    }
+                    // new CToast(context).simpleToast("Delete successfully", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_success).show();
+                    notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                hidePrd();
+                Log.e("Cancel  ", "onCancelled", databaseError.toException());
+            }
+        });
+
         Query applesQuery = ref.child("Payments");
 
         applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 hidePrd();
-                for (DataSnapshot appleSnapshot: dataSnapshot.getChildren()) {
-                    if(appleSnapshot.child("property_id").getValue().toString().equals(itemList.get(position).getProperty_id())){
-                        if(appleSnapshot.child("customer_id").getValue().toString().equals(itemList.get(position).getCustomer_id())){
+                for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
+                    if (appleSnapshot.child("property_id").getValue().toString().equals(itemList.get(position).getProperty_id())) {
+                        if (appleSnapshot.child("customer_id").getValue().toString().equals(itemList.get(position).getCustomer_id())) {
                             appleSnapshot.getRef().removeValue();
                         }
                     }
-                    new CToast(context).simpleToast("Delete successfully", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_success).show();
-                    notifyDataSetChanged();
-
+                    //notifyDataSetChanged();
                 }
+                new CToast(context).simpleToast("Delete successfully", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_success).show();
             }
 
             @Override
@@ -255,22 +326,27 @@ public class RentCustomerAdapter extends RecyclerView.Adapter<RentCustomerAdapte
 
     @Override
     public int getItemCount() {
-        System.out.println("========itemList  "+itemList.size());
+        System.out.println("========itemList  " + itemList.size());
         return itemList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txt_cust_name, txt_status;
+        TextView txt_cust_name, txt_status, txtStartDate, txtEndDate;
         RelativeLayout view_main;
         ImageView ivRentHistoryDelete;
+        LinearLayout linStart, linEnd;
 
         public ViewHolder(View itemView) {
             super(itemView);
             txt_cust_name = (TextView) itemView.findViewById(R.id.txt_cust_name);
             txt_status = (TextView) itemView.findViewById(R.id.txt_status);
+            txtStartDate = (TextView) itemView.findViewById(R.id.txtStartDate);
+            txtEndDate = (TextView) itemView.findViewById(R.id.txtEndDate);
             ivRentHistoryDelete = (ImageView) itemView.findViewById(R.id.ivRentHistoryDelete);
             view_main = (RelativeLayout) itemView.findViewById(R.id.view_main);
+            linStart = itemView.findViewById(R.id.linStart);
+            linEnd = itemView.findViewById(R.id.linEnd);
         }
     }
 
@@ -304,8 +380,8 @@ public class RentCustomerAdapter extends RecyclerView.Adapter<RentCustomerAdapte
         queryPro.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot appleSnapshot: dataSnapshot.getChildren()) {
-                    if(appleSnapshot.child("id").getValue().toString().equals(id)){
+                for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
+                    if (appleSnapshot.child("id").getValue().toString().equals(id)) {
 
                         String key = ref.child("Property_History").push().getKey();
                         Map<String, Object> map = new HashMap<>();
@@ -316,7 +392,7 @@ public class RentCustomerAdapter extends RecyclerView.Adapter<RentCustomerAdapte
                         map.put("hired_since", appleSnapshot.child("hired_since").getValue().toString());
                         map.put("property_id", id);
                         map.put("remarks", "");
-                        map.put("rent",  appleSnapshot.child("rent").getValue().toString());
+                        map.put("rent", appleSnapshot.child("rent").getValue().toString());
 
                         ref.child("Property_History").child(key).setValue(map).addOnCompleteListener(context, new OnCompleteListener<Void>() {
                             @Override
@@ -334,26 +410,77 @@ public class RentCustomerAdapter extends RecyclerView.Adapter<RentCustomerAdapte
                     }
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.e("Cancel  ", "onCancelled", databaseError.toException());
             }
         });
 
+
+        Query queryH = ref.child("RentHistory").orderByKey();
+        queryH.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot npsnapshot) {
+                hidePrd();
+                try {
+                    if (npsnapshot.exists()) {
+                        for (DataSnapshot dataSnapshot : npsnapshot.getChildren()) {
+                            if (dataSnapshot.child("property_id").getValue().toString().equals(id)) {
+                                if (dataSnapshot.child("customer_id").getValue().toString().equals(customer_id)) {
+                                    if (dataSnapshot.child("customer_status_for_property").getValue().toString().equals("0")) {
+                                        DatabaseReference cineIndustryRef = ref.child("RentHistory").child(dataSnapshot.getKey());
+                                        Map<String, Object> map = new HashMap<>();
+                                        map.put("customer_status_for_property", 1);
+
+                                        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                                        Date dateStart = new Date();
+
+                                        map.put("end_date", dateFormat.format(dateStart));
+                                        Task<Void> voidTask = cineIndustryRef.updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+
+                                            }
+                                        });
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    Log.e("exception   ", e.toString());
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                hidePrd();
+                Log.e("databaseError   ", databaseError.getMessage());
+            }
+        });
 
 
         Query removeDoc = ref.child("RantDocument");
         removeDoc.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot appleSnapshot: dataSnapshot.getChildren()) {
-                    if(appleSnapshot.child("p_id").getValue().toString().equals(id)){
-                        if(appleSnapshot.child("customer_id").getValue().toString().equals(customer_id)){
+                for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
+                    if (appleSnapshot.child("p_id").getValue().toString().equals(id)) {
+                        if (appleSnapshot.child("customer_id").getValue().toString().equals(customer_id)) {
                             appleSnapshot.getRef().removeValue();
                         }
                     }
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.e("Cancel  ", "onCancelled", databaseError.toException());
@@ -361,73 +488,74 @@ public class RentCustomerAdapter extends RecyclerView.Adapter<RentCustomerAdapte
         });
 
 
-            Query query = ref.child("Properties").orderByKey();
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot npsnapshot) {
-                    hidePrd();
-                    try {
-                        if (npsnapshot.exists()) {
-                            for (DataSnapshot dataSnapshot : npsnapshot.getChildren()) {
-                                if (dataSnapshot.child("id").getValue().toString().equals(id)) {
-                                    DatabaseReference cineIndustryRef = ref.child("Properties").child(dataSnapshot.getKey());
-                                    Map<String, Object> map = new HashMap<>();
-                                    map.put("rent", "");
-                                    map.put("customer_id", 0);
-                                    map.put("hired_since", "0000-00-00");
-                                    Task<Void> voidTask = cineIndustryRef.updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
+        Query query = ref.child("Properties").orderByKey();
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot npsnapshot) {
+                hidePrd();
+                try {
+                    if (npsnapshot.exists()) {
+                        for (DataSnapshot dataSnapshot : npsnapshot.getChildren()) {
+                            if (dataSnapshot.child("id").getValue().toString().equals(id)) {
+                                DatabaseReference cineIndustryRef = ref.child("Properties").child(dataSnapshot.getKey());
+                                Map<String, Object> map = new HashMap<>();
+                                map.put("rent", "");
+                                map.put("customer_id", 0);
+                                map.put("hired_since", "0000-00-00");
+                                Task<Void> voidTask = cineIndustryRef.updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
 
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
 
-                                        }
-                                    });
-                                }
+                                    }
+                                });
                             }
                         }
-                    } catch (Exception e) {
-                        Log.e("exception   ",e.toString());
-                        e.printStackTrace();
                     }
+                } catch (Exception e) {
+                    Log.e("exception   ", e.toString());
+                    e.printStackTrace();
                 }
+            }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    hidePrd();
-                    Log.e("databaseError   ",databaseError.getMessage());
-                }
-            });
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                hidePrd();
+                Log.e("databaseError   ", databaseError.getMessage());
+            }
+        });
 
         Query applesQuery = ref.child("Payments");
         applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot appleSnapshot: dataSnapshot.getChildren()) {
-                    if(appleSnapshot.child("property_id").getValue().toString().equals(id)){
-                            DatabaseReference cineIndustryRef = ref.child("Payments").child(appleSnapshot.getKey());
-                            Map<String, Object> map = new HashMap<>();
-                            map.put("rent_status", 1);
-                            Task<Void> voidTask = cineIndustryRef.updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    new CToast(context).simpleToast("Property unassigned successfully", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_success).show();
-                                    Intent intent = new Intent(context, Activity_Rent_List.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    context.startActivity(intent);
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
+                for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
+                    if (appleSnapshot.child("property_id").getValue().toString().equals(id)) {
+                        DatabaseReference cineIndustryRef = ref.child("Payments").child(appleSnapshot.getKey());
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("rent_status", 1);
+                        Task<Void> voidTask = cineIndustryRef.updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                new CToast(context).simpleToast("Property unassigned successfully", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_success).show();
+                                Intent intent = new Intent(context, Activity_Rent_List.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                context.startActivity(intent);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
 
-                                }
-                            });
+                            }
+                        });
                     }
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.e("Cancel  ", "onCancelled", databaseError.toException());

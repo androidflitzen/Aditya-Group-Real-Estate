@@ -120,22 +120,6 @@ public class Activity_Customer_Add extends AppCompatActivity {
                     edt_cust_no.setError("Mobile No. must be 10 digit");
                     edt_cust_no.requestFocus();
                     return;
-                } else if (!edt_cust_other_no.getText().toString().equals("") && edt_cust_other_no.getText().toString().length() != 10) {
-                    edt_cust_other_no.setError("Mobile No. must be 10 digit");
-                    edt_cust_other_no.requestFocus();
-                    return;
-                } else if (edt_cust_email.getText().toString().equals("") || !edt_cust_email.getText().toString().trim().matches(Helper.emailPattern) || edt_cust_email.getText().toString().isEmpty()) {
-                    edt_cust_email.setError("Enter Valid Email");
-                    edt_cust_email.requestFocus();
-                    return;
-                } else if (edt_cust_address.getText().toString().isEmpty() || edt_cust_address.getText().equals("")) {
-                    edt_cust_address.setError("Enter Address");
-                    edt_cust_address.requestFocus();
-                    return;
-                } else if (edt_cust_city.getText().toString().isEmpty() || edt_cust_city.getText().equals("")) {
-                    edt_cust_city.setError("Enter City");
-                    edt_cust_city.requestFocus();
-                    return;
                 } else {
                     addCustomer();
                 }

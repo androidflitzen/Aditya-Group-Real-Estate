@@ -13,7 +13,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.flitzen.adityarealestate_new.Classes.Helper;
-import com.flitzen.adityarealestate_new.Items.PlotDetailsForPDF;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -33,14 +32,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class PDFUtility_Transaction {
-    private static final String TAG = PDFUtility_Transaction.class.getSimpleName();
+public class PDFUtility_Transaction_All {
+    private static final String TAG = PDFUtility_Transaction_All.class.getSimpleName();
     private static Font FONT_TITLE = new Font(Font.FontFamily.TIMES_ROMAN, 30, Font.BOLD);
     private static Font FONT_SUBTITLE = new Font(Font.FontFamily.TIMES_ROMAN, 20, Font.NORMAL);
     private static Font FONT_TOTAL = new Font(Font.FontFamily.TIMES_ROMAN, 15, Font.NORMAL);
@@ -90,6 +88,8 @@ public class PDFUtility_Transaction {
         document.add(createDataTable(items));
         addEmptyLine(document,2);
         addFinalTotle(mContext,document,pdfWriter,finalAmount);
+        addEmptyLine(document, 2);
+
        // document.add(createSignBox());
 
         document.close();
@@ -260,7 +260,7 @@ public class PDFUtility_Transaction {
             cell.setPadding(8f);
             cell.setUseAscender(true);
 
-            Paragraph temp = new Paragraph("Transaction" ,FONT_TITLE);
+            Paragraph temp = new Paragraph("Transactions" ,FONT_TITLE);
             temp.setAlignment(Element.ALIGN_CENTER);
             cell.addElement(temp);
 
@@ -376,19 +376,19 @@ public class PDFUtility_Transaction {
             cell.setPadding(4f);
             table1.addCell(cell);
 
-            cell = new PdfPCell(new Phrase("Payment Type", FONT_COLUMN));
-            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-            cell.setPadding(4f);
-            table1.addCell(cell);
-
             cell = new PdfPCell(new Phrase("Notes", FONT_COLUMN));
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
             cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
             cell.setPadding(4f);
             table1.addCell(cell);
 
-            cell = new PdfPCell(new Phrase("Amount", FONT_COLUMN));
+            cell = new PdfPCell(new Phrase("Received", FONT_COLUMN));
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setPadding(4f);
+            table1.addCell(cell);
+
+            cell = new PdfPCell(new Phrase("Payment", FONT_COLUMN));
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
             cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
             cell.setPadding(4f);
@@ -416,7 +416,7 @@ public class PDFUtility_Transaction {
             cell.setPaddingRight(left_right_Padding);
             cell.setPaddingTop(top_bottom_Padding);
             cell.setPaddingBottom(top_bottom_Padding);
-          //  cell.setBackgroundColor(cell_color);
+           // cell.setBackgroundColor(cell_color);
             table1.addCell(cell);
 
             cell = new PdfPCell(new Phrase(temp[1], FONT_CELL));
@@ -436,7 +436,7 @@ public class PDFUtility_Transaction {
             cell.setPaddingRight(left_right_Padding);
             cell.setPaddingTop(top_bottom_Padding);
             cell.setPaddingBottom(top_bottom_Padding);
-          //  cell.setBackgroundColor(cell_color);
+            //cell.setBackgroundColor(cell_color);
             table1.addCell(cell);
 
             cell = new PdfPCell(new Phrase(temp[3], FONT_CELL));

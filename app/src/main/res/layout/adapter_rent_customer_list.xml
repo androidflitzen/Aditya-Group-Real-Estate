@@ -10,10 +10,9 @@
     <RelativeLayout
         android:id="@+id/view_main"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/f60"
+        android:layout_height="@dimen/_65sdp"
         android:orientation="horizontal"
         android:weightSum="10">
-
 
 
         <View
@@ -23,11 +22,16 @@
             android:background="@color/colorPrimary"/>
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:orientation="vertical">
+
+        <LinearLayout
             android:id="@+id/Linear1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/view"
-            android:layout_centerVertical="true"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginLeft="@dimen/f10"
             android:layout_marginRight="@dimen/f10"
@@ -68,5 +72,118 @@
                 app:srcCompat="@drawable/ic_delete" />
 
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/view"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal"
+            android:layout_marginLeft="@dimen/f10"
+            android:weightSum="2"
+            android:layout_marginRight="@dimen/f10">
+
+            <LinearLayout
+                android:id="@+id/linStart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:src="@drawable/ic_select_time"
+                        android:layout_gravity="center_vertical"
+                        android:tint="@color/colorPrimary"
+                        >
+
+                    </ImageView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Start Date"
+                        android:layout_weight="1"
+                        android:layout_marginRight="@dimen/_3sdp"
+                        android:textColor="@color/blackText1"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:textSize="@dimen/f14" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txtStartDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text=""
+                    android:layout_weight="1"
+                    android:layout_marginRight="@dimen/_3sdp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/f14" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/linEnd"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:src="@drawable/ic_select_time"
+                        android:layout_gravity="center_vertical"
+                        android:tint="@color/colorPrimary"
+                        >
+
+                    </ImageView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="End Date"
+                        android:layout_weight="1"
+                        android:layout_marginRight="@dimen/_3sdp"
+                        android:textColor="@color/blackText1"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:textSize="@dimen/f14" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txtEndDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text=""
+                    android:layout_weight="1"
+                    android:layout_marginRight="@dimen/_3sdp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/f14" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        </LinearLayout>
+
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

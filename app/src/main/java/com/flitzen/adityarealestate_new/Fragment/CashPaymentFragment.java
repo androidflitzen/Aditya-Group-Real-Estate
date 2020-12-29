@@ -38,10 +38,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.flitzen.adityarealestate_new.Activity.Activity_Customer_Add;
-import com.flitzen.adityarealestate_new.Activity.Activity_Plot_Details;
-import com.flitzen.adityarealestate_new.Activity.PdfCreatorCashPaymentActivity;
-import com.flitzen.adityarealestate_new.Activity.PdfViewActivity;
+
 import com.flitzen.adityarealestate_new.Activity.ViewPdfForAll;
 import com.flitzen.adityarealestate_new.Adapter.Adapter_Site_Payment_List;
 import com.flitzen.adityarealestate_new.Classes.API;
@@ -49,9 +46,7 @@ import com.flitzen.adityarealestate_new.Classes.CToast;
 import com.flitzen.adityarealestate_new.Classes.Helper;
 import com.flitzen.adityarealestate_new.Classes.Network;
 import com.flitzen.adityarealestate_new.Classes.Utils;
-import com.flitzen.adityarealestate_new.Items.CashPaymentDetailsForPDF;
 import com.flitzen.adityarealestate_new.Items.Item_Site_Payment_List;
-import com.flitzen.adityarealestate_new.PDFUtility;
 import com.flitzen.adityarealestate_new.PDFUtility_cashPayment;
 import com.flitzen.adityarealestate_new.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -212,6 +207,14 @@ public class CashPaymentFragment extends Fragment {
                 String ts = tsLong.toString();
                 path = Environment.getExternalStorageDirectory().toString() + "/" + ts + "_payment_list.pdf";
                 System.out.println("========path  " + path);
+
+                int finalTotalAmount=0;
+                for (int i = 0; i < cashPaymentList.size(); i++) {
+                    if(cashPaymentList.get(i).getAmount()!=null && !(cashPaymentList.get(i).getAmount().equals(""))){
+                        finalTotalAmount=finalTotalAmount+Integer.parseInt(cashPaymentList.get(i).getAmount());
+                    }
+                }
+
                 try {
                     PDFUtility_cashPayment.createPdf(v.getContext(), new PDFUtility_cashPayment.OnDocumentClose() {
                         @Override
@@ -221,7 +224,7 @@ public class CashPaymentFragment extends Fragment {
                             intent.putExtra("path",path);
                             startActivity(intent);
                         }
-                    }, getSampleData(), path, true, site_size, site_address, site_name);
+                    }, getSampleData(), path, true, site_size, site_address, site_name,finalTotalAmount);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e("Error", "Error Creating Pdf");
@@ -268,7 +271,7 @@ public class CashPaymentFragment extends Fragment {
             }
 
             data2=cashPaymentList.get(i).getRemarks();
-            data3=Helper.getFormatPrice(Integer.parseInt(cashPaymentList.get(i).getAmount()));
+            data3=getResources().getString(R.string.rupee)+Helper.getFormatPrice(Integer.parseInt(cashPaymentList.get(i).getAmount()));
 
             temp.add(new String[] {data1,data2,data3});
         }

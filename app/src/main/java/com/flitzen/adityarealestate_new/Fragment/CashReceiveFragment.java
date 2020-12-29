@@ -200,7 +200,7 @@ public class CashReceiveFragment extends Fragment {
                             intent.putExtra("path",path);
                             startActivity(intent);
                         }
-                    }, getSampleData(), path, true, site_size, site_address, site_name);
+                    }, getSampleData(), path, true, site_size, site_address, site_name,0);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e("Error", "Error Creating Pdf");
@@ -266,7 +266,7 @@ public class CashReceiveFragment extends Fragment {
             }
 
             data2=receivedPaymentList.get(i).getRemarks();
-            data3=Helper.getFormatPrice(Integer.parseInt(receivedPaymentList.get(i).getAmount()));
+            data3=String.valueOf(getResources().getString(R.string.rupee)+String.valueOf(Helper.getFormatPrice(Integer.parseInt(receivedPaymentList.get(i).getAmount()))));
 
             temp.add(new String[] {data1,data2,data3});
         }

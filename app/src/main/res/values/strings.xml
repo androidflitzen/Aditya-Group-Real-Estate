@@ -8,6 +8,7 @@
     <string name="welcome_msg">Welcome to</string>
 
     <string name="rupee">₹</string>
+    <string name="rupee_for_pdf">\u20B9</string>
 
     <string name="loan_report"><u>Loan Report</u></string>
 

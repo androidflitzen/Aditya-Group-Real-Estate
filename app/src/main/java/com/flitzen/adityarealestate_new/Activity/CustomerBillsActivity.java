@@ -125,25 +125,27 @@ public class CustomerBillsActivity extends AppCompatActivity {
                 try {
                     if (dataSnapshot.exists()) {
                         for (DataSnapshot npsnapshot : dataSnapshot.getChildren()) {
-                            CustomerBill customerBill = new CustomerBill();
-                            customerBill.setBill_id(npsnapshot.child("Bill_id").getValue().toString());
-                            customerBill.setProperties_id(npsnapshot.child("Properties_id").getValue().toString());
-                            customerBill.setBill_month(npsnapshot.child("Bill_month").getValue().toString());
-                            // customerBill.setBill_Rs(obj.getString("Bill_Rs"));
-                            //customerBill.setOther_Notes(obj.getString("Other_Notes"));
-                            customerBill.setBill_photo(npsnapshot.child("Bill_photo").getValue().toString());
+                            if(npsnapshot.child("Properties_id").getValue().toString().equals(property_id)){
+                                CustomerBill customerBill = new CustomerBill();
+                                customerBill.setBill_id(npsnapshot.child("Bill_id").getValue().toString());
+                                customerBill.setProperties_id(npsnapshot.child("Properties_id").getValue().toString());
+                                customerBill.setBill_month(npsnapshot.child("Bill_month").getValue().toString());
+                                // customerBill.setBill_Rs(obj.getString("Bill_Rs"));
+                                //customerBill.setOther_Notes(obj.getString("Other_Notes"));
+                                customerBill.setBill_photo(npsnapshot.child("Bill_photo").getValue().toString());
 
-                            try {
-                                DateFormat f = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                                Date d = f.parse(npsnapshot.child("created_date").getValue().toString());
-                                DateFormat date = new SimpleDateFormat("yyyy-MM-dd");
-                                DateFormat time = new SimpleDateFormat("hh:mm:ss");
-                                customerBill.setCreate_date(date.format(d));
-                                customerBill.setCreate_time(time.format(d));
-                            } catch (ParseException e) {
-                                e.printStackTrace();
+                                try {
+                                    DateFormat f = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                                    Date d = f.parse(npsnapshot.child("created_date").getValue().toString());
+                                    DateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+                                    DateFormat time = new SimpleDateFormat("hh:mm:ss");
+                                    customerBill.setCreate_date(date.format(d));
+                                    customerBill.setCreate_time(time.format(d));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                                customerBillList.add(customerBill);
                             }
-                            customerBillList.add(customerBill);
                         }
 
                         gvBills.setAdapter(new CustomerBillListAdapter(CustomerBillsActivity.this, customerBillList));

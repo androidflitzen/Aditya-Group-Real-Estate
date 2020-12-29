@@ -134,6 +134,13 @@ public class TransReceived_Payment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                int finalTotalAmount=0;
+                for (int i = 0; i < transactionlist.size(); i++) {
+                    if(transactionlist.get(i).getAmount()!=null && !(transactionlist.get(i).getAmount().equals(""))){
+                        finalTotalAmount=finalTotalAmount+Integer.parseInt(transactionlist.get(i).getAmount());
+                    }
+                }
+
                 Long tsLong = System.currentTimeMillis() / 1000;
                 String ts = tsLong.toString();
                 path = Environment.getExternalStorageDirectory().toString() + "/" + ts + "_payment_list.pdf";
@@ -147,7 +154,7 @@ public class TransReceived_Payment extends Fragment {
                             intent.putExtra("path",path);
                             startActivity(intent);
                         }
-                    }, getSampleData(), path, true, customer_name, phoneNo);
+                    }, getSampleData(), path, true, customer_name, phoneNo,finalTotalAmount);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e("Error", "Error Creating Pdf");

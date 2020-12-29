@@ -301,19 +301,15 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
                             edt_site_name.setError("Site Name");
                             edt_site_name.requestFocus();
                             return;
-                        } else if (edt_site_address.getText().toString().trim().equals("")) {
-                            edt_site_address.setError("Site Address");
-                            edt_site_address.requestFocus();
-                            return;
-                        } else if (edt_site_purchase_price.getText().toString().trim().equals("")) {
-                            edt_site_purchase_price.setError("Site Purchase Price");
-                            edt_site_purchase_price.requestFocus();
-                            return;
-                        } else if (edt_site_size.getText().toString().trim().equals("")) {
-                            edt_site_size.setError("Site Size");
-                            edt_site_size.requestFocus();
-                            return;
-                        } else {
+                        }  else {
+
+                            if(edt_site_purchase_price.getText().toString().trim().equals("")){
+                                edt_site_purchase_price.setText("0");
+                            }
+                            if(edt_site_size.getText().toString().trim().equals("")){
+                                edt_site_size.setText("0");
+                            }
+
                             alertDialog.dismiss();
                             editSite(edt_site_name.getText().toString().trim(), edt_site_address.getText().toString().trim(), edt_site_purchase_price.getText().toString().trim(), edt_site_size.getText().toString().trim());
                         }
@@ -509,12 +505,28 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
             public void onClick(View v) {
                 dialog_new.dismiss();
 
-
                 try {
 
-                    Intent defaultBrowser = Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_BROWSER);
+                    try {
+                        Toast.makeText(getBaseContext(), "Opening PDF... ", Toast.LENGTH_SHORT).show();
+                        Intent inte = new Intent(Intent.ACTION_VIEW);
+                        inte.setDataAndType(Uri.parse(file_url), "application/pdf");
+                        startActivity(inte);
+                    } catch (ActivityNotFoundException e) {
+                        new CToast(mActivity).simpleToast("No Application available to view PDF", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                       // Toast.makeText(Activity_Sites_Purchase_Summary.this, "No Application available to view PDF", Toast.LENGTH_SHORT).show();
+                        Log.e("No available view PDF.", e.getMessage());
+                    }
+
+                    //First solution
+                  /*  Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(file_url));
+                    startActivity(browserIntent);*/
+
+
+                    //Second solution
+                    /*Intent defaultBrowser = Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_BROWSER);
                     defaultBrowser.setData(Uri.parse(file_url));
-                    startActivity(defaultBrowser);
+                    startActivity(defaultBrowser);*/
 
                    /* Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(file_url));
                     startActivity(browserIntent);*/
@@ -540,10 +552,9 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
 
                     startActivity(intent);*/
                 } catch (ActivityNotFoundException e) {
-                    Toast.makeText(Activity_Sites_Purchase_Summary.this, "No Application available to view PDF", Toast.LENGTH_SHORT).show();
+                    new CToast(mActivity).simpleToast("No Application available to view PDF", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                    //Toast.makeText(Activity_Sites_Purchase_Summary.this, "No Application available to view PDF", Toast.LENGTH_SHORT).show();
                 }
-
-
             }
         });
 

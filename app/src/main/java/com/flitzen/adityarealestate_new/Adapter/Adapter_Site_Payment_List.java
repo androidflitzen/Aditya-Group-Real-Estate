@@ -26,11 +26,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
 import com.flitzen.adityarealestate_new.Classes.API;
 import com.flitzen.adityarealestate_new.Classes.CToast;
 import com.flitzen.adityarealestate_new.Classes.Helper;
 import com.flitzen.adityarealestate_new.Classes.Utils;
 import com.flitzen.adityarealestate_new.Fragment.CashPaymentFragment;
+
 import com.flitzen.adityarealestate_new.Items.Item_Site_Payment_List;
 import com.flitzen.adityarealestate_new.R;
 
@@ -43,7 +45,7 @@ import java.util.Map;
 public class Adapter_Site_Payment_List extends RecyclerView.Adapter<Adapter_Site_Payment_List.ViewHolder> {
 
     Context context;
-    ArrayList<Item_Site_Payment_List> itemList = new ArrayList<>();
+    ArrayList<Item_Site_Payment_List> itemList = new ArrayList<Item_Site_Payment_List>();
     OnItemLongClickListener mItemClickListener;
     ProgressDialog prd;
 

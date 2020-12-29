@@ -195,12 +195,19 @@ public class Activity_Plot_Details extends AppCompatActivity implements PDFUtili
                 intent.putExtra("paymentList",arrayListPlotPayment);
                 startActivity(intent);*/
 
+                int finalTotalAmount=0;
+                for (int i = 0; i < arrayListPlotPayment.size(); i++) {
+                    if(arrayListPlotPayment.get(i).getAmount()!=null && !(arrayListPlotPayment.get(i).getAmount().equals(""))){
+                        finalTotalAmount=finalTotalAmount+Integer.parseInt(arrayListPlotPayment.get(i).getAmount());
+                    }
+                }
+
                 Long tsLong = System.currentTimeMillis() / 1000;
                 String ts = tsLong.toString();
                 path = Environment.getExternalStorageDirectory().toString() + "/" + ts + "_payment_list.pdf";
                 System.out.println("========path  " + path);
                 try {
-                    PDFUtility.createPdf(v.getContext(), Activity_Plot_Details.this, getSampleData(), path, true,plotDetailsForPDF);
+                    PDFUtility.createPdf(v.getContext(), Activity_Plot_Details.this, getSampleData(), path, true,plotDetailsForPDF,finalTotalAmount);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e("Error", "Error Creating Pdf");
@@ -346,7 +353,7 @@ public class Activity_Plot_Details extends AppCompatActivity implements PDFUtili
 
             arrayListPlotPayment.get(i).getPayment_time();
 
-            SimpleDateFormat input = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd");
             SimpleDateFormat inputT = new SimpleDateFormat("hh:mm:ss");
             SimpleDateFormat output = new SimpleDateFormat("dd MMMM yyyy");
             SimpleDateFormat outputT = new SimpleDateFormat("hh:mm a");

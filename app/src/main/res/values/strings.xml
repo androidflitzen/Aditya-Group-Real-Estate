@@ -890,5 +890,7 @@
     <string name="app_icon_license">App Icon made by Freepik from www.flaticon.com</string>
     <string name="pdf_icon_license">PDF Icon made by Google from www.flaticon.com</string>
     <string name="text_create_pdf">Create PDF</string>
+    <string name="google">google</string>
+    <string name="simple_user">simple_user</string>
 
 </resources>

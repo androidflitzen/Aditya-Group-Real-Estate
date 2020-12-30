@@ -131,6 +131,15 @@ public class Activity_Home extends AppCompatActivity {
             overridePendingTransition(0, 0);
           //  overridePendingTransition(R.anim.feed_in, R.anim.feed_out);
 
+        }else if (id == R.id.nav_profile) {
+
+           /* startActivity(new Intent(mActivity, Activity_Sites_List.class));
+          //  overridePendingTransition(R.anim.feed_in, R.anim.feed_out); */
+
+            startActivity(new Intent(mActivity, ProfileActivity.class));
+            overridePendingTransition(0, 0);
+          //  overridePendingTransition(R.anim.feed_in, R.anim.feed_out);
+
         } else if (id == R.id.nav_rentals) {
 
             startActivity(new Intent(mActivity, Activity_Rent_List.class));

@@ -9,6 +9,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -167,6 +168,7 @@ public class Activity_Customer_Details extends AppCompatActivity {
     private Uri selectedImageUri=Uri.parse("");
     private int totlePaidAmount = 0;
     private Uri capturedImageURI = Uri.parse("");
+    String mime="";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -2061,6 +2063,7 @@ public class Activity_Customer_Details extends AppCompatActivity {
             map.put("plot_id", id);
             map.put("property_id", 0);
             map.put("customer_status", 0);
+            map.put("file_type", mime);
 
             //TODO
             map.put("rent_status", 0);
@@ -2073,6 +2076,7 @@ public class Activity_Customer_Details extends AppCompatActivity {
                     hidePrd();
                     imageEncode = "";
                     capturedImageURI = Uri.parse("");
+                    mime="";
                     getCustomerDetail();
                 }
 
@@ -2128,6 +2132,7 @@ public class Activity_Customer_Details extends AppCompatActivity {
                                     map.put("plot_id", id);
                                     map.put("property_id", 0);
                                     map.put("customer_status", 0);
+                                    map.put("file_type", mime);
 
                                     //TODO
                                     map.put("rent_status", 0);
@@ -2140,6 +2145,7 @@ public class Activity_Customer_Details extends AppCompatActivity {
                                             hidePrd();
                                             imageEncode = "";
                                             capturedImageURI = Uri.parse("");
+                                            mime="";
                                             getCustomerDetail();
 
                                         }
@@ -2263,6 +2269,7 @@ public class Activity_Customer_Details extends AppCompatActivity {
             map.put("plot_id", 0);
             map.put("property_id", id);
             map.put("customer_status", 0);
+            map.put("file_type", mime);
 
             //TODO
             map.put("rent_status", 0);
@@ -2275,6 +2282,7 @@ public class Activity_Customer_Details extends AppCompatActivity {
                     hidePrd();
                     imageEncode = "";
                     capturedImageURI = Uri.parse("");
+                    mime="";
                     getCustomerDetail();
                 }
 
@@ -2330,6 +2338,7 @@ public class Activity_Customer_Details extends AppCompatActivity {
                                     map.put("plot_id", 0);
                                     map.put("property_id", id);
                                     map.put("customer_status", 0);
+                                    map.put("file_type", mime);
 
                                     //TODO
                                     map.put("rent_status", 0);
@@ -2342,6 +2351,7 @@ public class Activity_Customer_Details extends AppCompatActivity {
                                             hidePrd();
                                             imageEncode = "";
                                             capturedImageURI = Uri.parse("");
+                                            mime="";
                                             getCustomerDetail();
 
                                         }
@@ -2537,6 +2547,11 @@ public class Activity_Customer_Details extends AppCompatActivity {
                 if (data != null) {
                     if (data.getData() != null) {
                         selectedImageUri = data.getData();
+                        capturedImageURI=selectedImageUri;
+
+                        ContentResolver cR = getContentResolver();
+                        mime = cR.getType(selectedImageUri);
+
                         upload_Image();
                        /* try {
                             Bitmap bitmap = Helper.decodeUri(selectedImageUri, mActivity);
@@ -2563,6 +2578,10 @@ public class Activity_Customer_Details extends AppCompatActivity {
             } else if (requestCode == CAMERA_REQUEST) {
 
                 selectedImageUri = photoURI;
+
+                ContentResolver cR = getContentResolver();
+                mime = cR.getType(selectedImageUri);
+
                 upload_Image();
 
             } else if (requestCode == UPLOAD_REQUEST) {

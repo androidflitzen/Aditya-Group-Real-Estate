@@ -44,21 +44,28 @@
         android:label="@string/app_name"
         android:largeHeap="true"
         android:networkSecurityConfig="@xml/network_security_config"
-        android:roundIcon="@drawable/launcher_icon"
         android:requestLegacyExternalStorage="true"
+        android:roundIcon="@drawable/launcher_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:replace="android:theme">
-        <activity android:name=".Activity.ViewPdfForAll"></activity>
+        <activity android:name=".Activity.ProfileActivity"></activity>
+        <activity
+            android:name=".Activity.ViewPdfForAll"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".Task_Reminder.activity.TaskListActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Task_Reminder.activity.TaskEditActivity"
             android:label=""
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".Task_Reminder.activity.PreferencesActivity" />
+        <activity
+            android:name=".Task_Reminder.activity.PreferencesActivity"
+            android:screenOrientation="portrait" />
 
         <provider
             android:name=".Task_Reminder.provider.TaskProvider"
@@ -88,50 +95,62 @@
         <activity
             android:name=".Task_Reminder.tablet.activity.TaskListAndEditorActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.ListPDFActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.PdfCreatorPlotActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.PdfCreatorRentActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.PdfCreatorTransactionActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.PdfCreatorCashPaymentActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.PdfCreatorCashReceivedActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.PdfCreatorLoanActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.PdfActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.GlobalPDFActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.GlobalListPDFActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.RentPaymentActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <!--
  <receiver
@@ -166,62 +185,54 @@
         -->
         <activity
             android:name=".Activity.Activity_Plot_ActiveList"
-            android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="stateHidden"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Activity.TransEditDetail_Activity"
-            android:screenOrientation="sensorPortrait"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden"
-            tools:ignore="LockedOrientationActivity"></activity>
+            android:windowSoftInputMode="stateHidden"></activity>
         <activity
             android:name=".Activity.TransCustomer_Add_Activity"
-            android:screenOrientation="sensorPortrait"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden"
-            tools:ignore="LockedOrientationActivity" />
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Activity.CalenderView_Activity"
-            android:screenOrientation="sensorPortrait"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden"
-            tools:ignore="LockedOrientationActivity" />
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Activity.Edit_Transaction_Activity"
-            android:screenOrientation="sensorPortrait"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden"
-            tools:ignore="LockedOrientationActivity" />
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Activity.Edit_Transaction_Plot_Activity"
-            android:screenOrientation="sensorPortrait"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden"
-            tools:ignore="LockedOrientationActivity" />
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Activity.TransactionDetails_Activity"
-            android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="stateHidden"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Activity.Add_fab_Transaction_Activity"
-            android:screenOrientation="sensorPortrait"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden"
-            tools:ignore="LockedOrientationActivity" />
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Activity.Add_fab_Payment_Activity"
-            android:screenOrientation="sensorPortrait"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden"
-            tools:ignore="LockedOrientationActivity" />
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Activity.Transaction_Activity"
-            android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="stateHidden"
-            tools:ignore="LockedOrientationActivity" />
-        <activity android:name=".Splash_Screen">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Splash_Screen"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -230,47 +241,39 @@
         </activity>
         <activity
             android:name=".Activity.Activity_Login"
-            android:screenOrientation="sensorPortrait"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize"
-            tools:ignore="LockedOrientationActivity" />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".Activity.Activity_Home"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.Activity_Sites_List"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.Activity_Sites_Purchase_Summary"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.Activity_Plots_List"
-            android:screenOrientation="sensorPortrait"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden"
-            tools:ignore="LockedOrientationActivity" />
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Activity.Activity_Plot_Details"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.Activity_Rent_List"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.Activity_Rent_Details"
             android:exported="true"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            tools:ignore="LockedOrientationActivity">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.GET_CONTENT" />
 
@@ -282,144 +285,116 @@
         </activity>
         <activity
             android:name=".Activity.Activity_Customer_List"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.Activity_Deactive_Customer_List"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.Activity_Customer_Add"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.Activity_Customer_Details"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.Activity_Deactivate_Customer_Details"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.Activity_Manage_Sites"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.Activity_Manage_Plots"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.Activity_Manage_Properties"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.Activity_Add_Payment_For_Plots"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.Activity_Add_Payment_For_Rents"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.Activity_Add_Payment_For_Loan"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.Activity_Tasks_List"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.Activity_Task_Details"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.Activity_Complete_Task_Details"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.Activity_Admin_All_LoanApplication"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.Activity_EMI_Calculation"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.Activity_Pending_EMI"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.Activity_Regular_Recovery_List"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.Admin_LoanDetail_Activity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
-            tools:ignore="LockedOrientationActivity" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.Activity_Add_New_Loan"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
-            tools:ignore="LockedOrientationActivity" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.Activity_ImageViewer"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            tools:ignore="LockedOrientationActivity" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.Loan_Report_Activity"
             android:screenOrientation="landscape"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
-            tools:ignore="LockedOrientationActivity" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity
             android:name=".Activity.CustomerBillsActivity"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.BillDetailActivity"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.RentCustomerHistoryActivity"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.AddCustomerBillActivity"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.GoogleDriveUploadActivity"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.PdfViewActivity"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service
             android:name=".service.MyFirebaseMessagingService"

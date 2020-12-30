@@ -230,6 +230,8 @@ public class Activity_Login extends AppCompatActivity {
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
                                 editor.putBoolean(SharePref.isLoggedIn, true);
                                 editor.putString(SharePref.userName, edtUserName.getText().toString());
+                                editor.putString(SharePref.password, edtPassword.getText().toString());
+                                editor.putString(SharePref.gstType, getString(R.string.simple_user));
                                 editor.commit();
 
                                 startActivity(new Intent(Activity_Login.this, Activity_Home.class));
@@ -282,6 +284,7 @@ public class Activity_Login extends AppCompatActivity {
                                     SharedPreferences.Editor editor = sharedPreferences.edit();
                                     editor.putBoolean(SharePref.isLoggedIn, true);
                                     editor.putString(SharePref.userName, user.getDisplayName());
+                                    editor.putString(SharePref.gstType, getString(R.string.google));
 
                                     editor.commit();
                                         startActivity(new Intent(Activity_Login.this, Activity_Home.class));

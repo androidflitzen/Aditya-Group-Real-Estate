@@ -10,6 +10,7 @@ public class SharePref {
     public static String isLoggedIn = "isLoggedIn";
     public static String userId = "userId";
     public static String userName = "userName";
+    public static String password = "password";
     public static String userType = "userType";
     public static String gstType = "gstType";
     public static String customerId = "customerId";

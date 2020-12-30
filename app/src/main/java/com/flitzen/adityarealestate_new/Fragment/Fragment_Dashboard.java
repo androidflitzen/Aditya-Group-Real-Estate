@@ -5,11 +5,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.flitzen.adityarealestate_new.Activity.Activity_Add_Payment_For_Loan;
 import com.flitzen.adityarealestate_new.Activity.Activity_Add_Payment_For_Plots;
@@ -32,15 +35,20 @@ import com.flitzen.adityarealestate_new.Activity.Activity_Rent_List;
 import com.flitzen.adityarealestate_new.Activity.Transaction_Activity;
 import com.flitzen.adityarealestate_new.Classes.SharePref;
 import com.flitzen.adityarealestate_new.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class Fragment_Dashboard extends Fragment {
 
-    View btn_plots, btn_rents, btn_Customer, btn_Load_Application, btn_plots_payment, btn_rents_payment, btn_loan_payment, btn_transaction,btn_Tasks;
-    TextView tvTitleLoginName,txtPlot,txtRent,txtLoan,txtTransaction,txtCustomer;
-    ImageView imgPlot,imgRent,imgLoan,imgTransaction,imgCustomer;
+    View btn_plots, btn_rents, btn_Customer, btn_Load_Application, btn_plots_payment, btn_rents_payment, btn_loan_payment, btn_transaction, btn_Tasks;
+    TextView tvTitleLoginName, txtPlot, txtRent, txtLoan, txtTransaction, txtCustomer;
+    ImageView imgPlot, imgRent, imgLoan, imgTransaction, imgCustomer;
 
     Animation animZoomout;
     SharedPreferences sharedPreferences;
+
     public Fragment_Dashboard() {
     }
 
@@ -123,7 +131,7 @@ public class Fragment_Dashboard extends Fragment {
                 btn_Customer.setBackgroundColor(getResources().getColor(R.color.select_card));
                 startActivity(new Intent(getContext(), Activity_Customer_List.class));
                 getActivity().overridePendingTransition(0, 0);
-               // getActivity().overridePendingTransition(R.anim.feed_in, R.anim.feed_out);
+                // getActivity().overridePendingTransition(R.anim.feed_in, R.anim.feed_out);
             }
         });
 
@@ -174,7 +182,6 @@ public class Fragment_Dashboard extends Fragment {
 
               /*  imgPlot.setColorFilter(ContextCompat.getColor(getActivity(), R.color.white), android.graphics.PorterDuff.Mode.SRC_IN);
                 txtPlot.setTextColor(getResources().getColor(R.color.white));*/
-
 
 
                 btn_plots_payment.setBackgroundColor(getResources().getColor(R.color.select_card));
@@ -252,11 +259,10 @@ public class Fragment_Dashboard extends Fragment {
                 btn_transaction.setBackgroundColor(getResources().getColor(R.color.select_card));
                 startActivity(new Intent(getContext(), Transaction_Activity.class));
                 getActivity().overridePendingTransition(0, 0);
-              //  getActivity().overridePendingTransition(R.anim.feed_in, R.anim.feed_out);
+                //  getActivity().overridePendingTransition(R.anim.feed_in, R.anim.feed_out);
 
             }
         });
-
 
 
         return view;
@@ -271,7 +277,7 @@ public class Fragment_Dashboard extends Fragment {
         btn_plots_payment = view.findViewById(R.id.btn_plots_payment);
         btn_rents_payment = view.findViewById(R.id.btn_rents_payment);
         btn_loan_payment = view.findViewById(R.id.btn_loan_payment);
-       //  btn_Tasks = view.findViewById(R.id.btn_Tasks);
+        //  btn_Tasks = view.findViewById(R.id.btn_Tasks);
         tvTitleLoginName = view.findViewById(R.id.tvTitleLoginName);
         btn_transaction = view.findViewById(R.id.btn_transaction);
 
@@ -310,9 +316,9 @@ scaleAnim2.setRepeatMode(ValueAnimator.REVERSE);
 scaleAnim2.start();*/
 
 
-     //   tvTitleLoginName.setText("Welcome "+sharedPreferences.getString(SharePref.userName,"").toLowerCase());
+        //   tvTitleLoginName.setText("Welcome "+sharedPreferences.getString(SharePref.userName,"").toLowerCase());
 
-        tvTitleLoginName.setText("Welcome To "+getActivity().getResources().getString(R.string.app_name));
+        tvTitleLoginName.setText("Welcome To " + getActivity().getResources().getString(R.string.app_name));
 
         btn_plots.setAnimation(animZoomout);
         btn_rents.setAnimation(animZoomout);

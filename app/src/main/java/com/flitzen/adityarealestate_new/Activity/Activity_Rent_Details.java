@@ -158,6 +158,7 @@ public class Activity_Rent_Details extends AppCompatActivity {
     public static Uri filePathUri = null;
     RelativeLayout ivRentDeactivePdf;
     RentDetailsForPDF rentDetailsForPDF=new RentDetailsForPDF();
+    int  STORAGE_PERMISSION_CODE = 005;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -309,13 +310,20 @@ public class Activity_Rent_Details extends AppCompatActivity {
                 if (Permission.hasPermissions(Activity_Rent_Details.this, permissions)) {
                     if (txt_agreement_status.getText().toString().equals("Add Agreement")) {
                         //showAttachImageOption();
-                        Intent intent = new Intent(Activity_Rent_Details.this, ListPDFActivity.class);
-                        intent.putExtra("property_name", property_name);
-                        intent.putExtra("property_id", property_id);
-                        intent.putExtra("customer_id", customer_id);
-                        intent.putExtra("position", position);
+                        if (Permission.hasPermissions(mActivity, permissions)) {
+                            Intent intent = new Intent(Activity_Rent_Details.this, ListPDFActivity.class);
+                            intent.putExtra("property_name", property_name);
+                            intent.putExtra("property_id", property_id);
+                            intent.putExtra("customer_id", customer_id);
+                            intent.putExtra("position", position);
+                            startActivity(intent);
 
-                        startActivity(intent);
+                        }
+                        else {
+                            Permission.requestPermissions(mActivity, permissions, STORAGE_PERMISSION_CODE);
+                        }
+
+
                     } else {
                         openUpdateDialog_view();
 

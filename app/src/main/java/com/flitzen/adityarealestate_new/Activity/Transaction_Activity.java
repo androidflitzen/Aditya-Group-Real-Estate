@@ -415,6 +415,9 @@ public class Transaction_Activity extends AppCompatActivity {
 
         spinner1.setAdapter(spinnerArrayAdapter);
 
+        System.out.println("==========currentyear "+calendarView.getCurrentDate().getYear());
+        spinner1.setSelection(((ArrayAdapter<String>)spinner1.getAdapter()).getPosition(String.valueOf(calendarView.getCurrentDate().getYear())));
+
         rvCalenderMonth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -525,6 +528,13 @@ public class Transaction_Activity extends AppCompatActivity {
 
 
         //calendarView.setCurrentDate(CalendarDay.from(currentyear,currentmonth,currentdate));
+
+        Calendar cal = Calendar.getInstance();
+        tvCalenderMonth.setText((String)android.text.format.DateFormat.format("MMMM", new Date()));
+        tvCalenderMonth.setTextColor(getResources().getColor(R.color.text_color1));
+        CalenderMonth = tvCalenderMonth.getText().toString();
+        FinalMonth = cal.get(Calendar.MONTH) + 1;
+        calendarView.setCurrentDate(CalendarDay.from(currentyear, FinalMonth, 1));
 
         alertDialog.show();
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();

@@ -583,6 +583,7 @@
                 android:layout_marginTop="@dimen/f16"
                 app:cardBackgroundColor="@color/msg_fail"
                 app:cardCornerRadius="14dp"
+                android:visibility="gone"
                 app:cardElevation="0dp">
 
                 <TextView

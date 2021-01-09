@@ -1,14 +1,24 @@
 package com.flitzen.adityarealestate_new.Activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,20 +26,25 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.flitzen.adityarealestate_new.Adapter.PDFAdapter;
+import com.flitzen.adityarealestate_new.Adapter.PDFGlobleAdapter;
 import com.flitzen.adityarealestate_new.R;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class GlobalListPDFActivity extends AppCompatActivity {
 
     ListView lv_pdf;
     public static ArrayList<File> fileList = new ArrayList<File>();
-    PDFAdapter obj_adapter;
+    PDFGlobleAdapter obj_adapter;
     public static int REQUEST_PERMISSIONS = 1;
     boolean boolean_permission;
     File dir;
     String site_id = "",name = "",type = "";
+    EditText edtSearch;
+    ImageView imgClearSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +60,8 @@ public class GlobalListPDFActivity extends AppCompatActivity {
     private void init() {
 
         lv_pdf = (ListView) findViewById(R.id.lv_pdf);
+        edtSearch =  findViewById(R.id.edt_search);
+        imgClearSearch =  findViewById(R.id.img_clear_search);
         dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
         fn_permission();
 
@@ -62,10 +79,64 @@ public class GlobalListPDFActivity extends AppCompatActivity {
                 Log.e("Position", i + "");
             }
         });
+
+        edtSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b)
+                    imgClearSearch.setVisibility(View.VISIBLE);
+                else
+                    imgClearSearch.setVisibility(View.GONE);
+
+            }
+        });
+
+        edtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        edtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //filter(s.toString());
+                obj_adapter.getFilter().filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        imgClearSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edtSearch.setText(null);
+                edtSearch.clearFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+            }
+        });
     }
 
+    @SuppressLint("NewApi")
     public ArrayList<File> getfile(File dir) {
         File listFile[] = dir.listFiles();
+        Arrays.sort(listFile, Comparator.comparingLong(File::lastModified).reversed());
         if (listFile != null && listFile.length > 0) {
             for (int i = 0; i < listFile.length; i++) {
 
@@ -115,7 +186,7 @@ public class GlobalListPDFActivity extends AppCompatActivity {
 
             getfile(dir);
 
-            obj_adapter = new PDFAdapter(getApplicationContext(), fileList);
+            obj_adapter = new PDFGlobleAdapter(getApplicationContext(), fileList);
             lv_pdf.setAdapter(obj_adapter);
 
         }
@@ -131,7 +202,7 @@ public class GlobalListPDFActivity extends AppCompatActivity {
                 boolean_permission = true;
                 getfile(dir);
 
-                obj_adapter = new PDFAdapter(getApplicationContext(), fileList);
+                obj_adapter = new PDFGlobleAdapter(getApplicationContext(), fileList);
                 lv_pdf.setAdapter(obj_adapter);
 
             } else {

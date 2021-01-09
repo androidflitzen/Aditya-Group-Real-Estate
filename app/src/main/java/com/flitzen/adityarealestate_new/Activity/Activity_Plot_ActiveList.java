@@ -67,12 +67,17 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
+import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Month;
+import java.time.MonthDay;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.TimeZone;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -238,6 +243,12 @@ public class Activity_Plot_ActiveList extends AppCompatActivity {
         final TextView tvCalenderYear = (TextView) promptsView.findViewById(R.id.tvCalenderYear);
         final TextView tvCalenderMonth = (TextView) promptsView.findViewById(R.id.tvCalenderMonth);
 
+     /*   tvCalenderYear.setText(String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+        String monthName=new DateFormatSymbols().getMonths()[Calendar.getInstance().get(Calendar.MONTH)];
+        tvCalenderMonth.setText(monthName);*/
+
+
+
         final Spinner spinner1 = (Spinner) promptsView.findViewById(R.id.spinner1);
         ivAddReminder.setVisibility(View.GONE);
 
@@ -314,6 +325,7 @@ public class Activity_Plot_ActiveList extends AppCompatActivity {
         //  Utils.showLog("==yearlist"+Finallist);
 
 
+
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -343,6 +355,8 @@ public class Activity_Plot_ActiveList extends AppCompatActivity {
         spinnerArrayAdapter.setDropDownViewResource(calender_spinner_year);
 
         spinner1.setAdapter(spinnerArrayAdapter);
+
+        spinner1.setSelection(((ArrayAdapter<String>)spinner1.getAdapter()).getPosition(String.valueOf(currentyear)));
 
         rvCalenderMonth.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -395,7 +409,7 @@ public class Activity_Plot_ActiveList extends AppCompatActivity {
 
             calendarView.setDateSelected(CalendarDay.from(year, month, date1), true);
 
-            // calendarView.setDateSelected(CalendarDay.from(2019,8,23),true);
+             //calendarView.setDateSelected(CalendarDay.from(2019,8,23),true);
 
 
         }
@@ -446,6 +460,19 @@ public class Activity_Plot_ActiveList extends AppCompatActivity {
             }
         });
 
+
+       /* tvCalenderMonth.setText("September");
+        tvCalenderMonth.setTextColor(getResources().getColor(R.color.text_color1));
+        CalenderMonth = tvCalenderMonth.getText().toString();
+        FinalMonth = 8 + 1;
+        calendarView.setCurrentDate(CalendarDay.from(2020, FinalMonth, 1));*/
+
+        Calendar cal = Calendar.getInstance();
+        tvCalenderMonth.setText((String)android.text.format.DateFormat.format("MMMM", new Date()));
+        tvCalenderMonth.setTextColor(getResources().getColor(R.color.text_color1));
+        CalenderMonth = tvCalenderMonth.getText().toString();
+        FinalMonth = cal.get(Calendar.MONTH) + 1;
+        calendarView.setCurrentDate(CalendarDay.from(currentyear, FinalMonth, 1));
 
         //calendarView.setCurrentDate(CalendarDay.from(currentyear,currentmonth,currentdate));
 

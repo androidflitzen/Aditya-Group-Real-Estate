@@ -1,5 +1,6 @@
 package com.flitzen.adityarealestate_new.Activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -49,6 +50,7 @@ import com.flitzen.adityarealestate_new.Adapter.Adapter_Site_Payment_List;
 import com.flitzen.adityarealestate_new.Apiutils;
 import com.flitzen.adityarealestate_new.Classes.API;
 import com.flitzen.adityarealestate_new.Classes.EncodeBased64Binary;
+import com.flitzen.adityarealestate_new.Classes.Permission;
 import com.flitzen.adityarealestate_new.Classes.Utils;
 import com.flitzen.adityarealestate_new.Classes.CToast;
 import com.flitzen.adityarealestate_new.Classes.Helper;
@@ -163,6 +165,8 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
     ImageView ivEdit1;
     int purchase_price=0;
     int total_received=0;
+    private String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+    int  STORAGE_PERMISSION_CODE = 005;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -210,11 +214,11 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
                 if (isFileAttached) {
                     /*Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(file_url));
                     startActivity(browserIntent);*/
-                    startActivity(new Intent(Activity_Sites_Purchase_Summary.this, PdfViewActivity.class)
-                            .putExtra("pdf_url", file_url)
-                            .putExtra("only_load", true)
-                            .putExtra("id", site_id)
-                            .putExtra("site_name", txt_site_name.getText().toString()));
+                        startActivity(new Intent(Activity_Sites_Purchase_Summary.this, PdfViewActivity.class)
+                                .putExtra("pdf_url", file_url)
+                                .putExtra("only_load", true)
+                                .putExtra("id", site_id)
+                                .putExtra("site_name", txt_site_name.getText().toString()));
                 } else {
                     showUploadOptionsDialog();
                 }
@@ -228,11 +232,17 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
             public void onClick(View view) {
                 if (txt_agreement_status.getText().equals("Add PDF")) {
                     //openFileChooser_new();
-                    Intent intent = new Intent(Activity_Sites_Purchase_Summary.this,GlobalListPDFActivity.class);
-                    intent.putExtra("site_id",site_id);
-                    intent.putExtra("name",name);
-                    intent.putExtra("type",type);
-                    startActivity(intent);
+                    if (Permission.hasPermissions(mActivity, permissions)) {
+                        Intent intent = new Intent(Activity_Sites_Purchase_Summary.this,GlobalListPDFActivity.class);
+                        intent.putExtra("site_id",site_id);
+                        intent.putExtra("name",name);
+                        intent.putExtra("type",type);
+                        startActivity(intent);
+                    }
+                    else {
+                        Permission.requestPermissions(mActivity, permissions, STORAGE_PERMISSION_CODE);
+                    }
+
                 } else if (txt_agreement_status.getText().equals("View PDF")) {
                     openUpdateDialog_view();
                 }

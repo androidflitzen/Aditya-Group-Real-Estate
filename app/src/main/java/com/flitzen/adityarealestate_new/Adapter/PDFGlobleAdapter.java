@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.TextView;
 
+import com.flitzen.adityarealestate_new.Activity.GlobalListPDFActivity;
 import com.flitzen.adityarealestate_new.Activity.ListPDFActivity;
 import com.flitzen.adityarealestate_new.R;
 
@@ -15,7 +16,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 
-public class PDFAdapter extends ArrayAdapter<File> {
+public class PDFGlobleAdapter extends ArrayAdapter<File> {
 
 
     Context context;
@@ -23,7 +24,7 @@ public class PDFAdapter extends ArrayAdapter<File> {
     ArrayList<File> al_pdf;
     ArrayList<File> mOriginalValues;
 
-    public PDFAdapter(Context context, ArrayList<File> al_pdf) {
+    public PDFGlobleAdapter(Context context, ArrayList<File> al_pdf) {
         super(context, R.layout.adapter_pdf, al_pdf);
         this.context = context;
         this.al_pdf = al_pdf;
@@ -96,7 +97,7 @@ public class PDFAdapter extends ArrayAdapter<File> {
             protected void publishResults(CharSequence constraint,FilterResults results) {
 
                 al_pdf = (ArrayList<File>) results.values; // has the filtered values
-                ListPDFActivity.fileList=al_pdf;
+                GlobalListPDFActivity.fileList=al_pdf;
                 notifyDataSetChanged();  // notifies the data with new filtered values
             }
 

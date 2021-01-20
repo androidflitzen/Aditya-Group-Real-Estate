@@ -27,12 +27,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
+
 import com.flitzen.adityarealestate_new.Activity.Activity_Home;
 import com.flitzen.adityarealestate_new.Activity.Activity_Login;
 import com.flitzen.adityarealestate_new.Classes.SharePref;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
-import io.fabric.sdk.android.Fabric;
 
 public class Splash_Screen extends AppCompatActivity {
 
@@ -43,11 +43,16 @@ public class Splash_Screen extends AppCompatActivity {
     Animation animZoomout;
     private static final int MY_PERMISSIONS_REQUEST_CODE = 123;
 
+    private FirebaseAnalytics firebaseAnalytics;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Fabric.with(this, new Crashlytics());
+
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        firebaseAnalytics.setAnalyticsCollectionEnabled(true);
+
         setContentView(R.layout.activity_splash_screen);
 
         /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

@@ -5,9 +5,11 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +21,8 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -37,6 +41,7 @@ import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -114,6 +119,7 @@ public class Admin_LoanDetail_Activity extends AppCompatActivity implements Swip
     String emiAmount="";
     LoanDetailsForPDF loanDetailsForPDF=new LoanDetailsForPDF();
     String path="";
+    private static final int MENU_ITEM_ITEM1 = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -206,7 +212,7 @@ public class Admin_LoanDetail_Activity extends AppCompatActivity implements Swip
                     PDFUtility_Loan.createPdf(v.getContext(), new PDFUtility_Loan.OnDocumentClose() {
                         @Override
                         public void onPDFDocumentClose(File file) {
-                            Toast.makeText(Admin_LoanDetail_Activity.this, "Sample Pdf Created", Toast.LENGTH_SHORT).show();
+                          //  Toast.makeText(Admin_LoanDetail_Activity.this, "Sample Pdf Created", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(Admin_LoanDetail_Activity.this, ViewPdfForAll.class);
                             intent.putExtra("path",path);
                             startActivity(intent);
@@ -408,6 +414,14 @@ public class Admin_LoanDetail_Activity extends AppCompatActivity implements Swip
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_loan_edit, menu);
+        return true;
+    }
+
+
     private List<String[]> getSampleData() {
 
         List<String[]> temp = new ArrayList<>();
@@ -459,7 +473,9 @@ public class Admin_LoanDetail_Activity extends AppCompatActivity implements Swip
 
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     if (ds.child("id").getValue().toString().equals(loan_id)) {
+                        loanDetailsForPDF.setLoanId(ds.child("id").getValue().toString());
                         customerId = ds.child("Customer_Id").getValue().toString();
+                        loanDetailsForPDF.setCustomerID(customerId);
 
                         loanDetailsForPDF.setApplicationNo(ds.child("Applicantion_Number").getValue().toString());
                         loanDetailsForPDF.setDateApplied(ds.child("Date_Applied").getValue().toString());
@@ -494,6 +510,7 @@ public class Admin_LoanDetail_Activity extends AppCompatActivity implements Swip
 
 
                         String loanType = ds.child("Loan_Type").getValue().toString();
+                        loanDetailsForPDF.setLoanType(ds.child("Loan_Type").getValue().toString());
                         if (loanType.equals("1")) {
                             txt_loan_type.setText("Regular");
                         } else if (loanType.equals("2")) {
@@ -569,6 +586,7 @@ public class Admin_LoanDetail_Activity extends AppCompatActivity implements Swip
                         }
 
                         String lStatus = ds.child("Loan_Status").getValue().toString();
+                        loanDetailsForPDF.setLoanStatus(lStatus);
                         String status = "";
                         if (lStatus.equals("1")) {
                             status = "Pending";
@@ -591,9 +609,13 @@ public class Admin_LoanDetail_Activity extends AppCompatActivity implements Swip
 
                         txt_loan_date.setText(ds.child("Date_Applied").getValue().toString());
                         txt_loan_interest.setText(ds.child("Interest_Rate").getValue().toString() + "%");
+                        loanDetailsForPDF.setInterestRate(ds.child("Interest_Rate").getValue().toString());
                         txt_loan_reason.setText(ds.child("Reason_For_Loan").getValue().toString());
+                        loanDetailsForPDF.setReasonForLoan(ds.child("Reason_For_Loan").getValue().toString());
                         txt_loan_amount.setText(ruppe + formatter.format(Integer.parseInt(ds.child("Loan_Amount").getValue().toString())));
                         txtTotalEmi.setText(ds.child("Loan_Tenure").getValue().toString());
+                        loanDetailsForPDF.setLoanTenure(ds.child("Loan_Tenure").getValue().toString());
+                        loanDetailsForPDF.setPayEMIDate(ds.child("Pay_EMI_Date").getValue().toString());
 
                         if (status.equals("Pending")) {
                             viewPendingContent.setVisibility(View.VISIBLE);
@@ -742,6 +764,7 @@ public class Admin_LoanDetail_Activity extends AppCompatActivity implements Swip
                         }
 
                         String lStatus = jObj_Details.getString("Loan_Status");
+                        loanDetailsForPDF.setLoanStatus(lStatus);
 
                         txt_loan_status.setText(lStatus);
                         txt_loan_status.setTextColor(getLoanStatusColor(lStatus.toLowerCase()));
@@ -856,6 +879,12 @@ public class Admin_LoanDetail_Activity extends AppCompatActivity implements Swip
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                return true;
+
+            case R.id.edit_loan:
+                Intent intent=new Intent(Admin_LoanDetail_Activity.this,Activity_Edit_Loan.class);
+                intent.putExtra("loanDetails",loanDetailsForPDF);
+                startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);

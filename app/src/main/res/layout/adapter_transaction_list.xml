@@ -86,13 +86,12 @@
                 android:layout_gravity="center_vertical"
                 android:padding="@dimen/_8sdp"
                 android:visibility="visible"
-                android:layout_marginRight="@dimen/_10sdp"
                 android:checked="true">
 
             </com.google.android.material.switchmaterial.SwitchMaterial>
 
         </LinearLayout>
 
-
     </LinearLayout>
+
 </androidx.cardview.widget.CardView>

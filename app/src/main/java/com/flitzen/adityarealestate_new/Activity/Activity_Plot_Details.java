@@ -332,7 +332,7 @@ public class Activity_Plot_Details extends AppCompatActivity implements PDFUtili
 
     @Override
     public void onPDFDocumentClose(File file) {
-        Toast.makeText(this, "Sample Pdf Created", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, "Sample Pdf Created", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(Activity_Plot_Details.this, ViewPdfForAll.class);
         //intent.putExtra("SiteDetails", plotDetailsForPDF);
         //intent.putExtra("paymentList", arrayListPlotPayment);

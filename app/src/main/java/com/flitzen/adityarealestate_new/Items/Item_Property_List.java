@@ -11,6 +11,15 @@ public class Item_Property_List {
     String contact_no;
     String rent;
     String hired_since;
+    boolean checkDateIsGone;
+
+    public boolean isCheckDateIsGone() {
+        return checkDateIsGone;
+    }
+
+    public void setCheckDateIsGone(boolean checkDateIsGone) {
+        this.checkDateIsGone = checkDateIsGone;
+    }
 
     public String getId() {
         return id;

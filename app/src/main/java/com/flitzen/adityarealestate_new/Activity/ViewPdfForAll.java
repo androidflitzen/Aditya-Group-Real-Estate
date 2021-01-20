@@ -30,7 +30,7 @@ public class ViewPdfForAll extends AppCompatActivity implements OnPageChangeList
     PDFView pdfView;
     Integer pageNumber = 0;
     String path;
-    ImageView ivShare;
+    ImageView ivShare,ivEdit1;
     RelativeLayout btn_code;
     boolean onlyLoad = false;
     private String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
@@ -47,7 +47,15 @@ public class ViewPdfForAll extends AppCompatActivity implements OnPageChangeList
         pdfView = (PDFView) findViewById(R.id.pdfView);
         ivShare =  findViewById(R.id.ivShare);
         btn_code =  findViewById(R.id.btn_code);
+        ivEdit1 =  findViewById(R.id.ivEdit1);
        // position = getIntent().getIntExtra("position_new", -1);
+
+        ivEdit1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         btn_code.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,22 +65,22 @@ public class ViewPdfForAll extends AppCompatActivity implements OnPageChangeList
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (Permission.hasPermissions(ViewPdfForAll.this, permissions)) {
 
-                            shareFile(myFile);
+                            shareFileWhatsApp(myFile);
                         } else {
                             Permission.requestPermissions(ViewPdfForAll.this, permissions, 101);
                         }
                     } else {
-                        shareFile(myFile);
+                        shareFileWhatsApp(myFile);
                     }
                 } else {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (Permission.hasPermissions(ViewPdfForAll.this, permissions)) {
-                            shareFile(myFile);
+                            shareFileWhatsApp(myFile);
                         } else {
                             Permission.requestPermissions(ViewPdfForAll.this, permissions, 101);
                         }
                     } else {
-                        shareFile(myFile);
+                        shareFileWhatsApp(myFile);
                     }
                 }
             }
@@ -86,6 +94,17 @@ public class ViewPdfForAll extends AppCompatActivity implements OnPageChangeList
         Intent intentShareFile = new Intent(Intent.ACTION_SEND);
         intentShareFile.setType(URLConnection.guessContentTypeFromName(file.getName()));
         intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + file.getAbsolutePath()));
+        //if you need
+        //intentShareFile.putExtra(Intent.EXTRA_SUBJECT,"Sharing File Subject);
+        //intentShareFile.putExtra(Intent.EXTRA_TEXT, "Sharing File Description");
+        startActivity(Intent.createChooser(intentShareFile, "Share File"));
+    }
+
+    private void shareFileWhatsApp(File file) {
+        Intent intentShareFile = new Intent(Intent.ACTION_SEND);
+        intentShareFile.setType(URLConnection.guessContentTypeFromName(file.getName()));
+        intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + file.getAbsolutePath()));
+        intentShareFile.setPackage("com.whatsapp");
         //if you need
         //intentShareFile.putExtra(Intent.EXTRA_SUBJECT,"Sharing File Subject);
         //intentShareFile.putExtra(Intent.EXTRA_TEXT, "Sharing File Description");

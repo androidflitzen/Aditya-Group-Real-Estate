@@ -23,10 +23,10 @@
             <ImageView
                 android:id="@+id/ivback1"
                 android:layout_width="@dimen/_25sdp"
-                android:visibility="gone"
                 android:layout_height="@dimen/_18sdp"
                 android:layout_marginLeft="@dimen/_15sdp"
-                android:src="@drawable/ic_back_white"/>
+                android:src="@drawable/ic_back_white"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/ivback"
@@ -42,20 +42,20 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_marginLeft="@dimen/_5sdp"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/_5sdp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_centerVertical="true"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true">
 
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Profile"
                         android:layout_centerVertical="true"
+                        android:text="Profile"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_15sdp" />
 
@@ -161,22 +161,61 @@
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:text="Password"
                             android:textColor="@color/blackText2"
                             android:textSize="@dimen/f12" />
 
-                        <EditText
-                            android:id="@+id/txt_my_profile_password"
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="3dp"
-                            android:text="-"
-                            android:textColor="@color/blackText1"
-                            android:textSize="@dimen/f16"
-                            android:background="@null"
-                            />
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/txt_my_profile_password"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="3dp"
+                                android:background="@null"
+                                android:text="-"
+                                android:textColor="@color/blackText1"
+                                android:textSize="@dimen/f16" />
+
+                            <RelativeLayout
+                                android:id="@+id/relEditPass"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                >
+
+                                <TextView
+                                    android:id="@+id/txtEditPass"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Edit Password"
+                                    android:textSize="@dimen/f12"
+                                    android:layout_alignParentRight="true"
+                                    android:paddingLeft="@dimen/_10sdp"
+                                    android:textColor="@color/colorPrimary">
+
+                                </TextView>
+
+                                <View
+                                    android:layout_width="80dp"
+                                    android:layout_height="1dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_below="@id/txtEditPass"
+                                    android:background="@color/colorPrimary"
+                                    android:paddingLeft="@dimen/_10sdp"
+                                    android:layout_marginTop="2dp">
+
+                                </View>
+
+                            </RelativeLayout>
+
+                        </RelativeLayout>
+
                     </LinearLayout>
+
                 </LinearLayout>
 
                 <androidx.cardview.widget.CardView
@@ -187,6 +226,7 @@
                     android:foreground="?attr/selectableItemBackground"
                     app:cardBackgroundColor="@color/colorAccent"
                     app:cardCornerRadius="5dp"
+                    android:visibility="gone"
                     app:cardElevation="0dp">
 
                     <TextView

@@ -382,4 +382,6 @@
     <color name="colorTransparentBlack">#40000000</color>
     <color name="dashboard_box">#f1f1f1</color>
 
+    <color name="light_red">#dc5656</color>
+
 </resources>

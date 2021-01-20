@@ -11,7 +11,7 @@
     <RelativeLayout
         android:id="@+id/view_main"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_50sdp"
+        android:layout_height="@dimen/_65sdp"
         android:orientation="horizontal"
         android:weightSum="10">
 
@@ -65,6 +65,15 @@
 
             <TextView
                 android:id="@+id/txt_cust_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:paddingBottom="@dimen/f2"
+                android:textColor="@color/blackText2"
+                android:textSize="@dimen/f12" />
+
+            <TextView
+                android:id="@+id/txtRentDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text=""

@@ -49,10 +49,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:replace="android:theme">
-        <activity android:name=".Activity.ProfileActivity"></activity>
+        <activity android:name=".Activity.ViewAgreementPDF"></activity>
+        <activity android:name=".Activity.ProfileActivity" />
         <activity
             android:name=".Activity.ViewPdfForAll"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Task_Reminder.activity.TaskListActivity"
             android:screenOrientation="portrait"
@@ -66,6 +67,11 @@
         <activity
             android:name=".Task_Reminder.activity.PreferencesActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".Activity.Activity_Edit_Loan"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
 
         <provider
             android:name=".Task_Reminder.provider.TaskProvider"
@@ -191,7 +197,7 @@
             android:name=".Activity.TransEditDetail_Activity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Activity.TransCustomer_Add_Activity"
             android:screenOrientation="portrait"

@@ -515,7 +515,13 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
             public void onClick(View v) {
                 dialog_new.dismiss();
 
-                try {
+                Intent intent = new Intent(Activity_Sites_Purchase_Summary.this, ViewAgreementPDF.class);
+                intent.putExtra("pdf_url",file_url);
+                intent.putExtra("name",txt_site_name.getText().toString());
+                intent.putExtra("only_load",true);
+                startActivity(intent);
+
+                /*try {
 
                     try {
                         Toast.makeText(getBaseContext(), "Opening PDF... ", Toast.LENGTH_SHORT).show();
@@ -528,43 +534,10 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
                         Log.e("No available view PDF.", e.getMessage());
                     }
 
-                    //First solution
-                  /*  Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(file_url));
-                    startActivity(browserIntent);*/
-
-
-                    //Second solution
-                    /*Intent defaultBrowser = Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_BROWSER);
-                    defaultBrowser.setData(Uri.parse(file_url));
-                    startActivity(defaultBrowser);*/
-
-                   /* Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(file_url));
-                    startActivity(browserIntent);*/
-
-                    /*Intent intent = new Intent(Activity_Sites_Purchase_Summary.this, PdfViewActivity.class);
-                    intent.putExtra("pdf_url", file_url);
-                    intent.putExtra("only_load", true);
-                    intent.putExtra("id", site_id);
-                    intent.putExtra("site_name", txt_site_name.getText().toString());
-                    intent.putExtra("only_load", true);
-
-*//*
-                    startActivity(browserIntent);
-                    startActivity(new Intent(Activity_Sites_Purchase_Summary.this, PdfViewActivity.class)
-                            .putExtra("pdf_url", file_url)
-                            .putExtra("only_load", true)
-                            .putExtra("id", site_id)
-                            .putExtra("site_name", txt_site_name.getText().toString()));*//*
-
-                *//*    getApplicationContext().startActivity(new Intent(getApplicationContext(), PdfViewActivity.class)
-                            .putExtra("pdf_url", agreement_pdf_url)
-                            .putExtra("only_load", true));*//*
-
-                    startActivity(intent);*/
                 } catch (ActivityNotFoundException e) {
                     new CToast(mActivity).simpleToast("No Application available to view PDF", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
                     //Toast.makeText(Activity_Sites_Purchase_Summary.this, "No Application available to view PDF", Toast.LENGTH_SHORT).show();
-                }
+                }*/
             }
         });
 

@@ -157,7 +157,7 @@ public class Adapter_Sites_DeactiveList extends RecyclerView.Adapter<Adapter_Sit
 
     private void openDeleteplot(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setMessage("Are you sure delete this site ?");
+        builder.setMessage("Are you sure you want to delete this site? If you are select yes then, This site related all data are removed permanently");
         builder.setCancelable(true);
 
         builder.setPositiveButton(
@@ -185,18 +185,111 @@ public class Adapter_Sites_DeactiveList extends RecyclerView.Adapter<Adapter_Sit
 
         showPrd();
 
+        //Delete site
         DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference();
+        DatabaseReference drTest = FirebaseDatabase.getInstance().getReference();
         databaseReference.child("Sites").child(itemList.get(position).getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.getValue() != null) {
+                    String siteid=itemList.get(position).getId();
                     databaseReference.child("Sites").child(itemList.get(position).getKey()).removeValue().addOnCompleteListener(context, new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             hidePrd();
                             if(task.isSuccessful()){
+                                Log.e("site delete ",siteid);
+
+
+                                // Delete site related plots
+
+                                drTest.child("Plots")
+                                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                for (DataSnapshot postsnapshot :dataSnapshot.getChildren())  {
+
+                                                    if(postsnapshot.child("site_id").getValue().toString().equals(siteid)){
+                                                        Log.e("plot delete ","delete");
+                                                        // Delete plot related payments
+                                                        String id=postsnapshot.child("id").getValue().toString();
+                                                        drTest.child("Payments")
+                                                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                    @Override
+                                                                    public void onDataChange(DataSnapshot dataSnapshotPayment) {
+                                                                        for (DataSnapshot postsnapshotPay :dataSnapshotPayment.getChildren())  {
+                                                                            if(postsnapshotPay.child("plot_id").getValue().toString().equals(id)){
+                                                                                Log.e("payment delete ","delete");
+                                                                                postsnapshotPay.getRef().removeValue();
+                                                                            }
+                                                                        }
+                                                                    }
+
+                                                                    @Override
+                                                                    public void onCancelled(DatabaseError databaseError) {
+                                                                        Log.w("TAG: ", databaseError.getMessage());
+                                                                    }
+
+                                                                });
+
+                                                        postsnapshot.getRef().removeValue();
+
+                                                    }
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+                                                Log.w("TAG: ", databaseError.getMessage());
+                                            }
+
+                                        });
+
+
+                                // Delete cash payments data
+                                drTest.child("SitePayments")
+                                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshotCashPay) {
+                                                for (DataSnapshot postsnapshotCashPay :dataSnapshotCashPay.getChildren())  {
+                                                    if(postsnapshotCashPay.child("site_id").getValue().toString().equals(siteid)){
+                                                        Log.e("Site Payments delete ","delete");
+                                                        postsnapshotCashPay.getRef().removeValue();
+                                                    }
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+                                                Log.w("TAG: ", databaseError.getMessage());
+                                            }
+
+                                        });
+
+
+                                // Delete cash received data
+                                drTest.child("Site_Receive_Payment")
+                                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshotCashReceive) {
+                                                for (DataSnapshot postsnapshotCashreceive :dataSnapshotCashReceive.getChildren())  {
+                                                    if(postsnapshotCashreceive.child("site_id").getValue().toString().equals(siteid)){
+                                                        Log.e("Site Receive delete","delete");
+                                                        postsnapshotCashreceive.getRef().removeValue();
+                                                    }
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+                                                Log.w("TAG: ", databaseError.getMessage());
+                                            }
+
+                                        });
+
                                 new CToast(context).simpleToast("Site delete successfully", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_success).show();
                                 notifyDataSetChanged();
+
                             }
                             else {
                                 new CToast(context).simpleToast(task.getException().toString(), Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
@@ -228,45 +321,127 @@ public class Adapter_Sites_DeactiveList extends RecyclerView.Adapter<Adapter_Sit
     private void todeleteplotApi1(final int position) {
 
         showPrd();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, API.TODELETEPLOT + "site_id="+itemList.get(position).getId(), new Response.Listener<String>() {
 
+        //Delete site
+        DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference();
+        DatabaseReference drTest = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child("Sites").child(itemList.get(position).getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onResponse(String response) {
-                hidePrd();
-                try {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.getValue() != null) {
+                    String siteid=itemList.get(position).getId();
+                    databaseReference.child("Sites").child(itemList.get(position).getKey()).removeValue().addOnCompleteListener(context, new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            hidePrd();
+                            if(task.isSuccessful()){
+                                Log.e("site delete ",siteid);
+                                // Delete site related plots
 
-                    JSONObject jsonObject = new JSONObject(response);
-                    if (jsonObject.getInt("result") == 1) {
-                        new CToast(context).simpleToast(jsonObject.getString("message"), Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_success).show();
-                        itemList.remove(position);
-                        notifyDataSetChanged();
-                    } else {
-                        new CToast(context).simpleToast(jsonObject.getString("message"), Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
-                    }
+                                databaseReference.child("Plots").orderByChild("site_id").equalTo(siteid)
+                                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                for (DataSnapshot postsnapshot :dataSnapshot.getChildren())  {
+                                                    Log.e("plot delete ","delete");
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    new CToast(context).simpleToast("something went wrong.", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                                                    // Delete plot related payments
+                                                    String id=postsnapshot.child("id").getValue().toString();
+                                                    drTest.child("Payments").orderByChild("plot_id").equalTo(id)
+                                                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                @Override
+                                                                public void onDataChange(DataSnapshot dataSnapshotPayment) {
+                                                                    for (DataSnapshot postsnapshotPay :dataSnapshotPayment.getChildren())  {
+                                                                        Log.e("payment delete ","delete");
+                                                                        postsnapshotPay.getRef().removeValue();
+                                                                    }
+                                                                }
+
+                                                                @Override
+                                                                public void onCancelled(DatabaseError databaseError) {
+                                                                    Log.w("TAG: ", databaseError.getMessage());
+                                                                }
+
+                                                            });
+
+                                                    postsnapshot.getRef().removeValue();
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+                                                Log.w("TAG: ", databaseError.getMessage());
+                                            }
+
+                                        });
+
+
+                                // Delete cash payments data
+                                drTest.child("SitePayments").orderByChild("site_id").equalTo(siteid)
+                                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshotCashPay) {
+                                                for (DataSnapshot postsnapshotCashPay :dataSnapshotCashPay.getChildren())  {
+                                                    Log.e("Site Payments delete ","delete");
+                                                    postsnapshotCashPay.getRef().removeValue();
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+                                                Log.w("TAG: ", databaseError.getMessage());
+                                            }
+
+                                        });
+
+
+                                // Delete cash received data
+                                drTest.child("Site_Receive_Payment").orderByChild("site_id").equalTo(siteid)
+                                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshotCashReceive) {
+                                                for (DataSnapshot postsnapshotCashreceive :dataSnapshotCashReceive.getChildren())  {
+                                                    Log.e("Site Receive delete","delete");
+                                                    postsnapshotCashreceive.getRef().removeValue();
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+                                                Log.w("TAG: ", databaseError.getMessage());
+                                            }
+
+                                        });
+
+                                new CToast(context).simpleToast("Site delete successfully", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_success).show();
+                                notifyDataSetChanged();
+
+                            }
+                            else {
+                                new CToast(context).simpleToast(task.getException().toString(), Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                            }
+
+                        }
+                    }).addOnFailureListener(context, new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            hidePrd();
+                            new CToast(context).simpleToast(e.getMessage(), Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                        }
+                    });
                 }
-
+                else {
+                    hidePrd();
+                    new CToast(context).simpleToast("Site not exist", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                }
             }
-        }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
                 hidePrd();
-                new CToast(context).simpleToast("something went wrong.", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                new CToast(context).simpleToast(error.getMessage(), Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
             }
         });
-
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                30000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-        RequestQueue queue = Volley.newRequestQueue(context);
-        queue.add(stringRequest);
-
-
     }
 
     private void OpenActiveSite(final int position) {

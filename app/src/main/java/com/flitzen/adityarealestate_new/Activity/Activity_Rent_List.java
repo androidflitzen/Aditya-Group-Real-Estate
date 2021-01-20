@@ -1,5 +1,6 @@
 package com.flitzen.adityarealestate_new.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -70,11 +71,15 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class Activity_Rent_List extends AppCompatActivity {
@@ -100,6 +105,8 @@ public class Activity_Rent_List extends AppCompatActivity {
     private ImageView imgClearSearch;
     TextView tvtitle;
     boolean check = false;
+    String currentMonth = "";
+    String currentYear = "";
 
 
     @Override
@@ -299,6 +306,7 @@ public class Activity_Rent_List extends AppCompatActivity {
         Query query = databaseReference.child("Properties").orderByKey();
         //databaseReference.keepSynced(true);
         query.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NewApi")
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 swipe_refresh.setRefreshing(false);
@@ -309,8 +317,10 @@ public class Activity_Rent_List extends AppCompatActivity {
                         for (DataSnapshot npsnapshot : dataSnapshot.getChildren()) {
                             Item_Property_List item = new Item_Property_List();
                             item.setId(npsnapshot.child("id").getValue().toString());
+                            String propertyID = npsnapshot.child("id").getValue().toString();
                             item.setProperty_name(npsnapshot.child("property_name").getValue().toString());
                             item.setAddress(npsnapshot.child("address").getValue().toString());
+                            //item.setHired_since(npsnapshot.child("hired_since").getValue().toString());
                             if (npsnapshot.child("hired_since").getValue().toString().equals("0000-00-00")) {
                                 item.setIs_hired("0");
                             } else {
@@ -351,19 +361,111 @@ public class Activity_Rent_List extends AppCompatActivity {
                                 }
                             });
 
-                           /* databaseReference.child("Customers").child("id").equalTo(npsnapshot.child("customer_id").getValue().toString()).addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    String key=snapshot.getKey();
-                                    String name=snapshot.child(key).child("name").getValue().toString();
-                                    item.setCustomer_name(name);
-                                }
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
+                            //Check payment
 
+                            try {
+
+                                LocalDate todaydate = LocalDate.now();
+                                String monthFirstDay = String.valueOf(todaydate.withDayOfMonth(1));
+                                System.out.println("=======Months first date in yyyy-mm-dd: " + todaydate.withDayOfMonth(1));
+
+                                Calendar calendar = Calendar.getInstance();
+                                int year = calendar.get(Calendar.YEAR);
+                                int cMonth = calendar.get(Calendar.MONTH);
+                                String hDate = npsnapshot.child("hired_since").getValue().toString();
+                                System.out.println("========hDate   " + hDate);
+
+                                String[] date = hDate.split("-");
+                                String hYear = date[0];
+                                hYear = String.valueOf(year);
+
+                                String monthHDate = hYear + "-" + date[1] + "-" + date[2];
+                                System.out.println("=========monthHDate   " + monthHDate);
+
+                                Date c = Calendar.getInstance().getTime();
+                                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                                String todayDate = df.format(c);
+                                String[] date11 = todayDate.split("-");
+                                final String currentMonth = date11[1];
+                                final String currentYear = date11[0];
+
+
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                                Date date1 = sdf.parse(monthHDate);
+                                Date date2 = sdf.parse(todayDate);
+                                int i = date1.compareTo(date2);
+                                switch (i) {
+                                    case -1: //date1<date2 = -1   date gone
+                                        Query queryPay = databaseReference.child("Payments").orderByKey();
+                                        // databaseReference.keepSynced(true);
+                                        queryPay.addValueEventListener(new ValueEventListener() {
+                                            @SuppressLint("NewApi")
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshotPay) {
+                                                try {
+                                                    if (dataSnapshotPay.exists()) {
+                                                        for (DataSnapshot npsnapshot2 : dataSnapshotPay.getChildren()) {
+                                                            if (npsnapshot2.child("property_id").getValue().toString().equals(propertyID)) {
+                                                                if (npsnapshot2.child("customer_id").getValue().toString().equals(customerId)) {
+                                                                    String paymentDate = npsnapshot2.child("payment_date").getValue().toString();
+                                                                    Log.e("paymentDate  ", paymentDate);
+
+                                                                    SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                                                                    SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd");
+                                                                    try {
+                                                                        Date oneWayTripDate;
+                                                                        oneWayTripDate = input.parse(paymentDate);
+                                                                        String d = output.format(oneWayTripDate);
+
+                                                                        String[] date = d.split("-");
+                                                                        String month = date[1];
+                                                                        String year = date[0];
+
+                                                                        if (Integer.parseInt(month) == Integer.parseInt(currentMonth)) {
+                                                                            if (Integer.parseInt(year) == Integer.parseInt(currentYear)) {
+                                                                                item.setCheckDateIsGone(false);
+                                                                            } else {
+                                                                                item.setCheckDateIsGone(true);
+                                                                            }
+                                                                        } else {
+                                                                            item.setCheckDateIsGone(true);
+                                                                        }
+
+
+                                                                    } catch (ParseException e) {
+                                                                        e.printStackTrace();
+                                                                    }
+
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                } catch (Exception e) {
+                                                    Log.e("Ex   ", e.toString());
+                                                    new CToast(mActivity).simpleToast("Something went wrong", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                                                }
+                                                adapter_property_list.notifyDataSetChanged();
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+                                                Log.e("error ", error.getMessage());
+                                                new CToast(mActivity).simpleToast("Something went wrong", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                                            }
+                                        });
+                                    case 1: //date1>date2 = 1
+                                        //return sDate1;
+                                    case 0: //date1==date2= 0
+                                    default:
+                                        //return sDate2;
                                 }
-                            });*/
+                            } catch (ParseException e) {
+                                // return sDate1;
+                            }
+
+
                             Log.e("main For  ", "main for");
                             item.setRent(npsnapshot.child("rent").getValue().toString());
                             item.setHired_since(npsnapshot.child("hired_since").getValue().toString());
@@ -385,7 +487,8 @@ public class Activity_Rent_List extends AppCompatActivity {
                     } else {
                         tvNoActiveCustomer.setVisibility(View.VISIBLE);
                     }
-                } catch (Exception e) {
+                } catch (
+                        Exception e) {
                     Log.e("Test  ", e.getMessage());
                     e.printStackTrace();
                 }
@@ -1255,7 +1358,6 @@ public class Activity_Rent_List extends AppCompatActivity {
             }
 
         });
-
 
 
         //insert new entry to payments table

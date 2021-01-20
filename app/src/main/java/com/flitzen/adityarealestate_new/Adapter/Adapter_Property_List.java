@@ -42,7 +42,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,10 +77,25 @@ public class Adapter_Property_List extends RecyclerView.Adapter<Adapter_Property
 
                 //holder.view_main.setCardBackgroundColor(context.getResources().getColor(R.color.gray));
 
-                holder.view_main.setBackgroundColor(context.getResources().getColor(R.color.gray));
+                holder.view_main.setBackgroundColor(context.getResources().getColor(R.color.white));
                 holder.rent_soldout.setVisibility(View.VISIBLE);
+
+                if(itemList.get(position).isCheckDateIsGone()==true){
+                    holder.view_main.setBackgroundColor(context.getResources().getColor(R.color.white));
+                    holder.view.setBackgroundColor(context.getResources().getColor(R.color.light_red));
+                    holder.txtRentDate.setTextColor(context.getResources().getColor(R.color.light_red));
+                    holder.rent_soldout.setVisibility(View.VISIBLE);
+                }else {
+                    holder.view_main.setBackgroundColor(context.getResources().getColor(R.color.white));
+                    holder.view.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+                    holder.txtRentDate.setTextColor(context.getResources().getColor(R.color.blackText2));
+                    holder.rent_soldout.setVisibility(View.VISIBLE);
+                }
+
             } else {
-                holder.view_main.setBackgroundColor(Color.WHITE);
+                holder.view_main.setBackgroundColor(context.getResources().getColor(R.color.gray));
+                holder.txtRentDate.setTextColor(context.getResources().getColor(R.color.blackText2));
+                holder.view.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
                 holder.rent_soldout.setVisibility(View.GONE);
             }
         }catch (Exception e) {
@@ -94,6 +112,26 @@ public class Adapter_Property_List extends RecyclerView.Adapter<Adapter_Property
         }
         else {
             holder.txt_cust_name.setText("Customer : " + itemList.get(position).getCustomer_name());
+        }
+
+        if(itemList.get(position).getHired_since().equals("0000-00-00")){
+            holder.txtRentDate.setText("Rent Date : -");
+        }
+        else {
+            try {
+
+                SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat output = new SimpleDateFormat("dd MMMM yyyy");
+
+                Date oneWayTripDate;
+                oneWayTripDate = input.parse(itemList.get(position).getHired_since());  // parse input
+                String data1=output.format(oneWayTripDate);
+                holder.txtRentDate.setText("Rent Date : "+data1);
+
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
 
 
@@ -128,9 +166,10 @@ public class Adapter_Property_List extends RecyclerView.Adapter<Adapter_Property
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txt_site_name, txt_site_name_1, txt_site_address,txt_cust_name;
+        TextView txt_site_name, txt_site_name_1, txt_site_address,txt_cust_name,txtRentDate;
         RelativeLayout view_main;
         ImageView ivDelete,rent_soldout;
+        View view;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -141,6 +180,8 @@ public class Adapter_Property_List extends RecyclerView.Adapter<Adapter_Property
             ivDelete = (ImageView) itemView.findViewById(R.id.ivDelete);
             rent_soldout = (ImageView) itemView.findViewById(R.id.rent_soldout);
             txt_cust_name = (TextView) itemView.findViewById(R.id.txt_cust_name);
+            txtRentDate = (TextView) itemView.findViewById(R.id.txtRentDate);
+            view =  itemView.findViewById(R.id.view);
         }
     }
 

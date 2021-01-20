@@ -219,7 +219,7 @@ public class CashPaymentFragment extends Fragment {
                     PDFUtility_cashPayment.createPdf(v.getContext(), new PDFUtility_cashPayment.OnDocumentClose() {
                         @Override
                         public void onPDFDocumentClose(File file) {
-                            Toast.makeText(getActivity(), "Sample Pdf Created", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getActivity(), "Sample Pdf Created", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getActivity(), ViewPdfForAll.class);
                             intent.putExtra("path",path);
                             startActivity(intent);

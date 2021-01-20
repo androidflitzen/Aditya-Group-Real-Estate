@@ -111,6 +111,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -562,19 +563,17 @@ public class Activity_Rent_Details extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                //String maven = "maven.pdf";
-                //new DownloadFile().execute(agreement_pdf_url, maven);
-
-
-      /*          File pdfFile = new File(Environment.getExternalStorageDirectory() + "/testthreepdf/" + maven);  // -> filename = maven.pdf
-                Uri path = Uri.fromFile(pdfFile);
-                Intent pdfIntent = new Intent(Intent.ACTION_VIEW);
-                pdfIntent.setDataAndType(path, "application/pdf");
-                pdfIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);*/
 
                 // try {
 
-                try {
+                Intent intent = new Intent(Activity_Rent_Details.this, ViewAgreementPDF.class);
+                intent.putExtra("pdf_url",agreement_pdf_url);
+                intent.putExtra("name",txt_property_name.getText().toString());
+                intent.putExtra("only_load",true);
+                startActivity(intent);
+
+
+               /* try {
                     Toast.makeText(getBaseContext(), "Opening PDF... ", Toast.LENGTH_SHORT).show();
                     Intent inte = new Intent(Intent.ACTION_VIEW);
                     inte.setDataAndType(Uri.parse(agreement_pdf_url), "application/pdf");
@@ -582,22 +581,7 @@ public class Activity_Rent_Details extends AppCompatActivity {
                 } catch (ActivityNotFoundException e) {
                     Toast.makeText(Activity_Rent_Details.this, "No Application available to view PDF", Toast.LENGTH_SHORT).show();
                     Log.e("No available view PDF.", e.getMessage());
-                }
-
-//                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(agreement_pdf_url));
-//                    startActivity(browserIntent);
-
-                    /*Intent intent = new Intent(Activity_Rent_Details.this,PdfViewActivity.class);
-                    intent.putExtra("pdf_url",agreement_pdf_url);
-                    intent.putExtra("only_load",true);
-                      startActivity(intent);
-                      */
-
-
-//                } catch (ActivityNotFoundException e) {
-//                    Toast.makeText(Activity_Rent_Details.this, "No Application available to view PDF", Toast.LENGTH_SHORT).show();
-//                }
-
+                }*/
 
             }
         });

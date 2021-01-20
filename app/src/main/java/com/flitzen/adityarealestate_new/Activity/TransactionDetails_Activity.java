@@ -198,7 +198,7 @@ public class TransactionDetails_Activity extends AppCompatActivity {
                     PDFUtility_Transaction_All.createPdf(v.getContext(), new PDFUtility_Transaction_All.OnDocumentClose() {
                         @Override
                         public void onPDFDocumentClose(File file) {
-                            Toast.makeText(TransactionDetails_Activity.this, "Sample Pdf Created", Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(TransactionDetails_Activity.this, "Sample Pdf Created", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(TransactionDetails_Activity.this, ViewPdfForAll.class);
                             intent.putExtra("path",path);
                             startActivity(intent);

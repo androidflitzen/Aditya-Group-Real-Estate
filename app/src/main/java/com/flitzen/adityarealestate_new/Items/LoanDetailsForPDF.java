@@ -11,6 +11,78 @@ public class LoanDetailsForPDF implements Serializable {
     String interest;
     String deposit;
     String pendingAmount;
+    String loanTenure;
+    String reasonForLoan;
+    String loanType;
+    String payEMIDate;
+    String customerID;
+    String loanId;
+    String loanStatus;
+    String interestRate;
+
+    public String getInterestRate() {
+        return interestRate;
+    }
+
+    public void setInterestRate(String interestRate) {
+        this.interestRate = interestRate;
+    }
+
+    public String getLoanStatus() {
+        return loanStatus;
+    }
+
+    public void setLoanStatus(String loanStatus) {
+        this.loanStatus = loanStatus;
+    }
+
+    public String getLoanId() {
+        return loanId;
+    }
+
+    public void setLoanId(String loanId) {
+        this.loanId = loanId;
+    }
+
+    public String getCustomerID() {
+        return customerID;
+    }
+
+    public void setCustomerID(String customerID) {
+        this.customerID = customerID;
+    }
+
+    public String getPayEMIDate() {
+        return payEMIDate;
+    }
+
+    public void setPayEMIDate(String payEMIDate) {
+        this.payEMIDate = payEMIDate;
+    }
+
+    public String getLoanType() {
+        return loanType;
+    }
+
+    public void setLoanType(String loanType) {
+        this.loanType = loanType;
+    }
+
+    public String getReasonForLoan() {
+        return reasonForLoan;
+    }
+
+    public void setReasonForLoan(String reasonForLoan) {
+        this.reasonForLoan = reasonForLoan;
+    }
+
+    public String getLoanTenure() {
+        return loanTenure;
+    }
+
+    public void setLoanTenure(String loanTenure) {
+        this.loanTenure = loanTenure;
+    }
 
     public String getApplicationNo() {
         return applicationNo;

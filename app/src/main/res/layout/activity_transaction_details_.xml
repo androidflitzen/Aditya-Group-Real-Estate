@@ -41,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_6sdp"
                     android:layout_weight="0.5"
-                    android:gravity="center"
+                    android:layout_marginLeft="@dimen/_10sdp"
                     android:singleLine="true"
                     android:text="Transactions"
                     android:textColor="@color/white"
@@ -198,6 +198,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="Customer Name"
+                            android:visibility="gone"
                             android:textColor="@color/blackText2"
                             android:textSize="@dimen/_8sdp" />
 
@@ -207,6 +208,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="--------"
+                            android:visibility="gone"
                             android:textColor="@color/blackText1"
                             android:textSize="@dimen/_12sdp"
                             android:textStyle="bold" />
@@ -369,7 +371,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:text="--------"
-                                android:textColor="@color/msg_fail"
+                                android:textColor="@color/red_dark"
                                 android:textSize="@dimen/_12sdp"
                                 android:textStyle="bold" />
 
@@ -432,7 +434,7 @@
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_5sdp"
-                    android:background="@drawable/trans_tab_bg"
+                    android:visibility="gone"
                     android:orientation="horizontal">
 
                     <TextView
@@ -440,27 +442,33 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
-                        android:background="@drawable/task_bg_title"
-                        android:gravity="center"
                         android:padding="@dimen/_5sdp"
-                        android:text="Payment"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_15sdp" />
+                        android:text="Payment List"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/_16sdp"
+                        android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/tvTranstabRecevied"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
-                        android:background="@drawable/trans_tab_bg"
                         android:gravity="center"
                         android:padding="@dimen/_5sdp"
                         android:text="Received"
+                        android:visibility="gone"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_15sdp" />
 
 
                 </LinearLayout>
+
+                <FrameLayout
+                    android:id="@+id/Trans_Fragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:accessibilityTraversalBefore="@id/view"
+                    android:background="@drawable/all_bg_color" />
 
                 <FrameLayout
                     android:id="@+id/Trans_frame"
@@ -496,13 +504,6 @@
 
 
             </LinearLayout>
-
-            <FrameLayout
-                android:id="@+id/Trans_Fragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:accessibilityTraversalBefore="@id/view"
-                android:background="@drawable/all_bg_color" />
 
         </LinearLayout>
 

@@ -1,5 +1,6 @@
 package com.flitzen.adityarealestate_new.Fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -70,6 +71,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -365,6 +368,7 @@ public class CashReceiveFragment extends Fragment {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         Query query = databaseReference.child("Site_Receive_Payment").orderByKey();
         query.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NewApi")
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 hidePrd();
@@ -405,6 +409,13 @@ public class CashReceiveFragment extends Fragment {
                             tvViewPaymentPDF.setVisibility(View.GONE);
                             tvNoActiveCustomer.setVisibility(View.VISIBLE);
                         }
+
+                        Collections.sort(receivedPaymentList, new Comparator<ReceivedPayment>() {
+                            @Override
+                            public int compare(ReceivedPayment o1, ReceivedPayment o2) {
+                                return o1.getPayment_date().compareTo(o2.getPayment_date());
+                            }
+                        }.reversed());
                         receivedPaymentListAdapter.notifyDataSetChanged();
                     }
                     else {

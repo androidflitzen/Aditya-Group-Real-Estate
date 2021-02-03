@@ -1,6 +1,7 @@
 package com.flitzen.adityarealestate_new.Activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -56,6 +57,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -301,8 +304,8 @@ public class TransactionDetails_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                tvTranstabPayment.setBackground(getResources().getDrawable(R.drawable.task_bg_title));
-                tvTranstabRecevied.setBackground(getResources().getDrawable(R.drawable.trans_tab_bg));
+              //  tvTranstabPayment.setBackground(getResources().getDrawable(R.drawable.task_bg_title));
+               // tvTranstabRecevied.setBackground(getResources().getDrawable(R.drawable.trans_tab_bg));
                 pushFragment(new TranPayment_Fragment(customer_id, position, customer_name,contact_no));
                 //   pushFragment(new TranPayment_Fragment(customer_id, position), "");
             }
@@ -313,8 +316,8 @@ public class TransactionDetails_Activity extends AppCompatActivity {
             public void onClick(View v) {
 
 
-                tvTranstabPayment.setBackground(getResources().getDrawable(R.drawable.trans_tab_bg));
-                tvTranstabRecevied.setBackground(getResources().getDrawable(R.drawable.task_bg_title));
+               // tvTranstabPayment.setBackground(getResources().getDrawable(R.drawable.trans_tab_bg));
+               // tvTranstabRecevied.setBackground(getResources().getDrawable(R.drawable.task_bg_title));
                 //    tvTitleTask.setText("Pending Task");
                 pushFragment(new TransReceived_Payment(customer_id, position, customer_name,contact_no));
 
@@ -537,7 +540,7 @@ public class TransactionDetails_Activity extends AppCompatActivity {
                             TransactionDetails_Activity.tvTransCustReceived.setText("--------");
                         }
                         else {
-                            TransactionDetails_Activity.tvTransCustReceived.setText(ReceicedTotal);
+                            TransactionDetails_Activity.tvTransCustReceived.setText(getResources().getString(R.string.rupee)+" "+ReceicedTotal);
                         }
                     }
                 } catch (Exception e) {
@@ -558,6 +561,7 @@ public class TransactionDetails_Activity extends AppCompatActivity {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         Query queryDocument = databaseReference.child("Transactions").orderByKey();
         queryDocument.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NewApi")
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 try {
@@ -603,6 +607,13 @@ public class TransactionDetails_Activity extends AppCompatActivity {
                                     });
                                     transactionlistAll.add(item1);
                                     transactionlistTempAll.add(item1);
+
+                                Collections.sort(transactionlistAll, new Comparator<Transcation>() {
+                                    @Override
+                                    public int compare(Transcation o1, Transcation o2) {
+                                        return o1.getTransactionDate().compareTo(o2.getTransactionDate());
+                                    }
+                                }.reversed());
 
                             }
                         }
@@ -707,8 +718,8 @@ public class TransactionDetails_Activity extends AppCompatActivity {
         getReceivedlist();
         getAllPaymentList();
 
-        tvTranstabPayment.setBackground(getResources().getDrawable(R.drawable.task_bg_title));
-        tvTranstabRecevied.setBackground(getResources().getDrawable(R.drawable.trans_tab_bg));
+       // tvTranstabPayment.setBackground(getResources().getDrawable(R.drawable.task_bg_title));
+        //tvTranstabRecevied.setBackground(getResources().getDrawable(R.drawable.trans_tab_bg));
         pushFragment(new TranPayment_Fragment(customer_id, position, customer_name,contact_no));
 
         if (Edit_Transaction_Activity.isDateChange) {

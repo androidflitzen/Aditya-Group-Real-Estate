@@ -113,7 +113,7 @@ public class Add_fab_Payment_Activity extends AppCompatActivity {
             public void onClick(View v) {
 
                 final CharSequence[] items = {
-                        "Cash Payment"
+                        "Cash Received", "Cash Payment"
                 };
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(Add_fab_Payment_Activity.this);
@@ -124,6 +124,14 @@ public class Add_fab_Payment_Activity extends AppCompatActivity {
                         tvTransTypespn.setText(items[item]);
                         tvTransType1.setTextColor(getResources().getColor(R.color.blackText1));
                         // typeid = "1";
+
+
+                        if (item == 0) {
+                            typeid = "0";
+
+                        } else if (item == 1) {
+                            typeid = "1";
+                        }
 
 
                     }

@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +41,7 @@ import com.flitzen.adityarealestate_new.Classes.API;
 import com.flitzen.adityarealestate_new.Classes.Helper;
 import com.flitzen.adityarealestate_new.Classes.Utils;
 import com.flitzen.adityarealestate_new.Classes.WebAPI;
+import com.flitzen.adityarealestate_new.Items.Item_Plot_Payment_List;
 import com.flitzen.adityarealestate_new.Items.Transcation;
 import com.flitzen.adityarealestate_new.PDFUtility;
 import com.flitzen.adityarealestate_new.PDFUtility_Transaction;
@@ -59,6 +61,8 @@ import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -72,7 +76,7 @@ public class TranPayment_Fragment extends Fragment {
     Adapter_Trans_PaymentList adapterTransPaymentList;
 
 
-    String rent_amount = "", customer_id = "", customer_name = "",phoneNo="";
+    String rent_amount = "", customer_id = "", customer_name = "", phoneNo = "";
     int position;
 
     Activity mActivity;
@@ -91,21 +95,28 @@ public class TranPayment_Fragment extends Fragment {
     RelativeLayout ivTransPaymentPdf;
     @BindView(R.id.fab_addTransPayment)
     FloatingActionButton fabAddTransPayment;
+    @BindView(R.id.tvTotalPay)
+    TextView tvTotalPay;
+    @BindView(R.id.tvTotalReceive)
+    TextView tvTotalReceive;
+    @BindView(R.id.linMainText)
+    LinearLayout linMainText;
 
    /* @BindView(R.id.rvTransPayment)
     RecyclerView rvTransPayment;*/
 
-    TextView tvNoPayment ;
+    TextView tvNoPayment;
 
-    String PaymentTotltal="0" ;
+    String PaymentTotltal = "0";
+    String receivedTotltal = "0";
 
     @SuppressLint("ValidFragment")
-    public TranPayment_Fragment(String customer_id, int position, String customer_name,String contact_no) {
+    public TranPayment_Fragment(String customer_id, int position, String customer_name, String contact_no) {
 
-        this.customer_id = customer_id ;
-        this.position = position ;
-        this.customer_name = customer_name ;
-        this.phoneNo = contact_no ;
+        this.customer_id = customer_id;
+        this.position = position;
+        this.customer_name = customer_name;
+        this.phoneNo = contact_no;
 
     }
 
@@ -153,10 +164,10 @@ public class TranPayment_Fragment extends Fragment {
                 intent.putExtra("paymentList",transactionlist);
                 startActivity(intent);*/
 
-                int finalTotalAmount=0;
+                int finalTotalAmount = 0;
                 for (int i = 0; i < transactionlist.size(); i++) {
-                    if(transactionlist.get(i).getAmount()!=null && !(transactionlist.get(i).getAmount().equals(""))){
-                        finalTotalAmount=finalTotalAmount+Integer.parseInt(transactionlist.get(i).getAmount());
+                    if (transactionlist.get(i).getAmount() != null && !(transactionlist.get(i).getAmount().equals(""))) {
+                        finalTotalAmount = finalTotalAmount + Integer.parseInt(transactionlist.get(i).getAmount());
                     }
                 }
 
@@ -168,12 +179,12 @@ public class TranPayment_Fragment extends Fragment {
                     PDFUtility_Transaction.createPdf(v.getContext(), new PDFUtility_Transaction.OnDocumentClose() {
                         @Override
                         public void onPDFDocumentClose(File file) {
-                           // Toast.makeText(getActivity(), "Sample Pdf Created", Toast.LENGTH_SHORT).show();
+                            // Toast.makeText(getActivity(), "Sample Pdf Created", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getActivity(), ViewPdfForAll.class);
-                            intent.putExtra("path",path);
+                            intent.putExtra("path", path);
                             startActivity(intent);
                         }
-                    }, getSampleData(), path, true, customer_name, phoneNo,finalTotalAmount);
+                    }, getSampleData(), path, true, customer_name, phoneNo, finalTotalAmount);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e("Error", "Error Creating Pdf");
@@ -210,43 +221,45 @@ public class TranPayment_Fragment extends Fragment {
     private List<String[]> getSampleData() {
 
         List<String[]> temp = new ArrayList<>();
-        int finalTotalAmount=0;
+        int finalTotalAmount = 0;
         for (int i = 0; i < transactionlist.size(); i++) {
 
-            String data1="";
-            String data2="";
-            String data3="";
-            String data4="";
+            String data1 = "";
+            String data2 = "";
+            String data3 = "";
+            String data4 = "";
 
 
             if (transactionlist.get(i).getTransactionDate() != null) {
-                    SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd");
-                   // SimpleDateFormat inputT = new SimpleDateFormat("hh:mm:ss");
-                    SimpleDateFormat output = new SimpleDateFormat("dd MMMM yyyy");
-                   // SimpleDateFormat outputT = new SimpleDateFormat("hh:mm a");
-                    try {
-                        Date oneWayTripDate;
-                        Date oneWayTripDateT;
-                        oneWayTripDate = input.parse(transactionlist.get(i).getTransactionDate());  // parse input
-                       // oneWayTripDateT = inputT.parse(transactionlist.get(i).getTransactionTime());  // parse input
-                        data1=(output.format(oneWayTripDate));
+                SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd");
+                // SimpleDateFormat inputT = new SimpleDateFormat("hh:mm:ss");
+                SimpleDateFormat output = new SimpleDateFormat("dd MMMM yyyy");
+                // SimpleDateFormat outputT = new SimpleDateFormat("hh:mm a");
+                try {
+                    Date oneWayTripDate;
+                    Date oneWayTripDateT;
+                    oneWayTripDate = input.parse(transactionlist.get(i).getTransactionDate());  // parse input
+                    // oneWayTripDateT = inputT.parse(transactionlist.get(i).getTransactionTime());  // parse input
+                    data1 = (output.format(oneWayTripDate));
 
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-            }
-
-
-            if(transactionlist.get(i).getPaymentType()!=null){
-                if(transactionlist.get(i).getPaymentType().equals("1")){
-                    data2="Cash Payment";
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
             }
 
-            data3=transactionlist.get(i).getTransactionNote();
-            data4= Helper.getFormatPrice(Integer.parseInt(transactionlist.get(i).getAmount()));
 
-            temp.add(new String[] {data1,data2,data3,data4});
+            if (transactionlist.get(i).getPaymentType() != null) {
+                if (transactionlist.get(i).getPaymentType().equals("1")) {
+                    data2 = "Cash Payment";
+                } else {
+                    data2 = "Cash Received";
+                }
+            }
+
+            data3 = transactionlist.get(i).getTransactionNote();
+            data4 = Helper.getFormatPrice(Integer.parseInt(transactionlist.get(i).getAmount()));
+
+            temp.add(new String[]{data1, data2, data3, data4});
         }
         return temp;
     }
@@ -254,10 +267,11 @@ public class TranPayment_Fragment extends Fragment {
 
     private void getPaymentlist() {
 
-        System.out.println("=========getPaymentlist   "+customer_id);
+        System.out.println("=========getPaymentlist   " + customer_id);
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         Query queryDocument = databaseReference.child("Transactions").orderByKey();
         queryDocument.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NewApi")
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 try {
@@ -265,73 +279,107 @@ public class TranPayment_Fragment extends Fragment {
                         transactionlist.clear();
                         transactionlistTemp.clear();
                         tvNoPayment.setVisibility(View.GONE);
-                        int PaymentTotltal1=0;
+                        int PaymentTotltal1 = 0;
+                        int PaymentTotltal2 = 0;
                         for (DataSnapshot npsnapshot5 : dataSnapshot.getChildren()) {
                             if (npsnapshot5.child("customer_id").getValue().toString().equals(customer_id)) {
-                                if(npsnapshot5.child("payment_type").getValue().toString().equals("1")){
-                                    Transcation item1 = new Transcation();
-                                    item1.setTransactionId(npsnapshot5.child("transaction_id").getValue().toString());
-                                    item1.setCustomerId(npsnapshot5.child("customer_id").getValue().toString());
-                                    item1.setPaymentType(npsnapshot5.child("payment_type").getValue().toString());
-                                    item1.setTransactionDate(npsnapshot5.child("transaction_date").getValue().toString());
-                                    item1.setTransactionNote(npsnapshot5.child("transaction_note").getValue().toString());
-                                    item1.setAmount(npsnapshot5.child("amount").getValue().toString());
+                                //if(npsnapshot5.child("payment_type").getValue().toString().equals("1")){
+                                Transcation item1 = new Transcation();
+                                item1.setTransactionId(npsnapshot5.child("transaction_id").getValue().toString());
+                                item1.setCustomerId(npsnapshot5.child("customer_id").getValue().toString());
+                                item1.setPaymentType(npsnapshot5.child("payment_type").getValue().toString());
+                                item1.setTransactionDate(npsnapshot5.child("transaction_date").getValue().toString());
+                                item1.setTransactionNote(npsnapshot5.child("transaction_note").getValue().toString());
+                                item1.setAmount(npsnapshot5.child("amount").getValue().toString());
 
-                                    PaymentTotltal1=PaymentTotltal1+Integer.parseInt(npsnapshot5.child("amount").getValue().toString());
-                                    PaymentTotltal=String.valueOf(PaymentTotltal1);
-
-                                    Query queryCustomer = databaseReference.child("Transacation_Customers").orderByKey();
-                                    queryCustomer.addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                            try {
-                                                if (dataSnapshot.exists()) {
-                                                    for (DataSnapshot npsnapshotCustomer : dataSnapshot.getChildren()) {
-                                                        if (npsnapshotCustomer.child("id").getValue().toString().equals(customer_id)) {
-                                                            String name = npsnapshotCustomer.child("name").getValue().toString();
-                                                            item1.setCustomerName(name);
-                                                        }
-                                                    }
-                                                    adapterTransPaymentList.notifyDataSetChanged();
-                                                    tvNoPayment.setVisibility(View.GONE);
-                                                }
-                                            } catch (Exception e) {
-                                                Log.e("Ex   ", e.toString());
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-                                            Log.e("error ", error.getMessage());
-                                        }
-                                    });
-                                    transactionlist.add(item1);
-                                    transactionlistTemp.add(item1);
-                                    tvNoPayment.setVisibility(View.GONE);
+                                if (item1.getPaymentType().equals("1")) {
+                                    PaymentTotltal1 = PaymentTotltal1 + Integer.parseInt(npsnapshot5.child("amount").getValue().toString());
+                                    PaymentTotltal = String.valueOf(PaymentTotltal1);
                                 }
+                                else {
+                                    PaymentTotltal2 = PaymentTotltal2 + Integer.parseInt(npsnapshot5.child("amount").getValue().toString());
+                                    receivedTotltal = String.valueOf(PaymentTotltal2);
+                                }
+
+
+                                Query queryCustomer = databaseReference.child("Transacation_Customers").orderByKey();
+                                queryCustomer.addValueEventListener(new ValueEventListener() {
+                                    @SuppressLint("NewApi")
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        try {
+                                            if (dataSnapshot.exists()) {
+                                                for (DataSnapshot npsnapshotCustomer : dataSnapshot.getChildren()) {
+                                                    if (npsnapshotCustomer.child("id").getValue().toString().equals(customer_id)) {
+                                                        String name = npsnapshotCustomer.child("name").getValue().toString();
+                                                        item1.setCustomerName(name);
+                                                    }
+                                                }
+
+                                                Collections.sort(transactionlist, new Comparator<Transcation>() {
+                                                    @Override
+                                                    public int compare(Transcation o1, Transcation o2) {
+                                                        return o1.getTransactionDate().compareTo(o2.getTransactionDate());
+                                                    }
+                                                }.reversed());
+
+                                                adapterTransPaymentList.notifyDataSetChanged();
+                                                tvNoPayment.setVisibility(View.GONE);
+                                            }
+                                        } catch (Exception e) {
+                                            Log.e("Ex   ", e.toString());
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        Log.e("error ", error.getMessage());
+                                    }
+                                });
+                                transactionlist.add(item1);
+                                transactionlistTemp.add(item1);
+                                tvNoPayment.setVisibility(View.GONE);
+                                //  }
                             }
                         }
 
-                        if(transactionlist.size()>0){
+                        if (transactionlist.size() > 0) {
                             rvTransPayment.setVisibility(View.VISIBLE);
+                          //  ivTransPaymentPdf.setVisibility(View.VISIBLE);
+                            linMainText.setVisibility(View.VISIBLE);
                             tvNoPayment.setVisibility(View.GONE);
-                        }
-                        else {
+                        } else {
                             rvTransPayment.setVisibility(View.GONE);
+                           // ivTransPaymentPdf.setVisibility(View.GONE);
+                            linMainText.setVisibility(View.GONE);
                             tvNoPayment.setVisibility(View.VISIBLE);
                         }
+
+                        Collections.sort(transactionlist, new Comparator<Transcation>() {
+                            @Override
+                            public int compare(Transcation o1, Transcation o2) {
+                                return o1.getTransactionDate().compareTo(o2.getTransactionDate());
+                            }
+                        }.reversed());
+
                         adapterTransPaymentList.notifyDataSetChanged();
 
 
-                        if(PaymentTotltal.equals("0")){
+                        if (PaymentTotltal.equals("0")) {
                             TransactionDetails_Activity.tvTransCustPayment.setText("--------");
-                        }
-                        else {
-                            TransactionDetails_Activity.tvTransCustPayment.setText(PaymentTotltal);
+                            tvTotalPay.setText("--------");
+                        } else {
+                            TransactionDetails_Activity.tvTransCustPayment.setText(getResources().getString(R.string.rupee)+" "+PaymentTotltal);
+                            tvTotalPay.setText(getResources().getString(R.string.rupee)+" "+PaymentTotltal);
                         }
 
-                    }
-                    else {
+                        if (receivedTotltal.equals("0")) {
+                            tvTotalReceive.setText("--------");
+                        } else {
+                            tvTotalReceive.setText(getResources().getString(R.string.rupee)+" "+receivedTotltal);
+                        }
+
+                    } else {
                         rvTransPayment.setVisibility(View.GONE);
                         tvNoPayment.setVisibility(View.VISIBLE);
                     }
@@ -347,7 +395,7 @@ public class TranPayment_Fragment extends Fragment {
         });
     }
 
-    private void getPaymentlist1(){
+    private void getPaymentlist1() {
         // swipe_refresh.setRefreshing(true);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, API.TRANSACTION_DETAILSPAYMENT + " &customer_id=" + customer_id, new Response.Listener<String>() {
             @Override
@@ -413,7 +461,7 @@ public class TranPayment_Fragment extends Fragment {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         RequestQueue queue = Volley.newRequestQueue(mActivity);
-        Log.e("URL  ",stringRequest.getUrl());
+        Log.e("URL  ", stringRequest.getUrl());
         queue.add(stringRequest);
 
 

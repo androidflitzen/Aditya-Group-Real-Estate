@@ -12,7 +12,10 @@ import com.flitzen.adityarealestate_new.Items.Items_View_EMI;
 import com.flitzen.adityarealestate_new.R;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -79,7 +82,21 @@ public class Adapter_View_Emi extends BaseAdapter {
         }
         DecimalFormat formatter = new DecimalFormat("#,##,###");
         String amount = formatter.format(Integer.parseInt(itemList.get(position).getEmi_amount()));
-        viewHolder.emi_date.setText(itemList.get(position).getEmi_date());
+
+        try {
+            SimpleDateFormat formatIn = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            SimpleDateFormat formatOut = new SimpleDateFormat("dd MMM , yyyy hh:mm a");
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(formatIn.parse(itemList.get(position).getEmi_date()));
+            String newDate = formatOut.format(calendar.getTime());
+          //  viewHolder.emi_date.setText(itemList.get(position).getEmi_date());
+            viewHolder.emi_date.setText(newDate);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
         viewHolder.emi_amount.setText("\u20B9 " + amount);
         viewHolder.emi_position.setText(String.valueOf(position + 1));
         if (itemList.get(position).getEmi_remark().equals("")) {

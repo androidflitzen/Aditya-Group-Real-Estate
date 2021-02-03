@@ -53,6 +53,8 @@ import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -229,6 +231,7 @@ public class TransReceived_Payment extends Fragment {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         Query queryDocument = databaseReference.child("Transactions").orderByKey();
         queryDocument.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NewApi")
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 try {
@@ -264,6 +267,13 @@ public class TransReceived_Payment extends Fragment {
                                                             item1.setCustomerName(name);
                                                         }
                                                     }
+
+                                                    Collections.sort(transactionlist, new Comparator<Transcation>() {
+                                                        @Override
+                                                        public int compare(Transcation o1, Transcation o2) {
+                                                            return o1.getTransactionDate().compareTo(o2.getTransactionDate());
+                                                        }
+                                                    }.reversed());
                                                     adapterTransPaymentList.notifyDataSetChanged();
                                                 }
                                             } catch (Exception e) {
@@ -289,6 +299,13 @@ public class TransReceived_Payment extends Fragment {
                             rvTransReceived.setVisibility(View.GONE);
                             tvNoPaymentReceived.setVisibility(View.VISIBLE);
                         }
+
+                        Collections.sort(transactionlist, new Comparator<Transcation>() {
+                            @Override
+                            public int compare(Transcation o1, Transcation o2) {
+                                return o1.getTransactionDate().compareTo(o2.getTransactionDate());
+                            }
+                        }.reversed());
                         adapterTransPaymentList.notifyDataSetChanged();
                         if(ReceicedTotal.equals("0")){
                             TransactionDetails_Activity.tvTransCustReceived.setText("--------");

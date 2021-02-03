@@ -121,6 +121,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -715,6 +717,7 @@ public class RentPaymentListFragment extends Fragment {
         Query query = databaseReference.child("Payments").orderByKey();
         //databaseReference.keepSynced(true);
         query.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NewApi")
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 hidePrd();
@@ -757,6 +760,7 @@ public class RentPaymentListFragment extends Fragment {
                                         Query query = databaseReference.child("Customers").orderByKey();
                                         // databaseReference.keepSynced(true);
                                         query.addValueEventListener(new ValueEventListener() {
+                                            @SuppressLint("NewApi")
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot) {
                                                 try {
@@ -772,6 +776,14 @@ public class RentPaymentListFragment extends Fragment {
                                                 } catch (Exception e) {
                                                     Log.e("Ex   ", e.toString());
                                                 }
+
+                                                Collections.sort(arrayListRentPayment, new Comparator<Item_Plot_Payment_List>() {
+                                                    @Override
+                                                    public int compare(Item_Plot_Payment_List o1, Item_Plot_Payment_List o2) {
+                                                        return o1.getPayment_date().compareTo(o2.getPayment_date());
+                                                    }
+                                                }.reversed());
+
                                                 mAdapterPlot.notifyDataSetChanged();
                                             }
 
@@ -794,6 +806,13 @@ public class RentPaymentListFragment extends Fragment {
                             rec_purchased_plot_list.setVisibility(View.GONE);
                             tvNoActiveCustomer.setVisibility(View.VISIBLE);
                         }
+
+                        Collections.sort(arrayListRentPayment, new Comparator<Item_Plot_Payment_List>() {
+                            @Override
+                            public int compare(Item_Plot_Payment_List o1, Item_Plot_Payment_List o2) {
+                                return o1.getPayment_date().compareTo(o2.getPayment_date());
+                            }
+                        }.reversed());
                         mAdapterPlot.notifyDataSetChanged();
                     }
                     else {

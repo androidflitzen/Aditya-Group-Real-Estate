@@ -1,5 +1,6 @@
 package com.flitzen.adityarealestate_new.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -55,6 +56,7 @@ import com.flitzen.adityarealestate_new.Adapter.Adapter_View_Emi;
 import com.flitzen.adityarealestate_new.Classes.API;
 import com.flitzen.adityarealestate_new.Classes.CToast;
 import com.flitzen.adityarealestate_new.Items.Iteams_All_Loan_Application;
+import com.flitzen.adityarealestate_new.Items.Item_Plot_Payment_List;
 import com.flitzen.adityarealestate_new.Items.Items_View_EMI;
 import com.flitzen.adityarealestate_new.Classes.Helper;
 import com.flitzen.adityarealestate_new.Items.LoanDetailsForPDF;
@@ -84,6 +86,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -524,6 +528,7 @@ public class Admin_LoanDetail_Activity extends AppCompatActivity implements Swip
                         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
                         Query query = databaseReference.child("EMI_Received").orderByKey();
                         query.addValueEventListener(new ValueEventListener() {
+                            @SuppressLint("NewApi")
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 try {
@@ -561,6 +566,14 @@ public class Admin_LoanDetail_Activity extends AppCompatActivity implements Swip
                                         }
                                         /*mAdapter = new Adapter_View_Emi(mActivity, itemArray_EMI);
                                         listview_EMI.setAdapter(mAdapter);*/
+
+                                        Collections.sort(itemArray_EMI, new Comparator<Items_View_EMI>() {
+                                            @Override
+                                            public int compare(Items_View_EMI o1, Items_View_EMI o2) {
+                                                return o1.getEmi_date().compareTo(o2.getEmi_date());
+                                            }
+                                        }.reversed());
+
                                         mAdapter.notifyDataSetChanged();
                                     }
                                 } catch (Exception e) {

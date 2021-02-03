@@ -118,6 +118,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -1346,6 +1348,7 @@ public class Activity_Plot_Details extends AppCompatActivity implements PDFUtili
         Query queryPayment = databaseReference.child("Payments").orderByKey();
         // databaseReference.keepSynced(true);
         queryPayment.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NewApi")
             @Override
             public void onDataChange(DataSnapshot dataSnapshot1) {
                 try {
@@ -1399,6 +1402,15 @@ public class Activity_Plot_Details extends AppCompatActivity implements PDFUtili
                                                         }
                                                     }
                                                 }
+                                                Collections.sort(arrayListPlotPayment, new Comparator<Item_Plot_Payment_List>() {
+                                                    @Override
+                                                    public int compare(Item_Plot_Payment_List o1, Item_Plot_Payment_List o2) {
+                                                        return o1.getPayment_date().compareTo(o2.getPayment_date());
+                                                    }
+                                                }.reversed());
+
+                                                mAdapterPlot.notifyDataSetChanged();
+
                                             } catch (Exception e) {
                                                 hidePrd();
                                                 Log.e("Ex  mid ", e.toString());
@@ -1425,6 +1437,12 @@ public class Activity_Plot_Details extends AppCompatActivity implements PDFUtili
                             ll_plot.setVisibility(View.GONE);
                         }
 
+                        Collections.sort(arrayListPlotPayment, new Comparator<Item_Plot_Payment_List>() {
+                            @Override
+                            public int compare(Item_Plot_Payment_List o1, Item_Plot_Payment_List o2) {
+                                return o1.getPayment_date().compareTo(o2.getPayment_date());
+                            }
+                        }.reversed());
                         mAdapterPlot.notifyDataSetChanged();
 
                         int purchasePrice = Integer.parseInt(purchase_price);

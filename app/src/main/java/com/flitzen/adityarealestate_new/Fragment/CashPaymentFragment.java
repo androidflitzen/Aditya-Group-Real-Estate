@@ -1,5 +1,6 @@
 package com.flitzen.adityarealestate_new.Fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -46,6 +47,7 @@ import com.flitzen.adityarealestate_new.Classes.CToast;
 import com.flitzen.adityarealestate_new.Classes.Helper;
 import com.flitzen.adityarealestate_new.Classes.Network;
 import com.flitzen.adityarealestate_new.Classes.Utils;
+import com.flitzen.adityarealestate_new.Items.Item_Plot_Payment_List;
 import com.flitzen.adityarealestate_new.Items.Item_Site_Payment_List;
 import com.flitzen.adityarealestate_new.PDFUtility_cashPayment;
 import com.flitzen.adityarealestate_new.R;
@@ -71,6 +73,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -526,6 +530,7 @@ public class CashPaymentFragment extends Fragment {
         DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference();
         Query querySite = databaseReference1.child("Sites").orderByKey();
         querySite.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NewApi")
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 swipeRefresh.setRefreshing(false);
@@ -583,6 +588,14 @@ public class CashPaymentFragment extends Fragment {
                                                     tvViewPaymentPDF.setVisibility(View.GONE);
                                                     tvNoActiveCustomer.setVisibility(View.VISIBLE);
                                                 }
+
+                                                Collections.sort(cashPaymentList, new Comparator<Item_Site_Payment_List>() {
+                                                    @Override
+                                                    public int compare(Item_Site_Payment_List o1, Item_Site_Payment_List o2) {
+                                                        return o1.getPayment_date().compareTo(o2.getPayment_date());
+                                                    }
+                                                }.reversed());
+
                                                 adapter_site_payment_list.notifyDataSetChanged();
 
                                             }
@@ -614,6 +627,14 @@ public class CashPaymentFragment extends Fragment {
                         } else {
                             tvViewPaymentPDF.setVisibility(View.GONE);
                         }
+
+                        Collections.sort(cashPaymentList, new Comparator<Item_Site_Payment_List>() {
+                            @Override
+                            public int compare(Item_Site_Payment_List o1, Item_Site_Payment_List o2) {
+                                return o1.getPayment_date().compareTo(o2.getPayment_date());
+                            }
+                        }.reversed());
+
                         adapter_site_payment_list.notifyDataSetChanged();
 
                     }

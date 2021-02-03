@@ -460,7 +460,7 @@ public class Activity_Add_New_Loan extends AppCompatActivity {
         }
 
 
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
         LocalDateTime now = LocalDateTime.now();
         System.out.println("=======Current date and time "+dtf.format(now));
 

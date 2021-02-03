@@ -383,5 +383,8 @@
     <color name="dashboard_box">#f1f1f1</color>
 
     <color name="light_red">#dc5656</color>
+    <color name="very_light_red">#FFEFEF</color>
+
+    <color name="red_dark">#BC1818</color>
 
 </resources>

@@ -72,6 +72,8 @@ public class Adapter_Property_List extends RecyclerView.Adapter<Adapter_Property
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
+        System.out.println("==========position    "+position+"   "+itemList.get(position).isCheckDateIsGone());
+
        try {
             if (itemList.get(position).getIs_hired().equals("1")) {
 
@@ -106,13 +108,18 @@ public class Adapter_Property_List extends RecyclerView.Adapter<Adapter_Property
         holder.txt_site_name_1.setText(itemList.get(position).getProperty_name());
 
         holder.txt_site_address.setText("Address : " + itemList.get(position).getAddress());
-        if(itemList.get(position).getCustomer_name()==null){
-            itemList.get(position).setCustomer_name("");
-            holder.txt_cust_name.setText("Customer : " + itemList.get(position).getCustomer_name());
+        try {
+            if(itemList.get(position).getCustomer_name()==null){
+                itemList.get(position).setCustomer_name("");
+                holder.txt_cust_name.setText("Customer : " + itemList.get(position).getCustomer_name());
+            }
+            else {
+                holder.txt_cust_name.setText("Customer : " + itemList.get(position).getCustomer_name());
+            }
+        }catch (Exception e){
+
         }
-        else {
-            holder.txt_cust_name.setText("Customer : " + itemList.get(position).getCustomer_name());
-        }
+
 
         if(itemList.get(position).getHired_since().equals("0000-00-00")){
             holder.txtRentDate.setText("Rent Date : -");

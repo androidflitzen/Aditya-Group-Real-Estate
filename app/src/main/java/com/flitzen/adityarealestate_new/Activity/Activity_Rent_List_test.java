@@ -8,16 +8,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
@@ -36,6 +26,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -83,7 +80,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class Activity_Rent_List extends AppCompatActivity {
+public class Activity_Rent_List_test extends AppCompatActivity {
 
     Activity mActivity;
     ProgressDialog prd;
@@ -118,7 +115,7 @@ public class Activity_Rent_List extends AppCompatActivity {
         //getSupportActionBar().setTitle(Html.fromHtml("Rents"));
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mActivity = Activity_Rent_List.this;
+        mActivity = Activity_Rent_List_test.this;
 
         edtSearch = (EditText) findViewById(R.id.edt_search);
         tvNoActiveCustomer = findViewById(R.id.tvNoActiveCustomer);
@@ -170,7 +167,7 @@ public class Activity_Rent_List extends AppCompatActivity {
                 LayoutInflater localView = LayoutInflater.from(mActivity);
                 View promptsView = localView.inflate(R.layout.dialog_property_add, null);
 
-                final android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(mActivity);
+                final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mActivity);
                 alertDialogBuilder.setView(promptsView);
                 final AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.setCancelable(false);
@@ -367,177 +364,230 @@ public class Activity_Rent_List extends AppCompatActivity {
 
                             try {
 
+                                LocalDate todaydate = LocalDate.now();
+                                String monthFirstDay = String.valueOf(todaydate.withDayOfMonth(1));
+                                System.out.println("=======Months first date in yyyy-mm-dd: " + todaydate.withDayOfMonth(1));
 
-                                //get Current date
+                                Calendar calendar = Calendar.getInstance();
+                                int year = calendar.get(Calendar.YEAR);
+                                int cMonth = calendar.get(Calendar.MONTH);
+                                String hDate = npsnapshot.child("hired_since").getValue().toString();
+                                System.out.println("========hDate   " + hDate);
+
+                                String[] date = hDate.split("-");
+                                String hYear = date[0];
+                                hYear = String.valueOf(year);
+                                String hDay = date[2];
+
+                                String monthHDate = hYear + "-" + date[1] + "-" + date[2];
+                                System.out.println("=========monthHDate   " + monthHDate);
+
                                 Date c = Calendar.getInstance().getTime();
-                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                                String sCurrentDate = simpleDateFormat.format(c);
-                                Date dCurrentDate = simpleDateFormat.parse(sCurrentDate);
-                                String[] sDateCurrent = sCurrentDate.split("-");
-                                String sCurrentMonth = sDateCurrent[1];
-                                String sCurrentYear = sDateCurrent[0];
-                                System.out.println("=========sCurrentMonth    " + sCurrentMonth);
-                                System.out.println("=========dCurrentDate    " + dCurrentDate);
+                                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                                String todayDate = df.format(c);
+                                String[] date11 = todayDate.split("-");
+                                final String currentMonth = date11[1];
+                                final String currentYear = date11[0];
+                                final String currentDay = date11[2];
 
-                                // set this month payment date
+                                System.out.println("==========currentYear   "+currentYear);
+
+                                String monthHHDate = hYear + "-" +currentMonth + "-" + date[2];
+
+                                Calendar cc= Calendar.getInstance();
+                                //int next_month = cc.get(Calendar.MONTH) + 1;
+                               // int next_month = 03;
+
+
+                                Calendar cal = GregorianCalendar.getInstance();
+                                SimpleDateFormat df1 = new SimpleDateFormat("MMMM yyyy");
+
+                                Date currentMonth1 = new Date();
+                                cal.setTime(currentMonth1);
+
+                                // current month
+                                String currentMonthAsSting = df1.format(cal.getTime());
+
+                                // Add next month
+                                cal.set(Calendar.MONTH, cal.get(Calendar.MONTH)+1);
+                                String nextMonthAsString = df1.format(cal.getTime());
+
+                                System.out.println("==========next_month   "+nextMonthAsString);
+
+                                String nextMonthDate = hYear + "-" +nextMonthAsString + "-" + date[2];
+                                System.out.println("=======monthHHDate   "+monthHHDate);
 
                                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                                String sPayDate = npsnapshot.child("hired_since").getValue().toString();
-                                String[] sDateThis = sPayDate.split("-");
-                                String sThisMonthPayDate = sCurrentYear + "-" + sCurrentMonth + "-" + sDateThis[2];
-                                Date dThisMonthPay = simpleDateFormat.parse(sThisMonthPayDate);
-                                String mainPayDate=sDateThis[2];
-                                System.out.println("=============sPayDate   " + sPayDate);
-                                System.out.println("=============sThisMonthPayDate   " + sThisMonthPayDate);
-                                System.out.println("=============dThisMonthPay   " + dThisMonthPay);
+                                Date date1 = sdf.parse(monthHDate);
+                                Date date2 = sdf.parse(todayDate);
+                                int i = date1.compareTo(date2);
+                               // switch (i) {
+                                    //case -1: //date1<date2 = -1   date gone
+                                        Query queryPay = databaseReference.child("Payments").orderByKey();
+                                        // databaseReference.keepSynced(true);
+                                        queryPay.addValueEventListener(new ValueEventListener() {
+                                            @SuppressLint("NewApi")
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshotPay) {
+                                                try {
+                                                    if (dataSnapshotPay.exists()) {
+                                                        for (DataSnapshot npsnapshot2 : dataSnapshotPay.getChildren()) {
+                                                            if (npsnapshot2.child("property_id").getValue().toString().equals(propertyID)) {
+                                                                if (npsnapshot2.child("customer_id").getValue().toString().equals(customerId)) {
+                                                                    String paymentDate = npsnapshot2.child("payment_date").getValue().toString();
+                                                                    Log.e("paymentDate  ", paymentDate);
 
-                                //get previous month of current month
+                                                                    SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                                                                    SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd");
+                                                                    try {
+                                                                        Date oneWayTripDate;
+                                                                        oneWayTripDate = input.parse(paymentDate);
+                                                                        String d = output.format(oneWayTripDate);
 
-                                Calendar cal = Calendar.getInstance();
-                                cal.setTime(c);
-                                cal.set(Calendar.DAY_OF_MONTH, 1);
-                                cal.add(Calendar.DATE, -1);
-                                Date preMonthDate = cal.getTime();
-                                String sPreviousMonthFull = sdf.format(preMonthDate);
-                                String[] sDatePre = sPreviousMonthFull.split("-");
-                                String sPreviousMonth = sDatePre[1];
-                                System.out.println("===========sPreviousMonth   " + sPreviousMonth);
-                                System.out.println("===========sPreviousMonthFull   " + sPreviousMonthFull);
+                                                                        String[] date = d.split("-");
+                                                                        String month = date[1];
+                                                                        String year = date[0];
+                                                                        String day = date[2];
+
+                                                                        Date date1 = output.parse(monthHHDate);
+                                                                        Date date2 = output.parse(d);
+                                                                        Date date3 = output.parse(todayDate);
+                                                                        Date date4 = output.parse(nextMonthDate);
+
+                                                                        System.out.println("========monthHHDate  "+monthHHDate);
+                                                                        System.out.println("========d  "+d);
+                                                                        System.out.println("========todayDate  "+todayDate);
+                                                                        System.out.println("========nextMonthDate  "+nextMonthDate);
 
 
-                               /* Calendar cc = new GregorianCalendar();
-                                cc.setTime(dThisMonthPay);
-                                SimpleDateFormat sdff = new SimpleDateFormat("yyyy-MM-dd");
-                                System.out.println("============NOW   "+sdff.format(sThisMonthPayDate));   // NOW
-                                cc.add(Calendar.MONTH, -1);
-                                System.out.println("============pr    "+sdff.format(cc.getTime()));*/
+
+                                                                        /*Date d1 = new Date();
+                                                                        if (date2 != null && date1 != null && date4 != null) {
+                                                                            if (date2.after(date1) && date2.before(date4)) {
+                                                                                item.setCheckDateIsGone(false);
+                                                                            }
+                                                                            else {
+                                                                                if(date3.before(date1)){
+                                                                                    item.setCheckDateIsGone(false);
+                                                                                }else {
+                                                                                    item.setCheckDateIsGone(true);
+                                                                                }
+                                                                            }
+                                                                        }*/
 
 
-                                Query queryPay = databaseReference.child("Payments").orderByKey();
-                                // databaseReference.keepSynced(true);
-                                queryPay.addValueEventListener(new ValueEventListener() {
-                                    @SuppressLint("NewApi")
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshotPay) {
-                                        try {
-                                            if (dataSnapshotPay.exists()) {
-                                                String sLastPayMonth="0";
-                                                String slastPayDate="0";
-                                                String sLastPayDay="0";
-                                                Date dLastPayDate=null;
-                                                for (DataSnapshot npsnapshot2 : dataSnapshotPay.getChildren()) {
-                                                    if (npsnapshot2.child("property_id").getValue().toString().equals(propertyID)) {
-                                                        if (npsnapshot2.child("customer_id").getValue().toString().equals(customerId)) {
-                                                            String paymentDate = npsnapshot2.child("payment_date").getValue().toString();
-                                                            Log.e("paymentDate  ", paymentDate);
 
-                                                            SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                                                            SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd");
-                                                            try {
-                                                                Date oneWayTripDate;
-                                                                oneWayTripDate = input.parse(paymentDate);
-                                                                slastPayDate = output.format(oneWayTripDate);
-                                                                dLastPayDate=output.parse(slastPayDate);
 
-                                                                String[] date = slastPayDate.split("-");
-                                                                sLastPayMonth = date[1];
-                                                                sLastPayDay = date[2];
 
-                                                            }catch (Exception e){
-                                                                System.out.println("===========e   "+e.getMessage());
+
+                                                                       /* Date d1 = new Date();
+
+                                                                        if((d1.after(date1) && (d1.before(date4))) || (d.equals(sdf.format(date1)) ||d.equals(sdf.format(date4)))){
+                                                                            System.out.println("Date is between ");
+                                                                            item.setCheckDateIsGone(false);
+                                                                        }
+                                                                        else{
+                                                                            System.out.println("Date is not between ");
+                                                                            item.setCheckDateIsGone(true);
+                                                                        }*/
+
+
+
+
+
+
+
+
+
+                                                                        int i = date1.compareTo(date2);
+                                                                        switch (i) {
+                                                                            case -1: //date1<date2 = -1   date gone
+                                                                                item.setCheckDateIsGone(false);
+                                                                                break;
+                                                                            case 1: //date1>date2 = 1
+                                                                                int i1 = date1.compareTo(date3);
+                                                                                switch (i1) {
+                                                                                    case -1: //date1<date3 = -1   date gone
+                                                                                        item.setCheckDateIsGone(true);
+                                                                                        break;
+                                                                                    case 1:
+                                                                                        item.setCheckDateIsGone(false);
+                                                                                        break;
+                                                                                    case 0:
+                                                                                        item.setCheckDateIsGone(false);
+                                                                                        break;
+
+                                                                                }
+                                                                                break;
+                                                                                //return sDate1;
+
+                                                                            case 0: //date1==date2= 0
+                                                                                item.setCheckDateIsGone(false);
+                                                                                break;
+
+                                                                            default:
+                                                                        }
+
+
+
+
+
+
+
+                                                                        /*System.out.println("=========year  "+year);
+
+                                                                        if (Integer.parseInt(month) == Integer.parseInt(currentMonth)) {
+                                                                            if (Integer.parseInt(year) == Integer.parseInt(currentYear)) {
+                                                                                item.setCheckDateIsGone(false);
+                                                                                System.out.println("=========id false  "+npsnapshot2.child("id").getValue().toString());
+                                                                            } else {
+                                                                                if(Integer.parseInt(hDay) < Integer.parseInt(currentDay)){
+                                                                                    item.setCheckDateIsGone(true);
+                                                                                }else {
+                                                                                    item.setCheckDateIsGone(false);
+                                                                                }
+                                                                                System.out.println("=========id  if else "+npsnapshot2.child("id").getValue().toString());
+                                                                            }
+                                                                        } else {
+                                                                            if(Integer.parseInt(hDay) < Integer.parseInt(currentDay)){
+                                                                                item.setCheckDateIsGone(true);
+                                                                            }else {
+                                                                                item.setCheckDateIsGone(false);
+                                                                            }
+                                                                            System.out.println("=========id else "+npsnapshot2.child("id").getValue().toString());
+                                                                        }*/
+
+
+                                                                    } catch (ParseException e) {
+                                                                        System.out.println("=========e  parse   "+e.getMessage());
+                                                                        e.printStackTrace();
+                                                                    }
+
+
+                                                                }
                                                             }
                                                         }
                                                     }
+                                                } catch (Exception e) {
+                                                    Log.e("Ex   ", e.toString());
+                                                    new CToast(mActivity).simpleToast("Something went wrong", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
                                                 }
-                                                System.out.println("============sLastPayMonth    "+sLastPayMonth);
-                                                int i = dThisMonthPay.compareTo(dCurrentDate);
-                                                switch (i){
-                                                    case -1:
-
-                                                        System.out.println("=========  -1    ");
-                                                        if(Integer.parseInt(sCurrentMonth)== Integer.parseInt(sLastPayMonth)){
-                                                            int i1 = dLastPayDate.compareTo(dCurrentDate);
-                                                            switch (i1){
-                                                                case -1:
-                                                                    item.setCheckDateIsGone(false);
-                                                                    break;
-                                                                case 1:
-                                                                    item.setCheckDateIsGone(true);
-                                                                    break;
-                                                            }
-
-                                                        }else {
-                                                            item.setCheckDateIsGone(true);
-                                                        }
-
-                                                        break;
-
-                                                    case 1:
-                                                        System.out.println("=========  1    ");
-
-                                                        if(Integer.parseInt(sCurrentMonth)== Integer.parseInt(sLastPayMonth)){
-                                                            int i1 = dLastPayDate.compareTo(dCurrentDate);
-                                                            switch (i1){
-                                                                case -1:
-                                                                    item.setCheckDateIsGone(false);
-                                                                    break;
-                                                                case 1:
-                                                                    item.setCheckDateIsGone(true);
-                                                                    break;
-                                                            }
-                                                        }
-                                                        else if(Integer.parseInt(sLastPayMonth)==Integer.parseInt(sPreviousMonth)){
-                                                            if(Integer.parseInt(sLastPayDay)>Integer.parseInt(mainPayDate)){
-                                                                item.setCheckDateIsGone(false);
-                                                            }else {
-                                                                item.setCheckDateIsGone(true);
-                                                            }
-                                                        }else {
-                                                            item.setCheckDateIsGone(true);
-                                                        }
-                                                        break;
-
-                                                    case 0:
-                                                        System.out.println("============ 0   ");
-
-                                                        if(Integer.parseInt(sCurrentMonth)== Integer.parseInt(sLastPayMonth)){
-                                                            int i1 = dLastPayDate.compareTo(dCurrentDate);
-                                                            switch (i1){
-                                                                case -1:
-                                                                    item.setCheckDateIsGone(false);
-                                                                    break;
-                                                                case 1:
-                                                                    item.setCheckDateIsGone(true);
-                                                                    break;
-                                                            }
-                                                        }
-                                                        else if(Integer.parseInt(sLastPayMonth)==Integer.parseInt(sPreviousMonth)){
-                                                            if(Integer.parseInt(sLastPayDay)>Integer.parseInt(mainPayDate)){
-                                                                item.setCheckDateIsGone(false);
-                                                            }else {
-                                                                item.setCheckDateIsGone(true);
-                                                            }
-                                                        }else {
-                                                            item.setCheckDateIsGone(true);
-                                                        }
-                                                        break;
-                                                }
-
+                                                adapter_property_list.notifyDataSetChanged();
                                             }
-                                        } catch (Exception e) {
-                                            Log.e("Ex   ", e.toString());
-                                            new CToast(mActivity).simpleToast("Something went wrong", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
-                                        }
-                                        adapter_property_list.notifyDataSetChanged();
-                                    }
 
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-                                        Log.e("error ", error.getMessage());
-                                        new CToast(mActivity).simpleToast("Something went wrong", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
-                                    }
-                                });
-                            } catch (Exception e) {
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+                                                Log.e("error ", error.getMessage());
+                                                new CToast(mActivity).simpleToast("Something went wrong", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                                            }
+                                        });
+                                   /* case 1: //date1>date2 = 1
+                                        //return sDate1;
+                                    case 0: //date1==date2= 0
+                                    default:*/
+                                        //return sDate2;
+                              //  }
+                            } catch (ParseException e) {
                                 // return sDate1;
                             }
 
@@ -647,7 +697,7 @@ public class Activity_Rent_List extends AppCompatActivity {
         LayoutInflater localView = LayoutInflater.from(mActivity);
         View promptsView = localView.inflate(R.layout.dialog_customer_property_info, null);
 
-        final android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(mActivity);
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mActivity);
         alertDialogBuilder.setView(promptsView);
         final AlertDialog alertDialog = alertDialogBuilder.create();
 
@@ -693,7 +743,7 @@ public class Activity_Rent_List extends AppCompatActivity {
         LayoutInflater localView = LayoutInflater.from(mActivity);
         View promptsView = localView.inflate(R.layout.dialog_customer_property_assign, null);
 
-        final android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(mActivity);
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mActivity);
         alertDialogBuilder.setView(promptsView);
         final AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.setCancelable(false);
@@ -865,9 +915,9 @@ public class Activity_Rent_List extends AppCompatActivity {
         LayoutInflater localView = LayoutInflater.from(mActivity);
         View promptsView = localView.inflate(R.layout.dialog_spinner, null);
 
-        final android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(mActivity);
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mActivity);
         alertDialogBuilder.setView(promptsView);
-        final android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+        final AlertDialog alertDialog = alertDialogBuilder.create();
 
         final EditText edtSearchLocation = (EditText) promptsView.findViewById(R.id.edt_spn_search);
         final ListView list_location = (ListView) promptsView.findViewById(R.id.list_spn);
@@ -940,9 +990,9 @@ public class Activity_Rent_List extends AppCompatActivity {
                 LayoutInflater localView = LayoutInflater.from(mActivity);
                 View promptsView = localView.inflate(R.layout.dailog_add_customer, null);
 
-                final android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(mActivity);
+                final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mActivity);
                 alertDialogBuilder.setView(promptsView);
-                final android.app.AlertDialog alertDialog_b = alertDialogBuilder.create();
+                final AlertDialog alertDialog_b = alertDialogBuilder.create();
 
 
                 final EditText edt_add_customer_name = (EditText) promptsView.findViewById(R.id.edt_add_customer_name);
@@ -1153,7 +1203,7 @@ public class Activity_Rent_List extends AppCompatActivity {
                                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
-                            RequestQueue queue = Volley.newRequestQueue(Activity_Rent_List.this);
+                            RequestQueue queue = Volley.newRequestQueue(Activity_Rent_List_test.this);
                             queue.add(stringRequest);
 
 
@@ -1199,9 +1249,9 @@ public class Activity_Rent_List extends AppCompatActivity {
         LayoutInflater localView = LayoutInflater.from(mActivity);
         View promptsView = localView.inflate(R.layout.dailog_add_customer, null);
 
-        final android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(mActivity);
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mActivity);
         alertDialogBuilder.setView(promptsView);
-        final android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+        final AlertDialog alertDialog = alertDialogBuilder.create();
 
 
         final EditText edt_add_customer_name = (EditText) promptsView.findViewById(R.id.edt_add_customer_name);
@@ -1422,15 +1472,15 @@ public class Activity_Rent_List extends AppCompatActivity {
         map.put("rent_status", 0);
         map.put("payment_status", 0);
 
-        rootRef.child("Payments").child(key).setValue(map).addOnCompleteListener(Activity_Rent_List.this, new OnCompleteListener<Void>() {
+        rootRef.child("Payments").child(key).setValue(map).addOnCompleteListener(Activity_Rent_List_test.this, new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
             }
 
-        }).addOnFailureListener(Activity_Rent_List.this, new OnFailureListener() {
+        }).addOnFailureListener(Activity_Rent_List_test.this, new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(Activity_Rent_List.this, "Please try later...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Activity_Rent_List_test.this, "Please try later...", Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -1452,15 +1502,15 @@ public class Activity_Rent_List extends AppCompatActivity {
         map1.put("end_date", "0000-00-00");
         map1.put("customer_status_for_property", 0);
         //TODO
-        rootRef.child("RentHistory").child(key).setValue(map1).addOnCompleteListener(Activity_Rent_List.this, new OnCompleteListener<Void>() {
+        rootRef.child("RentHistory").child(key).setValue(map1).addOnCompleteListener(Activity_Rent_List_test.this, new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
             }
 
-        }).addOnFailureListener(Activity_Rent_List.this, new OnFailureListener() {
+        }).addOnFailureListener(Activity_Rent_List_test.this, new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(Activity_Rent_List.this, "Please try later...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Activity_Rent_List_test.this, "Please try later...", Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -1637,7 +1687,7 @@ public class Activity_Rent_List extends AppCompatActivity {
         map.put("property_name", site_name);
         map.put("rent", "");
 
-        rootRef.child("Properties").child(key).setValue(map).addOnCompleteListener(Activity_Rent_List.this, new OnCompleteListener<Void>() {
+        rootRef.child("Properties").child(key).setValue(map).addOnCompleteListener(Activity_Rent_List_test.this, new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 hidePrd();
@@ -1646,11 +1696,11 @@ public class Activity_Rent_List extends AppCompatActivity {
 
             }
 
-        }).addOnFailureListener(Activity_Rent_List.this, new OnFailureListener() {
+        }).addOnFailureListener(Activity_Rent_List_test.this, new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 hidePrd();
-                Toast.makeText(Activity_Rent_List.this, "Please try later...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Activity_Rent_List_test.this, "Please try later...", Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -1710,7 +1760,7 @@ public class Activity_Rent_List extends AppCompatActivity {
     }
 
     public void showPrd() {
-        prd = new ProgressDialog(Activity_Rent_List.this);
+        prd = new ProgressDialog(Activity_Rent_List_test.this);
         prd.setMessage("Please wait...");
         prd.setCancelable(false);
         prd.show();
@@ -1734,7 +1784,7 @@ public class Activity_Rent_List extends AppCompatActivity {
         super.onBackPressed();
 
         //   overridePendingTransition(R.anim.feed_in, R.anim.feed_out);
-        Intent intent = new Intent(Activity_Rent_List.this, Activity_Home.class);
+        Intent intent = new Intent(Activity_Rent_List_test.this, Activity_Home.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         overridePendingTransition(0, 0);

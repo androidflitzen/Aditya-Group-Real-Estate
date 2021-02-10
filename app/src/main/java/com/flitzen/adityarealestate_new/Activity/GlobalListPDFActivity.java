@@ -27,6 +27,7 @@ import androidx.core.content.ContextCompat;
 
 import com.flitzen.adityarealestate_new.Adapter.PDFAdapter;
 import com.flitzen.adityarealestate_new.Adapter.PDFGlobleAdapter;
+import com.flitzen.adityarealestate_new.Classes.Utils;
 import com.flitzen.adityarealestate_new.R;
 
 import java.io.File;
@@ -135,38 +136,43 @@ public class GlobalListPDFActivity extends AppCompatActivity {
 
     @SuppressLint("NewApi")
     public ArrayList<File> getfile(File dir) {
-        File listFile[] = dir.listFiles();
-        Arrays.sort(listFile, Comparator.comparingLong(File::lastModified).reversed());
-        if (listFile != null && listFile.length > 0) {
-            for (int i = 0; i < listFile.length; i++) {
+        try {
+            File listFile[] = dir.listFiles();
+            Arrays.sort(listFile, Comparator.comparingLong(File::lastModified).reversed());
+            if (listFile != null && listFile.length > 0) {
+                for (int i = 0; i < listFile.length; i++) {
 
-                if (listFile[i].isDirectory()) {
-                    getfile(listFile[i]);
+                    if (listFile[i].isDirectory()) {
+                        getfile(listFile[i]);
 
-                } else {
+                    } else {
 
-                    boolean booleanpdf = false;
-                    if (listFile[i].getName().endsWith(".pdf")) {
+                        boolean booleanpdf = false;
+                        if (listFile[i].getName().endsWith(".pdf")) {
 
-                        for (int j = 0; j < fileList.size(); j++) {
-                            if (fileList.get(j).getName().equals(listFile[i].getName())) {
-                                booleanpdf = true;
+                            for (int j = 0; j < fileList.size(); j++) {
+                                if (fileList.get(j).getName().equals(listFile[i].getName())) {
+                                    booleanpdf = true;
+                                } else {
+
+                                }
+                            }
+
+                            if (booleanpdf) {
+                                booleanpdf = false;
                             } else {
+                                fileList.add(listFile[i]);
 
                             }
-                        }
-
-                        if (booleanpdf) {
-                            booleanpdf = false;
-                        } else {
-                            fileList.add(listFile[i]);
-
                         }
                     }
                 }
             }
+            return fileList;
+        }catch (Exception e){
+            Utils.showToast(GlobalListPDFActivity.this, "Something went wrong", R.color.msg_fail);
         }
-        return fileList;
+       return fileList;
     }
 
 

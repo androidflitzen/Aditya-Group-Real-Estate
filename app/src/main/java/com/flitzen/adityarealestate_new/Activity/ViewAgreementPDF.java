@@ -98,11 +98,15 @@ public class ViewAgreementPDF extends AppCompatActivity {
             remotePDFViewPager = new RemotePDFViewPager(ViewAgreementPDF.this, PDF_URL, new DownloadFile.Listener() {
                 @Override
                 public void onSuccess(String url, String destinationPath) {
-                    adapter = new PDFPagerAdapter(ViewAgreementPDF.this, FileUtil.extractFileNameFromURL(url));
-                    remotePDFViewPager.setAdapter(adapter);
-                    viewContent.removeAllViewsInLayout();
-                    viewContent.addView(remotePDFViewPager, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    progressDialog.dismiss();
+                    try {
+                        adapter = new PDFPagerAdapter(ViewAgreementPDF.this, FileUtil.extractFileNameFromURL(url));
+                        remotePDFViewPager.setAdapter(adapter);
+                        viewContent.removeAllViewsInLayout();
+                        viewContent.addView(remotePDFViewPager, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        progressDialog.dismiss();
+                    }catch (Exception e){
+                        Utils.showToast(ViewAgreementPDF.this, "Something went wrong", R.color.msg_fail);
+                    }
                 }
 
                 @Override
@@ -172,11 +176,15 @@ public class ViewAgreementPDF extends AppCompatActivity {
                         remotePDFViewPager = new RemotePDFViewPager(ViewAgreementPDF.this, PDF_PATH, new DownloadFile.Listener() {
                             @Override
                             public void onSuccess(String url, String destinationPath) {
-                                adapter = new PDFPagerAdapter(ViewAgreementPDF.this, FileUtil.extractFileNameFromURL(url));
-                                remotePDFViewPager.setAdapter(adapter);
-                                viewContent.removeAllViewsInLayout();
-                                viewContent.addView(remotePDFViewPager, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                progressDialog.dismiss();
+                                try {
+                                    adapter = new PDFPagerAdapter(ViewAgreementPDF.this, FileUtil.extractFileNameFromURL(url));
+                                    remotePDFViewPager.setAdapter(adapter);
+                                    viewContent.removeAllViewsInLayout();
+                                    viewContent.addView(remotePDFViewPager, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                    progressDialog.dismiss();
+                                }catch (Exception e){
+                                    System.out.println("========e view "+e.getMessage());
+                                }
                             }
 
                             @Override
@@ -227,11 +235,14 @@ public class ViewAgreementPDF extends AppCompatActivity {
     }
 
     public void downloadFile(String fileURL) {
-        File myFile = new File(new File(Utils.getItemDir()), "IV-" + site_name + ".pdf");
+
         try {
+            File myFile = new File(new File(Utils.getItemDir()), "IV-" + site_name + ".pdf");
             myFile.createNewFile();
             new DownloadFileFromURL(myFile).execute(fileURL);
         } catch (Exception e) {
+            System.out.println("==========e e View ");
+            Utils.showToast(ViewAgreementPDF.this, "Something went wrong", R.color.msg_fail);
             e.printStackTrace();
         }
     }

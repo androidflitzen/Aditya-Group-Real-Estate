@@ -463,9 +463,25 @@ public class Splash_Screen extends AppCompatActivity {
             try {
                 VersionChecker versionChecker = new VersionChecker();
                 String latestVersion = versionChecker.execute().get();
-                System.out.println("========Double.parseDouble(latestVersion)   "+Double.parseDouble(latestVersion));
-                System.out.println("========appVersion   "+appVersion);
-                if(Double.parseDouble(latestVersion) == Double.parseDouble(appVersion)){
+                if(latestVersion!=null){
+                    System.out.println("========Double.parseDouble(latestVersion)   "+Double.parseDouble(latestVersion));
+                    System.out.println("========appVersion   "+appVersion);
+                    if(Double.parseDouble(latestVersion) == Double.parseDouble(appVersion)){
+                        if (sharedPreferences.getBoolean(SharePref.isLoggedIn, false)) {
+                            startActivity(new Intent(Splash_Screen.this, Activity_Home.class));
+                            // overridePendingTransition(R.anim.feed_in, R.anim.feed_out);
+                            overridePendingTransition(0, 0);
+                            finish();
+                        } else {
+                            startActivity(new Intent(Splash_Screen.this, Activity_Login.class));
+                            //  overridePendingTransition(R.anim.feed_in, R.anim.feed_out);
+                            overridePendingTransition(0, 0);
+                            finish();
+                        }
+                    }else {
+                        updateApp();
+                    }
+                }else {
                     if (sharedPreferences.getBoolean(SharePref.isLoggedIn, false)) {
                         startActivity(new Intent(Splash_Screen.this, Activity_Home.class));
                         // overridePendingTransition(R.anim.feed_in, R.anim.feed_out);
@@ -477,8 +493,6 @@ public class Splash_Screen extends AppCompatActivity {
                         overridePendingTransition(0, 0);
                         finish();
                     }
-                }else {
-                    updateApp();
                 }
             } catch (ExecutionException e) {
                 e.printStackTrace();

@@ -918,7 +918,12 @@ public class RentPaymentListFragment extends Fragment {
 
             Map<String, Object> map = new HashMap<>();
             map.put("amount", amount);
-            map.put("next_payment_date", txt_next_date);
+
+            // Change date next payment date format
+            String[] sDateThis = txt_next_date.split("-");
+            String txt_next_date1 = sDateThis[2] + "-" + sDateThis[1] + "-" + sDateThis[0];
+
+            map.put("next_payment_date", txt_next_date1);
             map.put("payment_attachment", capturedImageURI.toString());
             map.put("file_type", mime);
 

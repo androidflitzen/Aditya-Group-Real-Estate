@@ -86,7 +86,7 @@ public class Activity_Edit_Loan extends AppCompatActivity {
     String SelectedEmiDate = null;
     ProgressDialog prd;
 
-    LoanDetailsForPDF loanDetailsForPDF=new LoanDetailsForPDF();
+    LoanDetailsForPDF loanDetailsForPDF = new LoanDetailsForPDF();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,8 +101,8 @@ public class Activity_Edit_Loan extends AppCompatActivity {
         getSupportActionBar().setTitle("Edit Loan");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        if(getIntent()!=null){
-            loanDetailsForPDF= (LoanDetailsForPDF) getIntent().getSerializableExtra("loanDetails");
+        if (getIntent() != null) {
+            loanDetailsForPDF = (LoanDetailsForPDF) getIntent().getSerializableExtra("loanDetails");
         }
 
         initV();
@@ -245,6 +245,7 @@ public class Activity_Edit_Loan extends AppCompatActivity {
         edtReason.setText(loanDetailsForPDF.getReasonForLoan());
         edtInterest.setText(loanDetailsForPDF.getInterestRate());
         txtSelectEmidate.setText(loanDetailsForPDF.getPayEMIDate());
+        SelectedEmiDate = loanDetailsForPDF.getPayEMIDate();
 
         if (loanDetailsForPDF.getLoanType().equals("1")) {
             rdb_simple.setChecked(true);
@@ -315,7 +316,7 @@ public class Activity_Edit_Loan extends AppCompatActivity {
         final ListView lstView = (ListView) promptsView.findViewById(R.id.listview_users);
         final EditText edtSearch = (EditText) promptsView.findViewById(R.id.edt_users_dialog_search);
 
-        if(UsersData!=null){
+        if (UsersData != null) {
             try {
                 JSONObject jsonObject = new JSONObject(UsersData);
                 JSONArray jsonArray = jsonObject.getJSONArray("Applicants");
@@ -439,8 +440,8 @@ public class Activity_Edit_Loan extends AppCompatActivity {
                                     map.put("Monthly_EMI", String.valueOf(Helper.getRoundValue(EMI)));
                                     map.put("Pay_EMI_Date", SelectedEmiDate);
                                 }
-                                map.put("Loan_Status",loanDetailsForPDF.getLoanStatus());
-                                map.put("Original_Amount",edtAmount.getText().toString().trim());
+                                map.put("Loan_Status", loanDetailsForPDF.getLoanStatus());
+                                map.put("Original_Amount", edtAmount.getText().toString().trim());
 
                                 Task<Void> voidTask = cineIndustryRef.updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
@@ -462,7 +463,7 @@ public class Activity_Edit_Loan extends AppCompatActivity {
                         }
                     }
                 } catch (Exception e) {
-                    Log.e("exception   ",e.toString());
+                    Log.e("exception   ", e.toString());
                     e.printStackTrace();
                 }
             }
@@ -470,7 +471,7 @@ public class Activity_Edit_Loan extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 hidePrd();
-                Log.e("databaseError   ",databaseError.getMessage());
+                Log.e("databaseError   ", databaseError.getMessage());
             }
         });
     }
@@ -490,7 +491,7 @@ public class Activity_Edit_Loan extends AppCompatActivity {
 
                         new CToast(mActivity).simpleToast(jsonObject.getString("message"), Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_success).show();
                         Activity_Admin_All_LoanApplication.REFRESH = true;
-                       // overridePendingTransition(R.anim.feed_in, R.anim.feed_out);
+                        // overridePendingTransition(R.anim.feed_in, R.anim.feed_out);
                         overridePendingTransition(0, 0);
                         finish();
 

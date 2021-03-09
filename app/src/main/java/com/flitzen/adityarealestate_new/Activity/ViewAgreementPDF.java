@@ -300,7 +300,8 @@ public class ViewAgreementPDF extends AppCompatActivity {
             progressDialog.dismiss();
             /*progressDialog.dismiss();
             openPDFFile(myFile);*/
-            shareFileWhatsApp(myFile);
+            shareFile(myFile);
+           // shareFileWhatsApp(myFile);
         }
     }
 
@@ -309,6 +310,16 @@ public class ViewAgreementPDF extends AppCompatActivity {
         intentShareFile.setType(URLConnection.guessContentTypeFromName(file.getName()));
         intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + file.getAbsolutePath()));
         intentShareFile.setPackage("com.whatsapp");
+        //if you need
+        //intentShareFile.putExtra(Intent.EXTRA_SUBJECT,"Sharing File Subject);
+        //intentShareFile.putExtra(Intent.EXTRA_TEXT, "Sharing File Description");
+        startActivity(Intent.createChooser(intentShareFile, "Share File"));
+    }
+
+    private void shareFile(File file) {
+        Intent intentShareFile = new Intent(Intent.ACTION_SEND);
+        intentShareFile.setType(URLConnection.guessContentTypeFromName(file.getName()));
+        intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + file.getAbsolutePath()));
         //if you need
         //intentShareFile.putExtra(Intent.EXTRA_SUBJECT,"Sharing File Subject);
         //intentShareFile.putExtra(Intent.EXTRA_TEXT, "Sharing File Description");

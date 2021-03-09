@@ -51,6 +51,7 @@ import com.flitzen.adityarealestate_new.Classes.Helper;
 import com.flitzen.adityarealestate_new.Classes.Utils;
 import com.flitzen.adityarealestate_new.Items.Item_Customer_List;
 import com.flitzen.adityarealestate_new.Items.Item_Property_List;
+import com.flitzen.adityarealestate_new.Items.Item_Property_List_New;
 import com.flitzen.adityarealestate_new.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -90,8 +91,8 @@ public class Activity_Rent_List_test extends AppCompatActivity {
     SwipeRefreshLayout swipe_refresh;
     RecyclerView rec_rent_list;
     Adapter_Property_List adapter_property_list;
-    ArrayList<Item_Property_List> itemList = new ArrayList<>();
-    ArrayList<Item_Property_List> itemListTemp = new ArrayList<>();
+    ArrayList<Item_Property_List_New> itemList = new ArrayList<>();
+    ArrayList<Item_Property_List_New> itemListTemp = new ArrayList<>();
 
     String cust_id = "";
     List<Item_Customer_List> itemListCustomer = new ArrayList<>();
@@ -313,7 +314,7 @@ public class Activity_Rent_List_test extends AppCompatActivity {
                 try {
                     if (dataSnapshot.exists()) {
                         for (DataSnapshot npsnapshot : dataSnapshot.getChildren()) {
-                            Item_Property_List item = new Item_Property_List();
+                            Item_Property_List_New item = new Item_Property_List_New();
                             item.setId(npsnapshot.child("id").getValue().toString());
                             String propertyID = npsnapshot.child("id").getValue().toString();
                             item.setProperty_name(npsnapshot.child("property_name").getValue().toString());
@@ -650,7 +651,7 @@ public class Activity_Rent_List_test extends AppCompatActivity {
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
 
-                            Item_Property_List item = new Item_Property_List();
+                            Item_Property_List_New item = new Item_Property_List_New();
                             item.setId(object.getString("id"));
                             item.setProperty_name(object.getString("property_name"));
                             item.setAddress(object.getString("address"));

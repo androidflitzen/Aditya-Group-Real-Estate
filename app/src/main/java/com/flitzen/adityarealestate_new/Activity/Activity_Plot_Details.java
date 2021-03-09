@@ -11,6 +11,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -75,6 +76,7 @@ import com.flitzen.adityarealestate_new.Classes.ImageUtils;
 import com.flitzen.adityarealestate_new.Classes.Permission;
 import com.flitzen.adityarealestate_new.Classes.Utils;
 import com.flitzen.adityarealestate_new.Classes.WebAPI;
+import com.flitzen.adityarealestate_new.Fragment.ActionBottomDialogFragment;
 import com.flitzen.adityarealestate_new.Fragment.RentPaymentListFragment;
 import com.flitzen.adityarealestate_new.Items.Item_Customer_List;
 import com.flitzen.adityarealestate_new.Items.Item_Plot_List;
@@ -130,7 +132,7 @@ import java.util.UUID;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class Activity_Plot_Details extends AppCompatActivity implements PDFUtility.OnDocumentClose {
+public class Activity_Plot_Details extends AppCompatActivity implements PDFUtility.OnDocumentClose,ActionBottomDialogFragment.ItemClickListener {
 
     Activity mActivity;
     ProgressDialog prd;
@@ -140,7 +142,7 @@ public class Activity_Plot_Details extends AppCompatActivity implements PDFUtili
     int UPLOAD_REQUEST = 001, SELECT_PICTURE = 002, CAMERA_REQUEST = 003, SELECT_AUDIO = 004, CAMERA_PERMISSION_CODE = 005, FILE_REQUEST_CODE = 101;
     ImageUtils imageUtils = new ImageUtils();
     String imageEncode = "", attachmentType = "";
-    String type = "", plot_id = "", plot_no = "", plot_size = "";
+    String type = "", plot_id = "", plot_no = "", plot_size = "",active_deActive="";
     TextView tvUploadFile, tvUploadFile_update;
     ImageView ivUploadFile, ivUploadFile_update, img_delete, img_delete_update;
     LinearLayout viewUploadFile;
@@ -174,6 +176,8 @@ public class Activity_Plot_Details extends AppCompatActivity implements PDFUtili
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mActivity = Activity_Plot_Details.this;
+
+        active_deActive = getIntent().getStringExtra("ACTIVE_DEACTIVE");
 
         //txt_plot_no = (TextView) findViewById(R.id.txt_plot_no);
         txt_purchased_by = (TextView) findViewById(R.id.txt_purchased_by);
@@ -436,6 +440,7 @@ public class Activity_Plot_Details extends AppCompatActivity implements PDFUtili
 
         TextView btn_cancel = (TextView) view1.findViewById(R.id.btn_cancel);
         Button btn_add_payment = (Button) view1.findViewById(R.id.btn_add_payment);
+        Button btn_add_share_payment = (Button) view1.findViewById(R.id.btn_add_share_payment);
 
         //edt_paid_amount.setText(txt_pending_amount.getTag().toString());
 
@@ -559,7 +564,36 @@ public class Activity_Plot_Details extends AppCompatActivity implements PDFUtili
                 } else {
                     dialog.dismiss();
                     addPaymentforPlot(txt_date.getTag().toString(), txt_time.getText().toString(), edt_paid_amount.getText().toString()
-                            , Aditya.ID, txt_purchased_by.getTag().toString(), edt_remark.getText().toString(), txt_next_date.getText().toString());
+                            , Aditya.ID, txt_purchased_by.getTag().toString(), edt_remark.getText().toString(), txt_next_date.getText().toString(),0);
+                }
+            }
+        });
+
+        btn_add_share_payment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (edt_paid_amount.getText().toString().equals("")) {
+                    edt_paid_amount.setError("Enter pending amount");
+                    edt_paid_amount.requestFocus();
+                    return;
+                } else if (txt_date.getText().toString().equals("")) {
+                    new CToast(mActivity).simpleToast("Select Date", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                    return;
+                } else if (txt_time.getText().toString().equals("")) {
+                    new CToast(mActivity).simpleToast("Select Time", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                    return;
+                } else if (Integer.parseInt(edt_paid_amount.getText().toString()) > Integer.parseInt(txt_pending_amount.getTag().toString())) {
+                    edt_paid_amount.setError("You enter more then pending amount");
+                    edt_paid_amount.requestFocus();
+                    return;
+                } else if (txt_next_date.getText().toString().equals("")) {
+                    new CToast(mActivity).simpleToast("Select Next Payment Date", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                    return;
+                } else {
+                    dialog.dismiss();
+                    addPaymentforPlot(txt_date.getTag().toString(), txt_time.getText().toString(), edt_paid_amount.getText().toString()
+                            , Aditya.ID, txt_purchased_by.getTag().toString(), edt_remark.getText().toString(), txt_next_date.getText().toString(),1);
                 }
             }
         });
@@ -1356,77 +1390,152 @@ public class Activity_Plot_Details extends AppCompatActivity implements PDFUtili
                         int payeeAmount = 0;
                         for (DataSnapshot npsnapshot2 : dataSnapshot1.getChildren()) {
                             if (npsnapshot2.child("plot_id").getValue().toString().equals(Aditya.ID)) {
-                                if (npsnapshot2.child("payment_status").getValue().toString().equals("0")) {
+                                if(active_deActive.equalsIgnoreCase("DEACTIVE")){
+                                    if (npsnapshot2.child("payment_status").getValue().toString().equals("1")) {
 
-                                    Item_Plot_Payment_List payment = new Item_Plot_Payment_List();
-                                    payment.setId(npsnapshot2.child("id").getValue().toString());
-                                    payment.setKey(npsnapshot2.getKey());
-                                    payment.setAmount(npsnapshot2.child("amount").getValue().toString());
-                                    String amount = npsnapshot2.child("amount").getValue().toString();
-                                    payment.setRemarks(npsnapshot2.child("remarks").getValue().toString());
-                                    payment.setCustomer_id(npsnapshot2.child("customer_id").getValue().toString());
+                                        Item_Plot_Payment_List payment = new Item_Plot_Payment_List();
+                                        payment.setId(npsnapshot2.child("id").getValue().toString());
+                                        payment.setKey(npsnapshot2.getKey());
+                                        payment.setAmount(npsnapshot2.child("amount").getValue().toString());
+                                        String amount = npsnapshot2.child("amount").getValue().toString();
+                                        payment.setRemarks(npsnapshot2.child("remarks").getValue().toString());
+                                        payment.setCustomer_id(npsnapshot2.child("customer_id").getValue().toString());
 
-                                    try {
-                                        DateFormat f = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                                        Date d = f.parse(npsnapshot2.child("payment_date").getValue().toString());
-                                        DateFormat date = new SimpleDateFormat("yyyy-MM-dd");
-                                        DateFormat time = new SimpleDateFormat("hh:mm:ss");
-                                        System.out.println("=====Date: " + date.format(d));
-                                        System.out.println("======Time: " + time.format(d));
-                                        payment.setPayment_date(date.format(d));
-                                        payment.setPayment_time(time.format(d));
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
-                                    }
+                                        try {
+                                            DateFormat f = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                                            Date d = f.parse(npsnapshot2.child("payment_date").getValue().toString());
+                                            DateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+                                            DateFormat time = new SimpleDateFormat("hh:mm:ss");
+                                            System.out.println("=====Date: " + date.format(d));
+                                            System.out.println("======Time: " + time.format(d));
+                                            payment.setPayment_date(date.format(d));
+                                            payment.setPayment_time(time.format(d));
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
+                                        }
 
-                                    payment.setPayment_attachment(npsnapshot2.child("payment_attachment").getValue().toString());
+                                        payment.setPayment_attachment(npsnapshot2.child("payment_attachment").getValue().toString());
 
-                                    if (npsnapshot2.hasChild("file_type")) {
-                                        payment.setFileType(npsnapshot2.child("file_type").getValue().toString());
-                                    } else {
-                                        payment.setFileType("");
-                                    }
+                                        if (npsnapshot2.hasChild("file_type")) {
+                                            payment.setFileType(npsnapshot2.child("file_type").getValue().toString());
+                                        } else {
+                                            payment.setFileType("");
+                                        }
 
-                                    payment.setNext_payment_date(npsnapshot2.child("next_payment_date").getValue().toString());
+                                        payment.setNext_payment_date(npsnapshot2.child("next_payment_date").getValue().toString());
 
-                                    Query queryCustomer = databaseReference.child("Customers").orderByKey();
-                                    queryCustomer.addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                            try {
-                                                if (dataSnapshot.exists()) {
-                                                    for (DataSnapshot npsnapshot1 : dataSnapshot.getChildren()) {
-                                                        if (npsnapshot1.child("id").getValue().toString().equals(npsnapshot2.child("customer_id").getValue().toString())) {
-                                                            String name = npsnapshot1.child("name").getValue().toString();
-                                                            payment.setCustomer_name(npsnapshot1.child("name").getValue().toString());
+                                        Query queryCustomer = databaseReference.child("Customers").orderByKey();
+                                        queryCustomer.addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                try {
+                                                    if (dataSnapshot.exists()) {
+                                                        for (DataSnapshot npsnapshot1 : dataSnapshot.getChildren()) {
+                                                            if (npsnapshot1.child("id").getValue().toString().equals(npsnapshot2.child("customer_id").getValue().toString())) {
+                                                                String name = npsnapshot1.child("name").getValue().toString();
+                                                                payment.setCustomer_name(npsnapshot1.child("name").getValue().toString());
+                                                            }
                                                         }
                                                     }
+                                                    Collections.sort(arrayListPlotPayment, new Comparator<Item_Plot_Payment_List>() {
+                                                        @Override
+                                                        public int compare(Item_Plot_Payment_List o1, Item_Plot_Payment_List o2) {
+                                                            return o1.getPayment_date().compareTo(o2.getPayment_date());
+                                                        }
+                                                    }.reversed());
+
+                                                    mAdapterPlot.notifyDataSetChanged();
+
+                                                } catch (Exception e) {
+                                                    hidePrd();
+                                                    Log.e("Ex  mid ", e.toString());
                                                 }
-                                                Collections.sort(arrayListPlotPayment, new Comparator<Item_Plot_Payment_List>() {
-                                                    @Override
-                                                    public int compare(Item_Plot_Payment_List o1, Item_Plot_Payment_List o2) {
-                                                        return o1.getPayment_date().compareTo(o2.getPayment_date());
-                                                    }
-                                                }.reversed());
-
-                                                mAdapterPlot.notifyDataSetChanged();
-
-                                            } catch (Exception e) {
-                                                hidePrd();
-                                                Log.e("Ex  mid ", e.toString());
                                             }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+                                                hidePrd();
+                                                Log.e("error ", error.getMessage());
+                                            }
+                                        });
+
+                                        arrayListPlotPayment.add(payment);
+
+                                        payeeAmount = payeeAmount + Integer.parseInt(amount);
+                                    }
+                                }else if(active_deActive.equalsIgnoreCase("ACTIVE")){
+                                    if (npsnapshot2.child("payment_status").getValue().toString().equals("0")) {
+
+                                        Item_Plot_Payment_List payment = new Item_Plot_Payment_List();
+                                        payment.setId(npsnapshot2.child("id").getValue().toString());
+                                        payment.setKey(npsnapshot2.getKey());
+                                        payment.setAmount(npsnapshot2.child("amount").getValue().toString());
+                                        String amount = npsnapshot2.child("amount").getValue().toString();
+                                        payment.setRemarks(npsnapshot2.child("remarks").getValue().toString());
+                                        payment.setCustomer_id(npsnapshot2.child("customer_id").getValue().toString());
+
+                                        try {
+                                            DateFormat f = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                                            Date d = f.parse(npsnapshot2.child("payment_date").getValue().toString());
+                                            DateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+                                            DateFormat time = new SimpleDateFormat("hh:mm:ss");
+                                            System.out.println("=====Date: " + date.format(d));
+                                            System.out.println("======Time: " + time.format(d));
+                                            payment.setPayment_date(date.format(d));
+                                            payment.setPayment_time(time.format(d));
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
                                         }
 
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-                                            hidePrd();
-                                            Log.e("error ", error.getMessage());
+                                        payment.setPayment_attachment(npsnapshot2.child("payment_attachment").getValue().toString());
+
+                                        if (npsnapshot2.hasChild("file_type")) {
+                                            payment.setFileType(npsnapshot2.child("file_type").getValue().toString());
+                                        } else {
+                                            payment.setFileType("");
                                         }
-                                    });
 
-                                    arrayListPlotPayment.add(payment);
+                                        payment.setNext_payment_date(npsnapshot2.child("next_payment_date").getValue().toString());
 
-                                    payeeAmount = payeeAmount + Integer.parseInt(amount);
+                                        Query queryCustomer = databaseReference.child("Customers").orderByKey();
+                                        queryCustomer.addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                try {
+                                                    if (dataSnapshot.exists()) {
+                                                        for (DataSnapshot npsnapshot1 : dataSnapshot.getChildren()) {
+                                                            if (npsnapshot1.child("id").getValue().toString().equals(npsnapshot2.child("customer_id").getValue().toString())) {
+                                                                String name = npsnapshot1.child("name").getValue().toString();
+                                                                payment.setCustomer_name(npsnapshot1.child("name").getValue().toString());
+                                                            }
+                                                        }
+                                                    }
+                                                    Collections.sort(arrayListPlotPayment, new Comparator<Item_Plot_Payment_List>() {
+                                                        @Override
+                                                        public int compare(Item_Plot_Payment_List o1, Item_Plot_Payment_List o2) {
+                                                            return o1.getPayment_date().compareTo(o2.getPayment_date());
+                                                        }
+                                                    }.reversed());
+
+                                                    mAdapterPlot.notifyDataSetChanged();
+
+                                                } catch (Exception e) {
+                                                    hidePrd();
+                                                    Log.e("Ex  mid ", e.toString());
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+                                                hidePrd();
+                                                Log.e("error ", error.getMessage());
+                                            }
+                                        });
+
+                                        arrayListPlotPayment.add(payment);
+
+                                        payeeAmount = payeeAmount + Integer.parseInt(amount);
+                                    }
                                 }
                             }
                         }
@@ -2105,7 +2214,7 @@ public class Activity_Plot_Details extends AppCompatActivity implements PDFUtili
         queue.add(stringRequest);
     }
 
-    public void addPaymentforPlot(final String date, final String time, final String amount, final String id, final String customer_id, final String remark, final String next_date) {
+    public void addPaymentforPlot(final String date, final String time, final String amount, final String id, final String customer_id, final String remark, final String next_date,int checkButton) {
         showPrd();
 
         if (String.valueOf(capturedImageURI).equals("")) {
@@ -2143,7 +2252,12 @@ public class Activity_Plot_Details extends AppCompatActivity implements PDFUtili
 
             //TODO
             map.put("rent_status", 0);
-            map.put("payment_status", 0);
+            if(active_deActive.equalsIgnoreCase("DEACTIVE")){
+                map.put("payment_status", 1);
+            }else if(active_deActive.equalsIgnoreCase("ACTIVE")){
+                map.put("payment_status", 0);
+            }
+
 
             rootRef.child("Payments").child(key).setValue(map).addOnCompleteListener(Activity_Plot_Details.this, new OnCompleteListener<Void>() {
                 @Override
@@ -2155,6 +2269,21 @@ public class Activity_Plot_Details extends AppCompatActivity implements PDFUtili
                     mime = "";
                     attachmentType = "";
                     new CToast(mActivity).simpleToast("Payment add successfully", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_success).show();
+                    if (checkButton == 1) {
+                        if (appInstalledOrNot() == 0) {
+                            if (checkButton == 1) {
+                                sendMessage(amount, "com.whatsapp");
+                            }
+                        } else if (appInstalledOrNot() == 1) {
+                            if (checkButton == 1) {
+                                sendMessage(amount, "com.whatsapp.w4b");
+                            }
+                        } else if (appInstalledOrNot() == 2) {
+                            if (checkButton == 1) {
+                                sendMessage(amount, "both");
+                            }
+                        }
+                    }
                 }
 
             }).addOnFailureListener(Activity_Plot_Details.this, new OnFailureListener() {
@@ -2226,6 +2355,21 @@ public class Activity_Plot_Details extends AppCompatActivity implements PDFUtili
                                             mime = "";
                                             attachmentType = "";
                                             new CToast(mActivity).simpleToast("Payment add successfully", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_success).show();
+                                            if (checkButton == 1) {
+                                                if (appInstalledOrNot() == 0) {
+                                                    if (checkButton == 1) {
+                                                        sendMessage(amount, "com.whatsapp");
+                                                    }
+                                                } else if (appInstalledOrNot() == 1) {
+                                                    if (checkButton == 1) {
+                                                        sendMessage(amount, "com.whatsapp.w4b");
+                                                    }
+                                                } else if (appInstalledOrNot() == 2) {
+                                                    if (checkButton == 1) {
+                                                        sendMessage(amount, "both");
+                                                    }
+                                                }
+                                            }
                                         }
 
                                     }).addOnFailureListener(Activity_Plot_Details.this, new OnFailureListener() {
@@ -2256,6 +2400,105 @@ public class Activity_Plot_Details extends AppCompatActivity implements PDFUtili
                         }
                     });
         }
+    }
+
+    private void sendMessage(String amount, String pkg) {
+        Intent waIntent = new Intent(Intent.ACTION_SEND);
+        waIntent.setType("text/plain");
+        String text="";
+        if(txt_purchased_by.getText().toString()!=null && !txt_purchased_by.getText().toString().isEmpty()){
+            text = "Dear  '"+txt_purchased_by.getText().toString().trim()+"'\n"+"Your payment has been credited "+getResources().getString(R.string.rupee)+amount+" to "+getResources().getString(R.string.app_name)+".\n"+"\nThanks";
+        }else {
+            text = "Dear  'customer"+"'\n"+"Your payment has been credited "+getResources().getString(R.string.rupee)+amount+" to "+getResources().getString(R.string.app_name)+".\n"+"\nThanks";
+        }
+
+        if (pkg.equalsIgnoreCase("both")) {
+            showBottomSheet(text);
+        } else {
+            waIntent.setPackage(pkg);
+            if (waIntent != null) {
+                waIntent.putExtra(Intent.EXTRA_TEXT, text);
+                startActivity(Intent.createChooser(waIntent, text));
+            } else {
+                Toast.makeText(this, "WhatsApp not found", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        }
+    }
+
+    public void showBottomSheet(String text) {
+        ActionBottomDialogFragment addPhotoBottomDialogFragment =
+                new ActionBottomDialogFragment(text);
+        addPhotoBottomDialogFragment.show(this.getSupportFragmentManager(),
+                ActionBottomDialogFragment.TAG);
+    }
+
+    @Override
+    public void onItemClick(View view,String text) {
+        if (view.getId() == R.id.button1) {
+            Intent waIntent = new Intent(Intent.ACTION_SEND);
+            waIntent.setType("text/plain");
+            if(waIntent!=null){
+                waIntent.setPackage("com.whatsapp");
+                if (waIntent != null) {
+                    waIntent.putExtra(Intent.EXTRA_TEXT, text);
+                    startActivity(Intent.createChooser(waIntent, text));
+                } else {
+                    Toast.makeText(this, "WhatsApp not found", Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }else {
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+            }
+
+        } else if (view.getId() == R.id.button2) {
+            Intent waIntent = new Intent(Intent.ACTION_SEND);
+            waIntent.setType("text/plain");
+            if(waIntent!=null){
+                waIntent.setPackage("com.whatsapp.w4b");
+                if (waIntent != null) {
+                    waIntent.putExtra(Intent.EXTRA_TEXT, text);
+                    startActivity(Intent.createChooser(waIntent, text));
+                } else {
+                    Toast.makeText(this, "WhatsApp not found", Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }else {
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private int appInstalledOrNot() {
+        String pkgW = "com.whatsapp";
+        String pkgWB = "com.whatsapp.w4b";
+        PackageManager pm = getPackageManager();
+        int app_installed_whatsapp = -1;
+        int app_installed_w4b = -1;
+        int common = -1;
+        try {
+            pm.getPackageInfo(pkgW, PackageManager.GET_ACTIVITIES);
+            app_installed_whatsapp = 1;
+        } catch (PackageManager.NameNotFoundException e) {
+            app_installed_whatsapp = 0;
+        }
+
+        try {
+            pm.getPackageInfo(pkgWB, PackageManager.GET_ACTIVITIES);
+            app_installed_w4b = 1;
+        } catch (PackageManager.NameNotFoundException e) {
+            app_installed_w4b = 0;
+        }
+
+        if (app_installed_w4b == 1 & app_installed_whatsapp == 1) {
+            common = 2;
+        } else if (app_installed_whatsapp == 1) {
+            common = 0;
+        } else if (app_installed_w4b == 1) {
+            common = 1;
+        }
+
+        return common;
     }
 
     public void addPaymentforPlot1(final String date, final String time, final String amount, final String id, final String customer_id, final String remark, final String next_date) {

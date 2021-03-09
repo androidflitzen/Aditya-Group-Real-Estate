@@ -269,7 +269,7 @@ public class Activity_Login extends AppCompatActivity {
     }
 
     private void firebaseAuthWithGoogle(final GoogleSignInAccount acct) {
-
+       String email = acct.getEmail();
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -279,8 +279,8 @@ public class Activity_Login extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             if (user != null) {
                                 progress_bar_google.setVisibility(View.GONE);
-                                if (user.getEmail().equals("sanjaypatel989891@gmail.com") || user.getEmail().equals("bhavin.solanki@flitzen.in") || user.getEmail().equals("darshan@flitzen.co.uk")
-                                        || user.getEmail().equals("dhruv.flitzen@gmail.com") || user.getEmail().equals("android@flitzen.co.uk")) {
+                                if (email.equals("sanjaypatel989891@gmail.com") || email.equals("bhavin.solanki@flitzen.in") || email.equals("darshan@flitzen.co.uk")
+                                        || email.equals("dhruv.flitzen@gmail.com") || email.equals("android@flitzen.co.uk") || email.equals("flitzenuk@gmail.com")) {
                                     SharedPreferences.Editor editor = sharedPreferences.edit();
                                     editor.putBoolean(SharePref.isLoggedIn, true);
                                     editor.putString(SharePref.userName, user.getDisplayName());

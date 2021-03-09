@@ -245,6 +245,7 @@ public class Plot_Deactive_Fragment extends Fragment {
                 intent.putExtra("id", itemList.get(position).getId());
                 intent.putExtra("name", itemList.get(position).getSite_name());
                 intent.putExtra("TYPE", "ADD");
+                intent.putExtra("ACTIVE_DEACTIVE", "DEACTIVE");
                 startActivity(intent);
                 //  overridePendingTransition(R.anim.feed_in, R.anim.feed_out);
             }

@@ -10,6 +10,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -130,14 +131,14 @@ import java.util.Map;
 import java.util.UUID;
 
 @SuppressLint("ValidFragment")
-public class RentPaymentListFragment extends Fragment {
+public class RentPaymentListFragment extends Fragment implements ActionBottomDialogFragment.ItemClickListener{
     RecyclerView rec_purchased_plot_list;
     RentPaymentListAdapter mAdapterPlot;
     Activity mActivity;
     TextView tvNoActiveCustomer;
     ArrayList<Item_Plot_Payment_List> arrayListRentPayment = new ArrayList<>();
     FloatingActionButton fab_add_payment;
-    String rent_amount = "", customer_id = "", property_id = "",status="";
+    String rent_amount = "", customer_id = "", property_id = "",status="",customer_name="";
     ProgressDialog prd;
     SwipeRefreshLayout swipe_refresh;
     //  TextView tvViewPaymentPDF;
@@ -224,6 +225,7 @@ public class RentPaymentListFragment extends Fragment {
         property_id = getArguments().getString("property_id");
         position = Integer.parseInt(getArguments().getString("position"));
         customer_id = getArguments().getString("customer_id");
+        customer_name = getArguments().getString("customer_name");
         status = getArguments().getString("status");
 
         //   customer_id = getIntent().getStringExtra("customer_id");
@@ -489,6 +491,7 @@ public class RentPaymentListFragment extends Fragment {
         });
         TextView btn_cancel = (TextView) view1.findViewById(R.id.btn_cancel);
         Button btn_add_payment = (Button) view1.findViewById(R.id.btn_add_payment);
+        Button btn_add_share_payment = (Button) view1.findViewById(R.id.btn_add_share_payment);
 
         // edt_paid_amount.setText(rent_amount);
         txt_date.setText(Helper.getCurrentDate("dd/MM/yyyy"));
@@ -630,7 +633,33 @@ public class RentPaymentListFragment extends Fragment {
                     return;
                 } else {
                     dialog.dismiss();
-                    addPaymentForRent(txt_date.getTag().toString(), txt_time.getText().toString(), edt_paid_amount.getText().toString(), Aditya.ID, edt_remark.getText().toString(), txt_next_date.getText().toString());
+                    addPaymentForRent(txt_date.getTag().toString(), txt_time.getText().toString(), edt_paid_amount.getText().toString(), Aditya.ID
+                            , edt_remark.getText().toString(), txt_next_date.getText().toString(),0);
+                }
+            }
+        });
+
+        btn_add_share_payment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (edt_paid_amount.getText().toString().equals("")) {
+                    edt_paid_amount.setError("Enter paid amount");
+                    edt_paid_amount.requestFocus();
+                    return;
+                } else if (txt_date.getText().toString().equals("")) {
+                    new CToast(mActivity).simpleToast("Select Date", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                    return;
+                } else if (txt_time.getText().toString().equals("")) {
+                    new CToast(mActivity).simpleToast("Select Time", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                    return;
+                } else if (txt_next_date.getText().toString().equals("")) {
+                    new CToast(mActivity).simpleToast("Select Next Date", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                    return;
+                } else {
+                    dialog.dismiss();
+                    addPaymentForRent(txt_date.getTag().toString(), txt_time.getText().toString(), edt_paid_amount.getText().toString(), Aditya.ID
+                            , edt_remark.getText().toString(), txt_next_date.getText().toString(),1);
                 }
             }
         });
@@ -866,6 +895,7 @@ public class RentPaymentListFragment extends Fragment {
                             payment.setRemarks(object2.getString("remarks"));
                             payment.setCustomer_id(object2.getString("customer_id"));
                             payment.setCustomer_name(object2.getString("customer_name"));
+                            customer_name=object2.getString("customer_name");
                             payment.setPayment_attachment(object2.getString("payment_attachment"));
                             payment.setNext_payment_date(object2.getString("next_payment_date"));
                             arrayListRentPayment.add(payment);
@@ -909,7 +939,7 @@ public class RentPaymentListFragment extends Fragment {
         queue.add(stringRequest);
     }
 
-    public void addPaymentForRent(final String date, final String time, final String amount, final String id, final String remark, String txt_next_date) {
+    public void addPaymentForRent(final String date, final String time, final String amount, final String id, final String remark, String txt_next_date,int checkButton) {
         showPrd();
 
         if (String.valueOf(capturedImageURI).equals("")) {
@@ -951,6 +981,21 @@ public class RentPaymentListFragment extends Fragment {
                     capturedImageURI=Uri.parse("");
                     attachmentType = "";
                     mime="";
+                    if (checkButton == 1) {
+                        if (appInstalledOrNot() == 0) {
+                            if (checkButton == 1) {
+                                sendMessage(amount, "com.whatsapp");
+                            }
+                        } else if (appInstalledOrNot() == 1) {
+                            if (checkButton == 1) {
+                                sendMessage(amount, "com.whatsapp.w4b");
+                            }
+                        } else if (appInstalledOrNot() == 2) {
+                            if (checkButton == 1) {
+                                sendMessage(amount, "both");
+                            }
+                        }
+                    }
                     new CToast(mActivity).simpleToast("Payment add successfully", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_success).show();
                     getPaymentRentCustomers();
                     //getRentDetail();
@@ -1013,6 +1058,22 @@ public class RentPaymentListFragment extends Fragment {
                                             capturedImageURI=Uri.parse("");
                                             attachmentType = "";
                                             mime="";
+
+                                            if (checkButton == 1) {
+                                                if (appInstalledOrNot() == 0) {
+                                                    if (checkButton == 1) {
+                                                        sendMessage(amount, "com.whatsapp");
+                                                    }
+                                                } else if (appInstalledOrNot() == 1) {
+                                                    if (checkButton == 1) {
+                                                        sendMessage(amount, "com.whatsapp.w4b");
+                                                    }
+                                                } else if (appInstalledOrNot() == 2) {
+                                                    if (checkButton == 1) {
+                                                        sendMessage(amount, "both");
+                                                    }
+                                                }
+                                            }
                                             new CToast(mActivity).simpleToast("Payment add successfully", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_success).show();
                                             getPaymentRentCustomers();
                                             //getRentDetail();
@@ -1050,6 +1111,101 @@ public class RentPaymentListFragment extends Fragment {
         }
 
 
+    }
+
+    private void sendMessage(String amount, String pkg) {
+        Intent waIntent = new Intent(Intent.ACTION_SEND);
+        waIntent.setType("text/plain");
+        String text="";
+        text = "Dear  '"+customer_name+"'\n"+"Your payment has been credited "+getResources().getString(R.string.rupee)+amount+" to "+getResources().getString(R.string.app_name)+".\n"+"\nThanks";
+
+        if (pkg.equalsIgnoreCase("both")) {
+            showBottomSheet(text);
+        } else {
+            waIntent.setPackage(pkg);
+            if (waIntent != null) {
+                waIntent.putExtra(Intent.EXTRA_TEXT, text);
+                startActivity(Intent.createChooser(waIntent, text));
+            } else {
+                Toast.makeText(getActivity(), "WhatsApp not found", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        }
+    }
+
+    public void showBottomSheet(String text) {
+        ActionBottomDialogFragment addPhotoBottomDialogFragment =
+                new ActionBottomDialogFragment(text);
+        addPhotoBottomDialogFragment.show(getActivity().getSupportFragmentManager(),
+                ActionBottomDialogFragment.TAG);
+    }
+
+    @Override
+    public void onItemClick(View view,String text) {
+        if (view.getId() == R.id.button1) {
+            Intent waIntent = new Intent(Intent.ACTION_SEND);
+            waIntent.setType("text/plain");
+            if(waIntent!=null){
+                waIntent.setPackage("com.whatsapp");
+                if (waIntent != null) {
+                    waIntent.putExtra(Intent.EXTRA_TEXT, text);
+                    startActivity(Intent.createChooser(waIntent, text));
+                } else {
+                    Toast.makeText(getActivity(), "WhatsApp not found", Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }else {
+                Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
+            }
+
+        } else if (view.getId() == R.id.button2) {
+            Intent waIntent = new Intent(Intent.ACTION_SEND);
+            waIntent.setType("text/plain");
+            if(waIntent!=null){
+                waIntent.setPackage("com.whatsapp.w4b");
+                if (waIntent != null) {
+                    waIntent.putExtra(Intent.EXTRA_TEXT, text);
+                    startActivity(Intent.createChooser(waIntent, text));
+                } else {
+                    Toast.makeText(getActivity(), "WhatsApp not found", Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }else {
+                Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private int appInstalledOrNot() {
+        String pkgW = "com.whatsapp";
+        String pkgWB = "com.whatsapp.w4b";
+        PackageManager pm = getActivity().getPackageManager();
+        int app_installed_whatsapp = -1;
+        int app_installed_w4b = -1;
+        int common = -1;
+        try {
+            pm.getPackageInfo(pkgW, PackageManager.GET_ACTIVITIES);
+            app_installed_whatsapp = 1;
+        } catch (PackageManager.NameNotFoundException e) {
+            app_installed_whatsapp = 0;
+        }
+
+        try {
+            pm.getPackageInfo(pkgWB, PackageManager.GET_ACTIVITIES);
+            app_installed_w4b = 1;
+        } catch (PackageManager.NameNotFoundException e) {
+            app_installed_w4b = 0;
+        }
+
+        if (app_installed_w4b == 1 & app_installed_whatsapp == 1) {
+            common = 2;
+        } else if (app_installed_whatsapp == 1) {
+            common = 0;
+        } else if (app_installed_w4b == 1) {
+            common = 1;
+        }
+
+        return common;
     }
 
     public void addPaymentForRent1(final String date, final String time, final String amount, final String id, final String remark, String txt_next_date) {

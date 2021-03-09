@@ -108,7 +108,7 @@ public class Activity_Plots_List extends AppCompatActivity {
     List<Item_Customer_List> itemListCustomer = new ArrayList<>();
     List<Item_Customer_List> itemListCustomerTemp = new ArrayList<>();
 
-    String type = "", id = "", name = "", mobile = "", mobile1 = "", emial = "", address = "", city = "",size="";
+    String type = "", id = "", name = "", mobile = "", mobile1 = "", emial = "", address = "", city = "",size="",active_deActive="";
     @BindView(R.id.etSearch)
     EditText etSearch;
     @BindView(R.id.ivCancel)
@@ -131,6 +131,7 @@ public class Activity_Plots_List extends AppCompatActivity {
         name = getIntent().getStringExtra("name");
         address = getIntent().getStringExtra("address");
         size = getIntent().getStringExtra("size");
+        active_deActive = getIntent().getStringExtra("ACTIVE_DEACTIVE");
 
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -281,6 +282,7 @@ public class Activity_Plots_List extends AppCompatActivity {
 
                     Aditya.ID = itemListPlot.get(position).getId();
                     Intent intent = new Intent(mActivity, Activity_Plot_Details.class);
+                    intent.putExtra("ACTIVE_DEACTIVE", active_deActive);
                     //intent.putExtra("POS", position);
                     startActivityForResult(intent, 001);
                     overridePendingTransition(0, 0);

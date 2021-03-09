@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Html;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,6 +33,7 @@ import com.flitzen.adityarealestate_new.Classes.API;
 import com.flitzen.adityarealestate_new.Classes.CToast;
 import com.flitzen.adityarealestate_new.Classes.Helper;
 import com.flitzen.adityarealestate_new.Classes.Utils;
+import com.flitzen.adityarealestate_new.Fragment.ActionBottomDialogFragment;
 import com.flitzen.adityarealestate_new.Items.Item_Customer_List;
 import com.flitzen.adityarealestate_new.Items.Item_Sites_List;
 import com.flitzen.adityarealestate_new.R;
@@ -52,7 +56,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class Add_fab_Payment_Activity extends AppCompatActivity {
+public class Add_fab_Payment_Activity extends AppCompatActivity implements ActionBottomDialogFragment.ItemClickListener{
 
 
     @BindView(R.id.tvTransCompanySpn)
@@ -73,6 +77,8 @@ public class Add_fab_Payment_Activity extends AppCompatActivity {
     EditText etTransNote;
     @BindView(R.id.btn_TransAdd)
     TextView btnTransAdd;
+    @BindView(R.id.btn_add_share_payment)
+    Button btn_add_share_payment;
 
     Context context;
     API webapi;
@@ -86,7 +92,7 @@ public class Add_fab_Payment_Activity extends AppCompatActivity {
     List<Item_Customer_List> itemListCustomerTemp = new ArrayList<>();
 
 
-    String customer_name, customer_id, type1, type2 = "Cash Payment";
+    String customer_name="", customer_id, type1, type2 = "Cash Payment";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -182,7 +188,35 @@ public class Add_fab_Payment_Activity extends AppCompatActivity {
                 } else {
 
                     Utils.showLog("cust_id" + customer_id + typeid);
-                    addTransactionApi(customer_id, typeid, etTransDate.getTag().toString().trim(), etTransAmount.getText().toString().trim(), etTransNote.getText().toString().trim());
+                    addTransactionApi(customer_id, typeid, etTransDate.getTag().toString().trim(), etTransAmount.getText().toString().trim(), etTransNote.getText().toString().trim(),0);
+                }
+            }
+        });
+
+        btn_add_share_payment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (tvTransCompanySpn.getText().toString().equals("")) {
+                    tvTransCompanySpn.setError("Select Party Name");
+                    tvTransCompanySpn.requestFocus();
+                    return;
+                } else if (tvTransTypespn.getText().toString().equals("")) {
+                    tvTransTypespn.setError("Select Payment Type");
+                    tvTransTypespn.requestFocus();
+                    return;
+                } else if (etTransDate.getText().toString().equals("")) {
+                    etTransDate.setError("Select Payment Date");
+                    etTransDate.requestFocus();
+                    return;
+                } else if (etTransAmount.getText().toString().equals("")) {
+                    etTransAmount.setError("Select Payment Amount");
+                    etTransAmount.requestFocus();
+                    return;
+                } else {
+
+                    Utils.showLog("cust_id" + customer_id + typeid);
+                    addTransactionApi(customer_id, typeid, etTransDate.getTag().toString().trim(), etTransAmount.getText().toString().trim(), etTransNote.getText().toString().trim(),1);
                 }
             }
         });
@@ -190,7 +224,7 @@ public class Add_fab_Payment_Activity extends AppCompatActivity {
 
     }
 
-    private void addTransactionApi(final String customer_id, final String typeid, final String date, final String amount, final String note) {
+    private void addTransactionApi(final String customer_id, final String typeid, final String date, final String amount, final String note,int checkButton) {
 
         showPrd();
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
@@ -211,6 +245,21 @@ public class Add_fab_Payment_Activity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 hidePrd();
+                if (checkButton == 1) {
+                    if (appInstalledOrNot() == 0) {
+                        if (checkButton == 1) {
+                            sendMessage(amount, "com.whatsapp");
+                        }
+                    } else if (appInstalledOrNot() == 1) {
+                        if (checkButton == 1) {
+                            sendMessage(amount, "com.whatsapp.w4b");
+                        }
+                    } else if (appInstalledOrNot() == 2) {
+                        if (checkButton == 1) {
+                            sendMessage(amount, "both");
+                        }
+                    }
+                }
                 new CToast(Add_fab_Payment_Activity.this).simpleToast("Payment added successfully", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_success).show();
                 finish();
             }
@@ -223,6 +272,101 @@ public class Add_fab_Payment_Activity extends AppCompatActivity {
             }
 
         });
+    }
+
+    private void sendMessage(String amount, String pkg) {
+        Intent waIntent = new Intent(Intent.ACTION_SEND);
+        waIntent.setType("text/plain");
+        String text="";
+        text = "Dear  '"+customer_name+"'\n"+"Your payment has been credited "+getResources().getString(R.string.rupee)+amount+" to "+getResources().getString(R.string.app_name)+".\n"+"\nThanks";
+
+        if (pkg.equalsIgnoreCase("both")) {
+            showBottomSheet(text);
+        } else {
+            waIntent.setPackage(pkg);
+            if (waIntent != null) {
+                waIntent.putExtra(Intent.EXTRA_TEXT, text);
+                startActivity(Intent.createChooser(waIntent, text));
+            } else {
+                Toast.makeText(this, "WhatsApp not found", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        }
+    }
+
+    private int appInstalledOrNot() {
+        String pkgW = "com.whatsapp";
+        String pkgWB = "com.whatsapp.w4b";
+        PackageManager pm = getPackageManager();
+        int app_installed_whatsapp = -1;
+        int app_installed_w4b = -1;
+        int common = -1;
+        try {
+            pm.getPackageInfo(pkgW, PackageManager.GET_ACTIVITIES);
+            app_installed_whatsapp = 1;
+        } catch (PackageManager.NameNotFoundException e) {
+            app_installed_whatsapp = 0;
+        }
+
+        try {
+            pm.getPackageInfo(pkgWB, PackageManager.GET_ACTIVITIES);
+            app_installed_w4b = 1;
+        } catch (PackageManager.NameNotFoundException e) {
+            app_installed_w4b = 0;
+        }
+
+        if (app_installed_w4b == 1 & app_installed_whatsapp == 1) {
+            common = 2;
+        } else if (app_installed_whatsapp == 1) {
+            common = 0;
+        } else if (app_installed_w4b == 1) {
+            common = 1;
+        }
+
+        return common;
+    }
+
+    public void showBottomSheet(String text) {
+        ActionBottomDialogFragment addPhotoBottomDialogFragment =
+                new ActionBottomDialogFragment(text);
+        addPhotoBottomDialogFragment.show(this.getSupportFragmentManager(),
+                ActionBottomDialogFragment.TAG);
+    }
+
+    @Override
+    public void onItemClick(View view,String text) {
+        if (view.getId() == R.id.button1) {
+            Intent waIntent = new Intent(Intent.ACTION_SEND);
+            waIntent.setType("text/plain");
+            if(waIntent!=null){
+                waIntent.setPackage("com.whatsapp");
+                if (waIntent != null) {
+                    waIntent.putExtra(Intent.EXTRA_TEXT, text);
+                    startActivity(Intent.createChooser(waIntent, text));
+                } else {
+                    Toast.makeText(this, "WhatsApp not found", Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }else {
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+            }
+
+        } else if (view.getId() == R.id.button2) {
+            Intent waIntent = new Intent(Intent.ACTION_SEND);
+            waIntent.setType("text/plain");
+            if(waIntent!=null){
+                waIntent.setPackage("com.whatsapp.w4b");
+                if (waIntent != null) {
+                    waIntent.putExtra(Intent.EXTRA_TEXT, text);
+                    startActivity(Intent.createChooser(waIntent, text));
+                } else {
+                    Toast.makeText(this, "WhatsApp not found", Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }else {
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void addTransactionApi1(final String customer_id, final String typeid, final String date, final String amount, final String note) {

@@ -30,6 +30,7 @@ import com.android.volley.toolbox.Volley;
 import com.flitzen.adityarealestate_new.Classes.API;
 import com.flitzen.adityarealestate_new.Classes.CToast;
 import com.flitzen.adityarealestate_new.Items.Item_Property_List;
+import com.flitzen.adityarealestate_new.Items.Item_Property_List_New;
 import com.flitzen.adityarealestate_new.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -51,13 +52,13 @@ import java.util.Map;
 
 public class Adapter_Property_List extends RecyclerView.Adapter<Adapter_Property_List.ViewHolder> {
 
-    ArrayList<Item_Property_List> itemList = new ArrayList<>();
+    ArrayList<Item_Property_List_New> itemList = new ArrayList<>();
     Activity context;
     boolean value;
     OnItemClickListener mItemClickListener;
     ProgressDialog prd;
 
-    public Adapter_Property_List(Activity context, ArrayList<Item_Property_List> itemList, Boolean value) {
+    public Adapter_Property_List(Activity context, ArrayList<Item_Property_List_New> itemList, Boolean value) {
         this.context = context;
         this.itemList = itemList;
         this.value = value;
@@ -218,11 +219,11 @@ public class Adapter_Property_List extends RecyclerView.Adapter<Adapter_Property
                     public void onClick(DialogInterface dialog, int id) {
                         showPrd();
                         DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference();
-                        databaseReference.child("Properties").child(itemList.get(position).getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        databaseReference.child("Properties").child(itemList.get(position).getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 if (snapshot.getValue() != null) {
-                                    databaseReference.child("Properties").child(itemList.get(position).getId()).removeValue().addOnCompleteListener(context, new OnCompleteListener<Void>() {
+                                    databaseReference.child("Properties").child(itemList.get(position).getKey()).removeValue().addOnCompleteListener(context, new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             hidePrd();

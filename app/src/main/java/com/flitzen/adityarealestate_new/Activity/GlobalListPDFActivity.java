@@ -170,6 +170,7 @@ public class GlobalListPDFActivity extends AppCompatActivity {
             }
             return fileList;
         }catch (Exception e){
+            e.printStackTrace();
             Utils.showToast(GlobalListPDFActivity.this, "Something went wrong", R.color.msg_fail);
         }
        return fileList;

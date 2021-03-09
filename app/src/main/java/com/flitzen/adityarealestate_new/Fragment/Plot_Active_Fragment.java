@@ -247,6 +247,7 @@ public class Plot_Active_Fragment extends Fragment {
                 intent.putExtra("address", itemList.get(position).getSite_address());
                 intent.putExtra("size", itemList.get(position).getSite_size());
                 intent.putExtra("TYPE", "ADD");
+                intent.putExtra("ACTIVE_DEACTIVE", "ACTIVE");
                 startActivity(intent);
               //  overridePendingTransition(R.anim.feed_in, R.anim.feed_out);
             }

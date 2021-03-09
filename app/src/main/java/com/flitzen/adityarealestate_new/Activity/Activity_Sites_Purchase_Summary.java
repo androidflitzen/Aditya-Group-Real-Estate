@@ -8,6 +8,7 @@ import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -56,6 +57,7 @@ import com.flitzen.adityarealestate_new.Classes.CToast;
 import com.flitzen.adityarealestate_new.Classes.Helper;
 import com.flitzen.adityarealestate_new.Classes.WebAPI;
 import com.flitzen.adityarealestate_new.CommonModel;
+import com.flitzen.adityarealestate_new.Fragment.ActionBottomDialogFragment;
 import com.flitzen.adityarealestate_new.Fragment.CashPaymentFragment;
 import com.flitzen.adityarealestate_new.Fragment.CashReceiveFragment;
 import com.flitzen.adityarealestate_new.Items.Item_Plot_List;
@@ -124,12 +126,12 @@ import es.voghdev.pdfviewpager.library.remote.DownloadFile;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
+public class Activity_Sites_Purchase_Summary extends AppCompatActivity implements ActionBottomDialogFragment.ItemClickListener {
 
     ProgressDialog prd;
     Activity mActivity;
 
-    String site_id = "", file_url = "", payment_pdf_file_url = "",name = "",type="",address="",size="";
+    String site_id = "", file_url = "", payment_pdf_file_url = "", name = "", type = "", address = "", size = "";
     TextView txt_site_name, txt_site_address, txt_purchase_price, txt_size, txt_total_paid, txt_income_cust, txt_pending_amount;
     FloatingActionButton fab_add_sites_payment;
     // SwipeRefreshLayout swipe_refresh;
@@ -160,21 +162,21 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
     private TaskCompletionSource<DriveId> mOpenItemTaskSource;
     private File storageDir;
     GoogleApiClient mGoogleApiClient;
-    TextView txt_agreement_status,tvtitle;
+    TextView txt_agreement_status, tvtitle;
     RelativeLayout ivEdit;
     ImageView ivEdit1;
-    int purchase_price=0;
-    int total_received=0;
+    int purchase_price = 0;
+    int total_received = 0;
     private String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
-    int  STORAGE_PERMISSION_CODE = 005;
+    int STORAGE_PERMISSION_CODE = 101;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sites_purchase_summary);
 
-       // getSupportActionBar().setTitle(Html.fromHtml("Site Purchase Summary"));
-      //  getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // getSupportActionBar().setTitle(Html.fromHtml("Site Purchase Summary"));
+        //  getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mActivity = Activity_Sites_Purchase_Summary.this;
 
@@ -214,11 +216,11 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
                 if (isFileAttached) {
                     /*Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(file_url));
                     startActivity(browserIntent);*/
-                        startActivity(new Intent(Activity_Sites_Purchase_Summary.this, PdfViewActivity.class)
-                                .putExtra("pdf_url", file_url)
-                                .putExtra("only_load", true)
-                                .putExtra("id", site_id)
-                                .putExtra("site_name", txt_site_name.getText().toString()));
+                    startActivity(new Intent(Activity_Sites_Purchase_Summary.this, PdfViewActivity.class)
+                            .putExtra("pdf_url", file_url)
+                            .putExtra("only_load", true)
+                            .putExtra("id", site_id)
+                            .putExtra("site_name", txt_site_name.getText().toString()));
                 } else {
                     showUploadOptionsDialog();
                 }
@@ -233,18 +235,21 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
                 if (txt_agreement_status.getText().equals("Add PDF")) {
                     //openFileChooser_new();
                     if (Permission.hasPermissions(mActivity, permissions)) {
-                        Intent intent = new Intent(Activity_Sites_Purchase_Summary.this,GlobalListPDFActivity.class);
-                        intent.putExtra("site_id",site_id);
-                        intent.putExtra("name",name);
-                        intent.putExtra("type",type);
+                        Intent intent = new Intent(Activity_Sites_Purchase_Summary.this, GlobalListPDFActivity.class);
+                        intent.putExtra("site_id", site_id);
+                        intent.putExtra("name", name);
+                        intent.putExtra("type", type);
                         startActivity(intent);
-                    }
-                    else {
+                    } else {
                         Permission.requestPermissions(mActivity, permissions, STORAGE_PERMISSION_CODE);
                     }
 
                 } else if (txt_agreement_status.getText().equals("View PDF")) {
-                    openUpdateDialog_view();
+                    if (Permission.hasPermissions(mActivity, permissions)) {
+                        openUpdateDialog_view();
+                    } else {
+                        Permission.requestPermissions(mActivity, permissions, STORAGE_PERMISSION_CODE);
+                    }
                 }
             }
         });
@@ -263,7 +268,7 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
             }
         });
 
-        ivEdit1 = (ImageView)findViewById(R.id.ivEdit1);
+        ivEdit1 = (ImageView) findViewById(R.id.ivEdit1);
         ivEdit1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -271,7 +276,7 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
             }
         });
 
-        ivEdit = (RelativeLayout)findViewById(R.id.ivEdit);
+        ivEdit = (RelativeLayout) findViewById(R.id.ivEdit);
 
         ivEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -311,12 +316,12 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
                             edt_site_name.setError("Site Name");
                             edt_site_name.requestFocus();
                             return;
-                        }  else {
+                        } else {
 
-                            if(edt_site_purchase_price.getText().toString().trim().equals("")){
+                            if (edt_site_purchase_price.getText().toString().trim().equals("")) {
                                 edt_site_purchase_price.setText("0");
                             }
-                            if(edt_site_size.getText().toString().trim().equals("")){
+                            if (edt_site_size.getText().toString().trim().equals("")) {
                                 edt_site_size.setText("0");
                             }
 
@@ -337,8 +342,8 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
         Fragment fragment = new CashPaymentFragment();
         Bundle args = new Bundle();
         args.putString("site_id", site_id);
-        args.putString("site_address",address);
-        args.putString("site_name",name);
+        args.putString("site_address", address);
+        args.putString("site_name", name);
         args.putString("site_size", size);
         fragment.setArguments(args);
         pushFragment(fragment);
@@ -402,6 +407,7 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
 
                 TextView btn_cancel = (TextView) promptsView.findViewById(R.id.btn_cancel);
                 Button btn_add_payment = (Button) promptsView.findViewById(R.id.btn_add_payment);
+                Button btn_add_share_payment = (Button) promptsView.findViewById(R.id.btn_add_share_payment);
 
                 txt_date.setText(Helper.getCurrentDate("dd/MM/yyyy"));
                 txt_date.setTag(Helper.getCurrentDate("yyyy-MM-dd"));
@@ -436,7 +442,28 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
                             return;
                         } else {
                             alertDialog.dismiss();
-                            addSitePayment(site_id, txt_date.getTag().toString().trim(), edt_paid_amount.getText().toString().trim(), edt_remark.getText().toString().trim());
+                            addSitePayment(site_id, txt_date.getTag().toString().trim(), edt_paid_amount.getText().toString().trim(), edt_remark.getText().toString().trim(), 0);
+                        }
+                    }
+                });
+
+                btn_add_share_payment.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (txt_date.getText().toString().equals("")) {
+                            new CToast(mActivity).simpleToast("Select Date", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                            return;
+                        } else if (edt_paid_amount.getText().toString().equals("")) {
+                            edt_paid_amount.setError("Enter pending amount");
+                            edt_paid_amount.requestFocus();
+                            return;
+                        } else if (Integer.parseInt(edt_paid_amount.getText().toString()) > Integer.parseInt(txt_pending_amount.getTag().toString())) {
+                            edt_paid_amount.setError("You enter more then pending amount");
+                            edt_paid_amount.requestFocus();
+                            return;
+                        } else {
+                            alertDialog.dismiss();
+                            addSitePayment(site_id, txt_date.getTag().toString().trim(), edt_paid_amount.getText().toString().trim(), edt_remark.getText().toString().trim(), 1);
                         }
                     }
                 });
@@ -516,9 +543,9 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
                 dialog_new.dismiss();
 
                 Intent intent = new Intent(Activity_Sites_Purchase_Summary.this, ViewAgreementPDF.class);
-                intent.putExtra("pdf_url",file_url);
-                intent.putExtra("name",txt_site_name.getText().toString());
-                intent.putExtra("only_load",true);
+                intent.putExtra("pdf_url", file_url);
+                intent.putExtra("name", txt_site_name.getText().toString());
+                intent.putExtra("only_load", true);
                 startActivity(intent);
 
                 /*try {
@@ -614,7 +641,7 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
     public void getSitePaymentList() {
 
         showPrd();
-        purchase_price=0;
+        purchase_price = 0;
         DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference();
         Query querySite = databaseReference1.child("Sites").orderByKey();
         querySite.addValueEventListener(new ValueEventListener() {
@@ -624,16 +651,16 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
                 try {
                     if (dataSnapshot.exists()) {
                         for (DataSnapshot npsnapshotSite : dataSnapshot.getChildren()) {
-                            if(npsnapshotSite.child("id").getValue().toString().equals(site_id)){
+                            if (npsnapshotSite.child("id").getValue().toString().equals(site_id)) {
 
                                 txt_site_name.setText(npsnapshotSite.child("site_name").getValue().toString());
                                 Log.e("Site address  ", npsnapshotSite.child("site_address").getValue().toString());
 
                                 txt_site_address.setText("(" + npsnapshotSite.child("site_address").getValue().toString() + ")" + "(" + npsnapshotSite.child("size").getValue().toString() + "Sq yard)");
                                 txt_site_address.setTag(npsnapshotSite.child("site_address").getValue().toString());
-                                address=npsnapshotSite.child("site_address").getValue().toString();
-                                size=npsnapshotSite.child("size").getValue().toString();
-                                purchase_price=Integer.parseInt(npsnapshotSite.child("purchase_price").getValue().toString());
+                                address = npsnapshotSite.child("site_address").getValue().toString();
+                                size = npsnapshotSite.child("size").getValue().toString();
+                                purchase_price = Integer.parseInt(npsnapshotSite.child("purchase_price").getValue().toString());
 
                                 txt_purchase_price.setText(getResources().getString(R.string.rupee) + Helper.getFormatPrice(Integer.parseInt(npsnapshotSite.child("purchase_price").getValue().toString())));
                                 txt_purchase_price.setTag(npsnapshotSite.child("purchase_price").getValue().toString());
@@ -685,10 +712,10 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
                 itemListTemp.clear();
                 try {
                     if (dataSnapshot.exists()) {
-                        int total_payments=0;
-                        int remaining_amount=0;
+                        int total_payments = 0;
+                        int remaining_amount = 0;
                         for (DataSnapshot npsnapshotPay : dataSnapshot.getChildren()) {
-                            if(npsnapshotPay.child("site_id").getValue().toString().equals(site_id)){
+                            if (npsnapshotPay.child("site_id").getValue().toString().equals(site_id)) {
 
                                 Item_Site_Payment_List item = new Item_Site_Payment_List();
                                 item.setId(npsnapshotPay.child("id").getValue().toString());
@@ -696,7 +723,7 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
                                 item.setAmount(npsnapshotPay.child("amount").getValue().toString());
                                 item.setRemarks(npsnapshotPay.child("remarks").getValue().toString());
 
-                                total_payments=total_payments+Integer.parseInt(npsnapshotPay.child("amount").getValue().toString());
+                                total_payments = total_payments + Integer.parseInt(npsnapshotPay.child("amount").getValue().toString());
 
                                 try {
                                     DateFormat f = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -716,14 +743,14 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
                             }
                         }
 
-                        if (total_payments!=0)
+                        if (total_payments != 0)
                             txt_total_paid.setText(getResources().getString(R.string.rupee) + Helper.getFormatPrice(total_payments));
                         else
                             txt_total_paid.setText("-");
 
-                        remaining_amount=purchase_price-total_payments;
+                        remaining_amount = purchase_price - total_payments;
 
-                        if (remaining_amount!=0) {
+                        if (remaining_amount != 0) {
                             txt_pending_amount.setText(getResources().getString(R.string.rupee) + Helper.getFormatPrice(remaining_amount));
                             txt_pending_amount.setTag(String.valueOf(remaining_amount));
                         } else
@@ -756,11 +783,11 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
                 hidePrd();
                 try {
                     if (dataSnapshot.exists()) {
-                        total_received=0;
+                        total_received = 0;
                         for (DataSnapshot npsnapshotPlot : dataSnapshot.getChildren()) {
-                            if(npsnapshotPlot.child("site_id").getValue().toString().equals(site_id)){
+                            if (npsnapshotPlot.child("site_id").getValue().toString().equals(site_id)) {
 
-                                System.out.println("============site_id  "+site_id);
+                                System.out.println("============site_id  " + site_id);
                                 Query queryPayments = databaseReference.child("Payments").orderByKey();
                                 queryPayments.addValueEventListener(new ValueEventListener() {
                                     @Override
@@ -768,12 +795,12 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
                                         try {
                                             if (dataSnapshot.exists()) {
                                                 for (DataSnapshot npsnapshotPay : dataSnapshot.getChildren()) {
-                                                    if(npsnapshotPay.child("plot_id").getValue().toString().equals(npsnapshotPlot.child("id").getValue().toString())){
-                                                        total_received=total_received+Integer.parseInt(npsnapshotPay.child("amount").getValue().toString());
-                                                        System.out.println("========amount  "+npsnapshotPay.child("amount").getValue().toString());
+                                                    if (npsnapshotPay.child("plot_id").getValue().toString().equals(npsnapshotPlot.child("id").getValue().toString())) {
+                                                        total_received = total_received + Integer.parseInt(npsnapshotPay.child("amount").getValue().toString());
+                                                        System.out.println("========amount  " + npsnapshotPay.child("amount").getValue().toString());
                                                     }
                                                 }
-                                                if (total_received!=0)
+                                                if (total_received != 0)
                                                     txt_income_cust.setText(getResources().getString(R.string.rupee) + Helper.getFormatPrice(total_received));
                                                 else
                                                     txt_income_cust.setText("-");
@@ -833,7 +860,7 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
                     itemListTemp.clear();
 
                     JSONObject jsonObject = new JSONObject(response);
-                     Log.e("Response Sites List", response);
+                    Log.e("Response Sites List", response);
 
                     if (jsonObject.getInt("result") == 1) {
 
@@ -915,11 +942,11 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        Log.e("Site   ",stringRequest.getUrl());
+        Log.e("Site   ", stringRequest.getUrl());
         queue.add(stringRequest);
     }
 
-    public void addSitePayment(final String id, final String date, final String amount, final String remarks) {
+    public void addSitePayment(final String id, final String date, final String amount, final String remarks, int checkButton) {
 
         showPrd();
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
@@ -937,6 +964,22 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 hidePrd();
                 new CToast(Activity_Sites_Purchase_Summary.this).simpleToast("Payment added successfully", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_success).show();
+                if (checkButton == 1) {
+                    if (appInstalledOrNot() == 0) {
+                        if (checkButton == 1) {
+                            sendMessage(amount, "com.whatsapp");
+                        }
+                    } else if (appInstalledOrNot() == 1) {
+                        if (checkButton == 1) {
+                            sendMessage(amount, "com.whatsapp.w4b");
+                        }
+                    } else if (appInstalledOrNot() == 2) {
+                        if (checkButton == 1) {
+                            sendMessage(amount, "both");
+                        }
+                    }
+                }
+
                 getSitePaymentList();
             }
 
@@ -950,9 +993,104 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
         });
     }
 
+    private int appInstalledOrNot() {
+        String pkgW = "com.whatsapp";
+        String pkgWB = "com.whatsapp.w4b";
+        PackageManager pm = getPackageManager();
+        int app_installed_whatsapp = -1;
+        int app_installed_w4b = -1;
+        int common = -1;
+        try {
+            pm.getPackageInfo(pkgW, PackageManager.GET_ACTIVITIES);
+            app_installed_whatsapp = 1;
+        } catch (PackageManager.NameNotFoundException e) {
+            app_installed_whatsapp = 0;
+        }
+
+        try {
+            pm.getPackageInfo(pkgWB, PackageManager.GET_ACTIVITIES);
+            app_installed_w4b = 1;
+        } catch (PackageManager.NameNotFoundException e) {
+            app_installed_w4b = 0;
+        }
+
+        if (app_installed_w4b == 1 & app_installed_whatsapp == 1) {
+            common = 2;
+        } else if (app_installed_whatsapp == 1) {
+            common = 0;
+        } else if (app_installed_w4b == 1) {
+            common = 1;
+        }
+
+        return common;
+    }
+
+    private void sendMessage(String amount, String pkg) {
+        Intent waIntent = new Intent(Intent.ACTION_SEND);
+        waIntent.setType("text/plain");
+        String text = "";
+        text = "Dear  'customer" + "'\n" + "Your payment has been credited " + getResources().getString(R.string.rupee) + amount + " to " + getResources().getString(R.string.app_name) + ".\n" + "\nThanks";
+
+        if (pkg.equalsIgnoreCase("both")) {
+            showBottomSheet(text);
+        } else {
+            waIntent.setPackage(pkg);
+            if (waIntent != null) {
+                waIntent.putExtra(Intent.EXTRA_TEXT, text);
+                startActivity(Intent.createChooser(waIntent, text));
+            } else {
+                Toast.makeText(this, "WhatsApp not found", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        }
+    }
+
+    public void showBottomSheet(String text) {
+        ActionBottomDialogFragment addPhotoBottomDialogFragment =
+                new ActionBottomDialogFragment(text);
+        addPhotoBottomDialogFragment.show(getSupportFragmentManager(),
+                ActionBottomDialogFragment.TAG);
+    }
+
+    @Override
+    public void onItemClick(View view,String text) {
+        if (view.getId() == R.id.button1) {
+            Intent waIntent = new Intent(Intent.ACTION_SEND);
+            waIntent.setType("text/plain");
+            if(waIntent!=null){
+                waIntent.setPackage("com.whatsapp");
+                if (waIntent != null) {
+                    waIntent.putExtra(Intent.EXTRA_TEXT, text);
+                    startActivity(Intent.createChooser(waIntent, text));
+                } else {
+                    Toast.makeText(this, "WhatsApp not found", Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }else {
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+            }
+
+        } else if (view.getId() == R.id.button2) {
+            Intent waIntent = new Intent(Intent.ACTION_SEND);
+            waIntent.setType("text/plain");
+            if(waIntent!=null){
+                waIntent.setPackage("com.whatsapp.w4b");
+                if (waIntent != null) {
+                    waIntent.putExtra(Intent.EXTRA_TEXT, text);
+                    startActivity(Intent.createChooser(waIntent, text));
+                } else {
+                    Toast.makeText(this, "WhatsApp not found", Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }else {
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     private void remove_Payment(final String id) {
 
-         showPrd();
+        showPrd();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         Query applesQuery = ref.child("SitePayments").orderByChild("id").equalTo(id);
 
@@ -960,7 +1098,7 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 hidePrd();
-                for (DataSnapshot appleSnapshot: dataSnapshot.getChildren()) {
+                for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
                     appleSnapshot.getRef().removeValue();
                     new CToast(Activity_Sites_Purchase_Summary.this).simpleToast("Delete payment successfully", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_success).show();
                     getSitePaymentList();
@@ -1236,9 +1374,9 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-      //  overridePendingTransition(R.anim.feed_in, R.anim.feed_out);
-        Intent intent = new Intent(Activity_Sites_Purchase_Summary.this,Activity_Plots_List.class);
-        intent.putExtra("id",site_id);
+        //  overridePendingTransition(R.anim.feed_in, R.anim.feed_out);
+        Intent intent = new Intent(Activity_Sites_Purchase_Summary.this, Activity_Plots_List.class);
+        intent.putExtra("id", site_id);
         intent.putExtra("name", name);
         intent.putExtra("TYPE", "ADD");
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -1328,7 +1466,7 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
 
 
                         //addSiteFileAPI(imageEncode);
-                    }else {
+                    } else {
                         addSiteFileAPI(imageEncode);
                     }
                     //uploadpdf();
@@ -1409,7 +1547,7 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
                 try {
 
                     JSONObject jsonObject = new JSONObject(response);
-                      Log.e("Response Tasks Add", response);
+                    Log.e("Response Tasks Add", response);
                     if (jsonObject.getInt("result") == 1) {
                         linAddFileView.setVisibility(View.GONE);
                         linPdfView.setVisibility(View.VISIBLE);
@@ -1507,7 +1645,7 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
                                     if (dataSnapshot.child("id").getValue().toString().equals(site_id)) {
                                         DatabaseReference cineIndustryRef = databaseReference.child("Sites").child(dataSnapshot.getKey());
                                         Map<String, Object> map = new HashMap<>();
-                                            map.put("file", "");
+                                        map.put("file", "");
 
                                         Task<Void> voidTask = cineIndustryRef.updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
@@ -1532,7 +1670,7 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
                                 }
                             }
                         } catch (Exception e) {
-                            Log.e("exception   ",e.toString());
+                            Log.e("exception   ", e.toString());
                             e.printStackTrace();
                         }
                     }
@@ -1540,7 +1678,7 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                         hidePrd();
-                        Log.e("databaseError   ",databaseError.getMessage());
+                        Log.e("databaseError   ", databaseError.getMessage());
                     }
                 });
             }
@@ -1688,8 +1826,8 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
             Fragment fragment = new CashPaymentFragment();
             Bundle args = new Bundle();
             args.putString("site_id", site_id);
-            args.putString("site_address",address);
-            args.putString("site_name",name);
+            args.putString("site_address", address);
+            args.putString("site_name", name);
             args.putString("site_size", size);
             fragment.setArguments(args);
             pushFragment(fragment);
@@ -1697,8 +1835,8 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
             Fragment fragment = new CashReceiveFragment();
             Bundle args = new Bundle();
             args.putString("site_id", site_id);
-            args.putString("site_address",address);
-            args.putString("site_name",name);
+            args.putString("site_address", address);
+            args.putString("site_name", name);
             args.putString("site_size", size);
             fragment.setArguments(args);
             pushFragment(fragment);
@@ -1710,7 +1848,7 @@ public class Activity_Sites_Purchase_Summary extends AppCompatActivity {
             getSupportFragmentManager()
                     .beginTransaction()
                     //.setCustomAnimations(R.anim.feed_in, R.anim.feed_out)
-                    .setCustomAnimations(0,0)
+                    .setCustomAnimations(0, 0)
                     .replace(R.id.cash_fragment_container, fragment)
                     //.addToBackStack("fragment")
                     .commit();

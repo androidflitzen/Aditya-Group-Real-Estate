@@ -38,6 +38,7 @@ import com.flitzen.adityarealestate_new.Adapter.Adapter_Property_List;
 import com.flitzen.adityarealestate_new.Classes.API;
 import com.flitzen.adityarealestate_new.Classes.CToast;
 import com.flitzen.adityarealestate_new.Items.Item_Property_List;
+import com.flitzen.adityarealestate_new.Items.Item_Property_List_New;
 import com.flitzen.adityarealestate_new.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -55,8 +56,8 @@ public class Activity_Manage_Properties extends AppCompatActivity {
     RecyclerView rec_property_list;
     FloatingActionButton fab_add_property;
     Adapter_Property_List adapter_property_list;
-    ArrayList<Item_Property_List> itemList = new ArrayList<>();
-    ArrayList<Item_Property_List> itemListTemp = new ArrayList<>();
+    ArrayList<Item_Property_List_New> itemList = new ArrayList<>();
+    ArrayList<Item_Property_List_New> itemListTemp = new ArrayList<>();
 
     private EditText edtSearch;
     private ImageView imgClearSearch;
@@ -257,7 +258,7 @@ public class Activity_Manage_Properties extends AppCompatActivity {
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
 
-                            Item_Property_List item = new Item_Property_List();
+                            Item_Property_List_New item = new Item_Property_List_New();
                             item.setId(object.getString("id"));
                             item.setProperty_name(object.getString("property_name"));
                             item.setAddress(object.getString("address"));

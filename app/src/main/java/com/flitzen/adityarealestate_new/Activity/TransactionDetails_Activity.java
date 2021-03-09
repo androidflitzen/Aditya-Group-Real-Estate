@@ -186,10 +186,16 @@ public class TransactionDetails_Activity extends AppCompatActivity {
                         .putExtra("pdf_url", file_url));
                 Utils.showLog("=== file_url " + file_url);*/
 
-                int finalTotalAmount=0;
+                int finalTotalAmountPay=0;
+                int finalTotalAmountReceive=0;
                 for (int i = 0; i < transactionlistAll.size(); i++) {
                     if(transactionlistAll.get(i).getAmount()!=null && !(transactionlistAll.get(i).getAmount().equals(""))){
-                        finalTotalAmount=finalTotalAmount+Integer.parseInt(transactionlistAll.get(i).getAmount());
+                        if(transactionlistAll.get(i).getPaymentType().equals("0")){
+                            finalTotalAmountReceive=finalTotalAmountReceive+Integer.parseInt(transactionlistAll.get(i).getAmount());
+                        }else {
+                            finalTotalAmountPay=finalTotalAmountPay+Integer.parseInt(transactionlistAll.get(i).getAmount());
+                        }
+
                     }
                 }
 
@@ -206,7 +212,7 @@ public class TransactionDetails_Activity extends AppCompatActivity {
                             intent.putExtra("path",path);
                             startActivity(intent);
                         }
-                    }, getSampleData(), path, true, customer_name, contact_no,finalTotalAmount);
+                    }, getSampleData(finalTotalAmountPay,finalTotalAmountReceive), path, true, customer_name, contact_no,finalTotalAmountPay,finalTotalAmountReceive);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e("Error", "Error Creating Pdf");
@@ -435,50 +441,55 @@ public class TransactionDetails_Activity extends AppCompatActivity {
 
     }
 
-    private List<String[]> getSampleData() {
+    private List<String[]> getSampleData(int finalTotalAmountPay, int finalTotalAmountReceive) {
 
         List<String[]> temp = new ArrayList<>();
         int finalTotalAmount=0;
-        for (int i = 0; i < transactionlistAll.size(); i++) {
+        for (int i = 0; i < transactionlistAll.size()+1; i++) {
 
             String data1="";
             String data2="";
             String data3="";
             String data4="";
 
+            if(i!=transactionlistAll.size()){
+                if (transactionlistAll.get(i).getTransactionDate() != null) {
+                    SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd");
+                    // SimpleDateFormat inputT = new SimpleDateFormat("hh:mm:ss");
+                    SimpleDateFormat output = new SimpleDateFormat("dd MMMM yyyy");
+                    // SimpleDateFormat outputT = new SimpleDateFormat("hh:mm a");
+                    try {
+                        Date oneWayTripDate;
+                        Date oneWayTripDateT;
+                        oneWayTripDate = input.parse(transactionlistAll.get(i).getTransactionDate());  // parse input
+                        // oneWayTripDateT = inputT.parse(transactionlist.get(i).getTransactionTime());  // parse input
+                        data1=(output.format(oneWayTripDate));
 
-            if (transactionlistAll.get(i).getTransactionDate() != null) {
-                SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd");
-                // SimpleDateFormat inputT = new SimpleDateFormat("hh:mm:ss");
-                SimpleDateFormat output = new SimpleDateFormat("dd MMMM yyyy");
-                // SimpleDateFormat outputT = new SimpleDateFormat("hh:mm a");
-                try {
-                    Date oneWayTripDate;
-                    Date oneWayTripDateT;
-                    oneWayTripDate = input.parse(transactionlistAll.get(i).getTransactionDate());  // parse input
-                    // oneWayTripDateT = inputT.parse(transactionlist.get(i).getTransactionTime());  // parse input
-                    data1=(output.format(oneWayTripDate));
-
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
+
+
+                data2=transactionlistAll.get(i).getTransactionNote();
+
+                if(transactionlistAll.get(i).getPaymentType()!=null){
+                    if(transactionlistAll.get(i).getPaymentType().equals("1")){
+                        data4=(getResources().getString(R.string.rupee)+Helper.getFormatPrice(Integer.parseInt(transactionlistAll.get(i).getAmount())));
+                        data3="";
+                    }
+                    else {
+                        data4="";
+                        data3=(getResources().getString(R.string.rupee)+Helper.getFormatPrice(Integer.parseInt(transactionlistAll.get(i).getAmount())));
+                    }
+                }
+
+            }else {
+                data4=("Total : "+getResources().getString(R.string.rupee)+Helper.getFormatPrice(finalTotalAmountPay));
+                data3=("Total : "+getResources().getString(R.string.rupee)+Helper.getFormatPrice(finalTotalAmountReceive));
             }
-
-
-            data2=transactionlistAll.get(i).getTransactionNote();
-
-            if(transactionlistAll.get(i).getPaymentType()!=null){
-                if(transactionlistAll.get(i).getPaymentType().equals("1")){
-                    data4=(getResources().getString(R.string.rupee)+Helper.getFormatPrice(Integer.parseInt(transactionlistAll.get(i).getAmount())));
-                    data3="";
-                }
-                else {
-                    data4="";
-                    data3=(getResources().getString(R.string.rupee)+Helper.getFormatPrice(Integer.parseInt(transactionlistAll.get(i).getAmount())));
-                }
-            }
-
             temp.add(new String[] {data1,data2,data3,data4});
+
         }
         return temp;
     }

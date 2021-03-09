@@ -233,6 +233,14 @@ public class Activity_Rent_Details extends AppCompatActivity {
             Bundle bundle = new Bundle();
             bundle.putString("rent", property_rent);
             bundle.putString("customer_id", customer_id);
+            if(txt_customer_name.getText().toString()!=null){
+                System.out.println("============isEmpty  "+txt_customer_name.getText().toString());
+                bundle.putString("customer_name", txt_customer_name.getText().toString());
+            }else {
+                System.out.println("============isEmpty else ");
+                bundle.putString("customer_name", "");
+            }
+
             bundle.putString("position", String.valueOf(position));
             bundle.putString("property_id", property_id);
             bundle.putString("status", status);

@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -55,6 +56,7 @@ import com.android.volley.toolbox.Volley;
 import com.flitzen.adityarealestate_new.Adapter.Adapter_View_Emi;
 import com.flitzen.adityarealestate_new.Classes.API;
 import com.flitzen.adityarealestate_new.Classes.CToast;
+import com.flitzen.adityarealestate_new.Fragment.ActionBottomDialogFragment;
 import com.flitzen.adityarealestate_new.Items.Iteams_All_Loan_Application;
 import com.flitzen.adityarealestate_new.Items.Item_Plot_Payment_List;
 import com.flitzen.adityarealestate_new.Items.Items_View_EMI;
@@ -93,13 +95,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Admin_LoanDetail_Activity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class Admin_LoanDetail_Activity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,ActionBottomDialogFragment.ItemClickListener {
 
     Activity mActivity;
     ArrayList<Items_View_EMI> itemArray_EMI = new ArrayList<>();
 
     SharedPreferences sharedPreferences;
-    String applicationId, applicationNumber, ruppe, applicantName, node_id, loan_id;
+    String applicationId, applicationNumber, ruppe, applicantName = "", node_id, loan_id;
     private LinearLayout btnLoanDetail, btnLoanInstallment;
     private View viewLoanDetail, viewLoanInstallment, viewPendingContent, mainView, viewRejectContent, viewApproveContent;
     private TextView txt_monthlu_emi, txt_loan_type, txtLoanRejectRemarks, txt_pay_emi_date;
@@ -120,9 +122,9 @@ public class Admin_LoanDetail_Activity extends AppCompatActivity implements Swip
     private String InstallMent_Type = "", file_url = "";
     ProgressDialog progressDialog;
     int totalPaidAmount = 0;
-    String emiAmount="";
-    LoanDetailsForPDF loanDetailsForPDF=new LoanDetailsForPDF();
-    String path="";
+    String emiAmount = "";
+    LoanDetailsForPDF loanDetailsForPDF = new LoanDetailsForPDF();
+    String path = "";
     private static final int MENU_ITEM_ITEM1 = 1;
 
     @Override
@@ -201,10 +203,10 @@ public class Admin_LoanDetail_Activity extends AppCompatActivity implements Swip
             @Override
             public void onClick(View v) {
 
-                int finalTotalAmount=0;
+                int finalTotalAmount = 0;
                 for (int i = 0; i < itemArray_EMI.size(); i++) {
-                    if(itemArray_EMI.get(i).getEmi_amount()!=null && !(itemArray_EMI.get(i).getEmi_amount().equals(""))){
-                        finalTotalAmount=finalTotalAmount+Integer.parseInt(itemArray_EMI.get(i).getEmi_amount());
+                    if (itemArray_EMI.get(i).getEmi_amount() != null && !(itemArray_EMI.get(i).getEmi_amount().equals(""))) {
+                        finalTotalAmount = finalTotalAmount + Integer.parseInt(itemArray_EMI.get(i).getEmi_amount());
                     }
                 }
 
@@ -216,12 +218,12 @@ public class Admin_LoanDetail_Activity extends AppCompatActivity implements Swip
                     PDFUtility_Loan.createPdf(v.getContext(), new PDFUtility_Loan.OnDocumentClose() {
                         @Override
                         public void onPDFDocumentClose(File file) {
-                          //  Toast.makeText(Admin_LoanDetail_Activity.this, "Sample Pdf Created", Toast.LENGTH_SHORT).show();
+                            //  Toast.makeText(Admin_LoanDetail_Activity.this, "Sample Pdf Created", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(Admin_LoanDetail_Activity.this, ViewPdfForAll.class);
-                            intent.putExtra("path",path);
+                            intent.putExtra("path", path);
                             startActivity(intent);
                         }
-                    }, getSampleData(), path, true, loanDetailsForPDF,finalTotalAmount);
+                    }, getSampleData(), path, true, loanDetailsForPDF, finalTotalAmount);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e("Error", "Error Creating Pdf");
@@ -289,7 +291,7 @@ public class Admin_LoanDetail_Activity extends AppCompatActivity implements Swip
                                 applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
-                                        for (DataSnapshot appleSnapshot: dataSnapshot.getChildren()) {
+                                        for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
                                             appleSnapshot.getRef().removeValue();
                                         }
                                         new CToast(mActivity).simpleToast("Installment delete successfully", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_success).show();
@@ -429,14 +431,14 @@ public class Admin_LoanDetail_Activity extends AppCompatActivity implements Swip
     private List<String[]> getSampleData() {
 
         List<String[]> temp = new ArrayList<>();
-        int finalTotalAmount=0;
+        int finalTotalAmount = 0;
         for (int i = 0; i < itemArray_EMI.size(); i++) {
 
-            String data1="";
-            String data2="";
-            String data3="";
-            String data4="";
-            String data5="";
+            String data1 = "";
+            String data2 = "";
+            String data3 = "";
+            String data4 = "";
+            String data5 = "";
 
             SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             SimpleDateFormat output = new SimpleDateFormat("dd MMMM yyyy hh:mm a");
@@ -444,21 +446,21 @@ public class Admin_LoanDetail_Activity extends AppCompatActivity implements Swip
                 Date oneWayTripDate;
                 Date oneWayTripDateT;
                 oneWayTripDate = input.parse(itemArray_EMI.get(i).getEmi_date());  // parse input
-                data1=output.format(oneWayTripDate);
+                data1 = output.format(oneWayTripDate);
 
             } catch (ParseException e) {
                 e.printStackTrace();
             }
 
-            if(loanDetailsForPDF.getCustomerName()!=null){
-                data2=loanDetailsForPDF.getCustomerName();
+            if (loanDetailsForPDF.getCustomerName() != null) {
+                data2 = loanDetailsForPDF.getCustomerName();
             }
 
-            data3=itemArray_EMI.get(i).getEmi_remark();
-            data4=itemArray_EMI.get(i).getEmi_type();
-            data5=Helper.getFormatPrice(Integer.parseInt(itemArray_EMI.get(i).getEmi_amount()));
+            data3 = itemArray_EMI.get(i).getEmi_remark();
+            data4 = itemArray_EMI.get(i).getEmi_type();
+            data5 = Helper.getFormatPrice(Integer.parseInt(itemArray_EMI.get(i).getEmi_amount()));
 
-            temp.add(new String[] {data1,data2,data3,data4,data5});
+            temp.add(new String[]{data1, data2, data3, data4, data5});
         }
         return temp;
     }
@@ -467,7 +469,7 @@ public class Admin_LoanDetail_Activity extends AppCompatActivity implements Swip
         //swipeRefresh.setRefreshing(true);
 
         progressDialog.show();
-        loanDetailsForPDF=new LoanDetailsForPDF();
+        loanDetailsForPDF = new LoanDetailsForPDF();
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference circleMemebersRef = rootRef.child("LoanDetails");
         ValueEventListener valueEventListener = new ValueEventListener() {
@@ -654,7 +656,7 @@ public class Admin_LoanDetail_Activity extends AppCompatActivity implements Swip
 
 
                             txt_approved_amount.setText(ruppe + formatter.format(Integer.parseInt(ds.child("Original_Amount").getValue().toString())));
-                            if(!(ds.child("Monthly_EMI").getValue().toString().equals(""))){
+                            if (!(ds.child("Monthly_EMI").getValue().toString().equals(""))) {
                                 txt_monthlu_emi.setText(ruppe + formatter.format(Integer.parseInt(ds.child("Monthly_EMI").getValue().toString())));
                                 getEMI_AMOUNT = formatter.format(Integer.parseInt(ds.child("Monthly_EMI").getValue().toString()));
                             }
@@ -697,7 +699,7 @@ public class Admin_LoanDetail_Activity extends AppCompatActivity implements Swip
 
                             txtPendingLoanAmount.setText(ruppe + formatter.format(Integer.parseInt(ds.child("Approved_Amount").getValue().toString())));
 
-                            if(!(ds.child("Monthly_EMI").getValue().toString().equals(""))){
+                            if (!(ds.child("Monthly_EMI").getValue().toString().equals(""))) {
                                 txt_monthlu_emi.setText(Html.fromHtml("EMI : <b>" + ruppe + formatter.format(Integer.parseInt(ds.child("Monthly_EMI").getValue().toString())) + "</b>"));
                                 getEMI_AMOUNT = formatter.format(Integer.parseInt(ds.child("Monthly_EMI").getValue().toString()));
                             }
@@ -895,8 +897,8 @@ public class Admin_LoanDetail_Activity extends AppCompatActivity implements Swip
                 return true;
 
             case R.id.edit_loan:
-                Intent intent=new Intent(Admin_LoanDetail_Activity.this,Activity_Edit_Loan.class);
-                intent.putExtra("loanDetails",loanDetailsForPDF);
+                Intent intent = new Intent(Admin_LoanDetail_Activity.this, Activity_Edit_Loan.class);
+                intent.putExtra("loanDetails", loanDetailsForPDF);
                 startActivity(intent);
                 return true;
         }
@@ -1195,6 +1197,12 @@ public class Admin_LoanDetail_Activity extends AppCompatActivity implements Swip
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getData();
+    }
+
     public void RejectDialog() {
 
         LayoutInflater localView = LayoutInflater.from(mActivity);
@@ -1251,6 +1259,7 @@ public class Admin_LoanDetail_Activity extends AppCompatActivity implements Swip
         final EditText edt_date = (EditText) promptsView.findViewById(R.id.edt_emi_date);
         final EditText edt_remark = (EditText) promptsView.findViewById(R.id.edt_emi_remark);
         final Button btn_pay = (Button) promptsView.findViewById(R.id.btn_pay_emi);
+        final Button btn_add_share_payment = (Button) promptsView.findViewById(R.id.btn_add_share_payment);
         final Button btn_cancel = (Button) promptsView.findViewById(R.id.btn_pay_emi_cancel);
         final RadioButton Rbtn_Interest = (RadioButton) promptsView.findViewById(R.id.rbtn_installmenttype_interest);
         final RadioButton Rbtn_Deposit = (RadioButton) promptsView.findViewById(R.id.rbtn_installmenttype_deposit);
@@ -1327,21 +1336,21 @@ public class Admin_LoanDetail_Activity extends AppCompatActivity implements Swip
                     DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
                     String key = rootRef.child("EMI_Received").push().getKey();
                     Map<String, Object> map = new HashMap<>();
-                    map.put("Customer_Id",customerId);
+                    map.put("Customer_Id", customerId);
                     map.put("EMI_Amount", edt_amount.getText().toString());
-                    emiAmount=edt_amount.getText().toString();
+                    emiAmount = edt_amount.getText().toString();
                     DateFormat df = new SimpleDateFormat("HH:mm:ss"); // Format time
                     String time = df.format(Calendar.getInstance().getTime());
 
-                    map.put("EMI_Date", EMI_date_format+" "+time);
+                    map.put("EMI_Date", EMI_date_format + " " + time);
                     map.put("Loan_Id", loan_id);
                     map.put("Loan_Remarks", edt_remark.getText().toString().trim());
                     map.put("Loan_Type", LOAN_TYPE);
                     map.put("Type", InstallMent_Type);
                     map.put("id", key);
 
-                    Log.e("Loan_Type  ",LOAN_TYPE);
-                    Log.e("Type  ",InstallMent_Type);
+                    Log.e("Loan_Type  ", LOAN_TYPE);
+                    Log.e("Type  ", InstallMent_Type);
 
                     rootRef.child("EMI_Received").child(key).setValue(map).addOnCompleteListener(Admin_LoanDetail_Activity.this, new OnCompleteListener<Void>() {
                         @Override
@@ -1361,7 +1370,7 @@ public class Admin_LoanDetail_Activity extends AppCompatActivity implements Swip
                     });
 
 
-                    if(InstallMent_Type.equals("Deposit")){
+                    if (InstallMent_Type.equals("Deposit")) {
                         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
                         Query query = databaseReference.child("LoanDetails").orderByKey();
                         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -1373,13 +1382,13 @@ public class Admin_LoanDetail_Activity extends AppCompatActivity implements Swip
 
                                             if (dataSnapshot.child("id").getValue().toString().equals(loan_id)) {
 
-                                                String ApprovedAmount=dataSnapshot.child("Approved_Amount").getValue().toString();
-                                                String interestS=dataSnapshot.child("Interest_Rate").getValue().toString();
+                                                String ApprovedAmount = dataSnapshot.child("Approved_Amount").getValue().toString();
+                                                String interestS = dataSnapshot.child("Interest_Rate").getValue().toString();
 
-                                                int pendingAmt= (Integer.parseInt(ApprovedAmount)) - (Integer.parseInt(emiAmount));
+                                                int pendingAmt = (Integer.parseInt(ApprovedAmount)) - (Integer.parseInt(emiAmount));
 
-                                                int interest= ((Integer.parseInt(interestS))/100);
-                                                int monthlyEmi=interest*pendingAmt;
+                                                int interest = ((Integer.parseInt(interestS)) / 100);
+                                                int monthlyEmi = interest * pendingAmt;
 
 
                                                 DatabaseReference cineIndustryRef = databaseReference.child("LoanDetails").child(dataSnapshot.getKey());
@@ -1390,7 +1399,7 @@ public class Admin_LoanDetail_Activity extends AppCompatActivity implements Swip
                                                 Task<Void> voidTask = cineIndustryRef.updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                     @Override
                                                     public void onSuccess(Void aVoid) {
-                                                        if(alertDialog.isShowing()){
+                                                        if (alertDialog.isShowing()) {
                                                             alertDialog.dismiss();
                                                         }
 
@@ -1406,14 +1415,137 @@ public class Admin_LoanDetail_Activity extends AppCompatActivity implements Swip
                                         }
                                     }
                                 } catch (Exception e) {
-                                    Log.e("exception   ",e.toString());
+                                    Log.e("exception   ", e.toString());
                                     e.printStackTrace();
                                 }
                             }
 
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
-                                Log.e("databaseError   ",databaseError.getMessage());
+                                Log.e("databaseError   ", databaseError.getMessage());
+                            }
+                        });
+                    }
+                }
+            }
+        });
+
+        btn_add_share_payment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (TextUtils.isEmpty(edt_date.getText().toString())) {
+                    edt_date.setError("Select Date");
+                    edt_date.requestFocus();
+                } else if (TextUtils.isEmpty(edt_amount.getText().toString().trim())) {
+                    edt_amount.setError("Enter Amount");
+                    edt_amount.requestFocus();
+                } else if (Integer.parseInt(edt_amount.getText().toString().trim()) == 0) {
+                    edt_amount.setError("Amount must be greater than 0(Zero)");
+                    edt_amount.requestFocus();
+                } else {
+
+                    //error : ek field no problem che -InstallMent_Type
+                    //showPrd();
+
+
+                    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                    String key = rootRef.child("EMI_Received").push().getKey();
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("Customer_Id", customerId);
+                    map.put("EMI_Amount", edt_amount.getText().toString());
+                    emiAmount = edt_amount.getText().toString();
+                    DateFormat df = new SimpleDateFormat("HH:mm:ss"); // Format time
+                    String time = df.format(Calendar.getInstance().getTime());
+
+                    map.put("EMI_Date", EMI_date_format + " " + time);
+                    map.put("Loan_Id", loan_id);
+                    map.put("Loan_Remarks", edt_remark.getText().toString().trim());
+                    map.put("Loan_Type", LOAN_TYPE);
+                    map.put("Type", InstallMent_Type);
+                    map.put("id", key);
+
+                    Log.e("Loan_Type  ", LOAN_TYPE);
+                    Log.e("Type  ", InstallMent_Type);
+
+                    rootRef.child("EMI_Received").child(key).setValue(map).addOnCompleteListener(Admin_LoanDetail_Activity.this, new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            alertDialog.dismiss();
+                            new CToast(mActivity).simpleToast("EMI Amount Added", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_success).show();
+                            if (appInstalledOrNot() == 0) {
+                                sendMessage(edt_amount.getText().toString(), "com.whatsapp");
+                            } else if (appInstalledOrNot() == 1) {
+                                sendMessage(edt_amount.getText().toString(), "com.whatsapp.w4b");
+                            } else if (appInstalledOrNot() == 2) {
+                                sendMessage(edt_amount.getText().toString(), "both");
+                            }
+                            getData();
+                        }
+
+                    }).addOnFailureListener(Admin_LoanDetail_Activity.this, new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            alertDialog.dismiss();
+                            Toast.makeText(Admin_LoanDetail_Activity.this, "Please try later...", Toast.LENGTH_SHORT).show();
+                        }
+
+                    });
+
+
+                    if (InstallMent_Type.equals("Deposit")) {
+                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                        Query query = databaseReference.child("LoanDetails").orderByKey();
+                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot npsnapshot) {
+                                try {
+                                    if (npsnapshot.exists()) {
+                                        for (DataSnapshot dataSnapshot : npsnapshot.getChildren()) {
+
+                                            if (dataSnapshot.child("id").getValue().toString().equals(loan_id)) {
+
+                                                String ApprovedAmount = dataSnapshot.child("Approved_Amount").getValue().toString();
+                                                String interestS = dataSnapshot.child("Interest_Rate").getValue().toString();
+
+                                                int pendingAmt = (Integer.parseInt(ApprovedAmount)) - (Integer.parseInt(emiAmount));
+
+                                                int interest = ((Integer.parseInt(interestS)) / 100);
+                                                int monthlyEmi = interest * pendingAmt;
+
+
+                                                DatabaseReference cineIndustryRef = databaseReference.child("LoanDetails").child(dataSnapshot.getKey());
+
+                                                Map<String, Object> map = new HashMap<>();
+                                                map.put("Monthly_EMI", monthlyEmi);
+                                                map.put("Approved_Amount", pendingAmt);
+                                                Task<Void> voidTask = cineIndustryRef.updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        if (alertDialog.isShowing()) {
+                                                            alertDialog.dismiss();
+                                                        }
+
+                                                        //new CToast(mActivity).simpleToast("EMI Amount Added", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_success).show();
+                                                        getData();
+                                                    }
+                                                }).addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    Log.e("exception   ", e.toString());
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                Log.e("databaseError   ", databaseError.getMessage());
                             }
                         });
                     }
@@ -1435,6 +1567,7 @@ public class Admin_LoanDetail_Activity extends AppCompatActivity implements Swip
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         window.setAttributes(lp);
     }
+
 
     String EMI_date_format = null, APPROVE_LOAN_DATE = null;
 
@@ -1483,6 +1616,101 @@ public class Admin_LoanDetail_Activity extends AppCompatActivity implements Swip
 
         alertDialog.show();
 
+    }
+
+    private void sendMessage(String amount, String pkg) {
+        Intent waIntent = new Intent(Intent.ACTION_SEND);
+        waIntent.setType("text/plain");
+        String text = "";
+        text = "Dear  '" + applicantName + "'\n" + "Your EMI has been credited " + getResources().getString(R.string.rupee) + amount + " to " + getResources().getString(R.string.app_name) + ".\n" + "\nThanks";
+
+        if (pkg.equalsIgnoreCase("both")) {
+            showBottomSheet(text);
+        } else {
+            waIntent.setPackage(pkg);
+            if (waIntent != null) {
+                waIntent.putExtra(Intent.EXTRA_TEXT, text);
+                startActivity(Intent.createChooser(waIntent, text));
+            } else {
+                Toast.makeText(this, "WhatsApp not found", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        }
+    }
+
+    public void showBottomSheet(String text) {
+        ActionBottomDialogFragment addPhotoBottomDialogFragment =
+                new ActionBottomDialogFragment(text);
+        addPhotoBottomDialogFragment.show(this.getSupportFragmentManager(),
+                ActionBottomDialogFragment.TAG);
+    }
+
+    @Override
+    public void onItemClick(View view,String text) {
+        if (view.getId() == R.id.button1) {
+            Intent waIntent = new Intent(Intent.ACTION_SEND);
+            waIntent.setType("text/plain");
+            if(waIntent!=null){
+                waIntent.setPackage("com.whatsapp");
+                if (waIntent != null) {
+                    waIntent.putExtra(Intent.EXTRA_TEXT, text);
+                    startActivity(Intent.createChooser(waIntent, text));
+                } else {
+                    Toast.makeText(this, "WhatsApp not found", Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }else {
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+            }
+
+        } else if (view.getId() == R.id.button2) {
+            Intent waIntent = new Intent(Intent.ACTION_SEND);
+            waIntent.setType("text/plain");
+            if(waIntent!=null){
+                waIntent.setPackage("com.whatsapp.w4b");
+                if (waIntent != null) {
+                    waIntent.putExtra(Intent.EXTRA_TEXT, text);
+                    startActivity(Intent.createChooser(waIntent, text));
+                } else {
+                    Toast.makeText(this, "WhatsApp not found", Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }else {
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private int appInstalledOrNot() {
+        String pkgW = "com.whatsapp";
+        String pkgWB = "com.whatsapp.w4b";
+        PackageManager pm = getPackageManager();
+        int app_installed_whatsapp = -1;
+        int app_installed_w4b = -1;
+        int common = -1;
+        try {
+            pm.getPackageInfo(pkgW, PackageManager.GET_ACTIVITIES);
+            app_installed_whatsapp = 1;
+        } catch (PackageManager.NameNotFoundException e) {
+            app_installed_whatsapp = 0;
+        }
+
+        try {
+            pm.getPackageInfo(pkgWB, PackageManager.GET_ACTIVITIES);
+            app_installed_w4b = 1;
+        } catch (PackageManager.NameNotFoundException e) {
+            app_installed_w4b = 0;
+        }
+
+        if (app_installed_w4b == 1 & app_installed_whatsapp == 1) {
+            common = 2;
+        } else if (app_installed_whatsapp == 1) {
+            common = 0;
+        } else if (app_installed_w4b == 1) {
+            common = 1;
+        }
+
+        return common;
     }
 
     @Override

@@ -14,6 +14,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
@@ -74,6 +75,7 @@ import com.flitzen.adityarealestate_new.Classes.CToast;
 import com.flitzen.adityarealestate_new.Classes.Helper;
 import com.flitzen.adityarealestate_new.Classes.Permission;
 import com.flitzen.adityarealestate_new.Classes.SharePref;
+import com.flitzen.adityarealestate_new.Fragment.ActionBottomDialogFragment;
 import com.flitzen.adityarealestate_new.Items.Item_Loan_Details;
 import com.flitzen.adityarealestate_new.Items.Item_Plot_Detail;
 import com.flitzen.adityarealestate_new.Items.Item_Property_Detail;
@@ -118,7 +120,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
-public class Activity_Customer_Details extends AppCompatActivity {
+public class Activity_Customer_Details extends AppCompatActivity implements ActionBottomDialogFragment.ItemClickListener{
 
     Activity mActivity;
     ProgressDialog prd;
@@ -474,6 +476,7 @@ public class Activity_Customer_Details extends AppCompatActivity {
 
                         TextView btn_cancel = (TextView) view1.findViewById(R.id.btn_cancel);
                         Button btn_add_payment = (Button) view1.findViewById(R.id.btn_add_payment);
+                        Button btn_add_share_payment = (Button) view1.findViewById(R.id.btn_add_share_payment);
 
                         edt_paid_amount.setText(arrayListPlotDetail.get(position).getPending_amount());
 
@@ -563,7 +566,37 @@ public class Activity_Customer_Details extends AppCompatActivity {
                                 }else {
                                     dialog.dismiss();
                                     addPaymentforPlot(txt_date.getTag().toString(), txt_time.getText().toString(), edt_paid_amount.getText().toString()
-                                            , arrayListPlotDetail.get(position).getId(), edt_remark.getText().toString(), txt_next_date.getText().toString());
+                                            , arrayListPlotDetail.get(position).getId(), edt_remark.getText().toString(), txt_next_date.getText().toString(),0);
+                                }
+                            }
+                        });
+
+                        btn_add_share_payment.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                                if (edt_paid_amount.getText().toString().equals("")) {
+                                    edt_paid_amount.setError("Enter pending amount");
+                                    edt_paid_amount.requestFocus();
+                                    return;
+                                } else if (txt_date.getText().toString().equals("")) {
+                                    new CToast(mActivity).simpleToast("Select Date", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                                    return;
+                                } else if (txt_time.getText().toString().equals("")) {
+                                    new CToast(mActivity).simpleToast("Select Time", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                                    return;
+                                } else if (Integer.parseInt(edt_paid_amount.getText().toString()) > Integer.parseInt(arrayListPlotDetail.get(position).getPending_amount())) {
+                                    edt_paid_amount.setError("You enter more then pending amount");
+                                    edt_paid_amount.requestFocus();
+                                    return;
+                                }
+                                else if (txt_next_date.getText().toString().equals("")) {
+                                    new CToast(mActivity).simpleToast("Select Next Payment Date", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                                    return;
+                                }else {
+                                    dialog.dismiss();
+                                    addPaymentforPlot(txt_date.getTag().toString(), txt_time.getText().toString(), edt_paid_amount.getText().toString()
+                                            , arrayListPlotDetail.get(position).getId(), edt_remark.getText().toString(), txt_next_date.getText().toString(),1);
                                 }
                             }
                         });
@@ -641,6 +674,7 @@ public class Activity_Customer_Details extends AppCompatActivity {
 
                         TextView btn_cancel = (TextView) view1.findViewById(R.id.btn_cancel);
                         Button btn_add_payment = (Button) view1.findViewById(R.id.btn_add_payment);
+                        Button btn_add_share_payment = (Button) view1.findViewById(R.id.btn_add_share_payment);
 
                         txt_date.setText(Helper.getCurrentDate("dd/MM/yyyy"));
                         txt_date.setTag(Helper.getCurrentDate("yyyy-MM-dd"));
@@ -725,7 +759,33 @@ public class Activity_Customer_Details extends AppCompatActivity {
                                 }else {
                                     dialog.dismiss();
                                     addPaymentForRent(txt_date.getTag().toString(), txt_time.getText().toString(), edt_paid_amount.getText().toString()
-                                            , arrayListPropertyDetail.get(position).getId(), edt_remark.getText().toString(),txt_next_date.getText().toString());
+                                            , arrayListPropertyDetail.get(position).getId(), edt_remark.getText().toString(),txt_next_date.getText().toString(),0);
+                                }
+                            }
+                        });
+
+                        btn_add_share_payment.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                                if (edt_paid_amount.getText().toString().equals("")) {
+                                    edt_paid_amount.setError("Enter paid amount");
+                                    edt_paid_amount.requestFocus();
+                                    return;
+                                } else if (txt_date.getText().toString().equals("")) {
+                                    new CToast(mActivity).simpleToast("Select Date", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                                    return;
+                                } else if (txt_time.getText().toString().equals("")) {
+                                    new CToast(mActivity).simpleToast("Select Time", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                                    return;
+                                }
+                                else if (txt_next_date.getText().toString().equals("")) {
+                                    new CToast(mActivity).simpleToast("Select Next Payment Date", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                                    return;
+                                }else {
+                                    dialog.dismiss();
+                                    addPaymentForRent(txt_date.getTag().toString(), txt_time.getText().toString(), edt_paid_amount.getText().toString()
+                                            , arrayListPropertyDetail.get(position).getId(), edt_remark.getText().toString(),txt_next_date.getText().toString(),1);
                                 }
                             }
                         });
@@ -819,6 +879,7 @@ public class Activity_Customer_Details extends AppCompatActivity {
 
                             TextView btn_cancel = (TextView) view1.findViewById(R.id.btn_cancel);
                             Button btn_add_payment = (Button) view1.findViewById(R.id.btn_add_payment);
+                            Button btn_add_share_payment =  view1.findViewById(R.id.btn_add_share_payment);
 
                             edt_paid_amount.setText(arrayListLoanDetails.get(position).getApproved_Amount());
 
@@ -913,7 +974,37 @@ public class Activity_Customer_Details extends AppCompatActivity {
                                     }else {
                                         dialog.dismiss();
                                         addPaymentforPlot(txt_date.getTag().toString(), txt_time.getText().toString(), edt_paid_amount.getText().toString()
-                                                , arrayListLoanDetails.get(position).getId(), edt_remark.getText().toString(), txt_next_date.getText().toString());
+                                                , arrayListLoanDetails.get(position).getId(), edt_remark.getText().toString(), txt_next_date.getText().toString(),0);
+                                    }
+                                }
+                            });
+
+                            btn_add_share_payment.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+
+                                    if (edt_paid_amount.getText().toString().equals("")) {
+                                        edt_paid_amount.setError("Enter pending amount");
+                                        edt_paid_amount.requestFocus();
+                                        return;
+                                    } else if (txt_date.getText().toString().equals("")) {
+                                        new CToast(mActivity).simpleToast("Select Date", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                                        return;
+                                    } else if (txt_time.getText().toString().equals("")) {
+                                        new CToast(mActivity).simpleToast("Select Time", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                                        return;
+                                    } else if (Integer.parseInt(edt_paid_amount.getText().toString()) > Integer.parseInt(arrayListLoanDetails.get(position).getApproved_Amount())) {
+                                        edt_paid_amount.setError("You enter more then pending amount");
+                                        edt_paid_amount.requestFocus();
+                                        return;
+                                    }
+                                    else if (txt_next_date.getText().toString().equals("")) {
+                                        new CToast(mActivity).simpleToast("Select Next Payment Date", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                                        return;
+                                    }else {
+                                        dialog.dismiss();
+                                        addPaymentforPlot(txt_date.getTag().toString(), txt_time.getText().toString(), edt_paid_amount.getText().toString()
+                                                , arrayListLoanDetails.get(position).getId(), edt_remark.getText().toString(), txt_next_date.getText().toString(),1);
                                     }
                                 }
                             });
@@ -2028,7 +2119,7 @@ public class Activity_Customer_Details extends AppCompatActivity {
     }
 
 
-    public void addPaymentforPlot(final String date, final String time, final String amount, final String id, final String remark, final String next_date) {
+    public void addPaymentforPlot(final String date, final String time, final String amount, final String id, final String remark, final String next_date,int checkButton) {
         showPrd();
 
 
@@ -2077,6 +2168,21 @@ public class Activity_Customer_Details extends AppCompatActivity {
                     imageEncode = "";
                     capturedImageURI = Uri.parse("");
                     mime="";
+                    if (checkButton == 1) {
+                        if (appInstalledOrNot() == 0) {
+                            if (checkButton == 1) {
+                                sendMessage(amount, "com.whatsapp");
+                            }
+                        } else if (appInstalledOrNot() == 1) {
+                            if (checkButton == 1) {
+                                sendMessage(amount, "com.whatsapp.w4b");
+                            }
+                        } else if (appInstalledOrNot() == 2) {
+                            if (checkButton == 1) {
+                                sendMessage(amount, "both");
+                            }
+                        }
+                    }
                     getCustomerDetail();
                 }
 
@@ -2146,6 +2252,21 @@ public class Activity_Customer_Details extends AppCompatActivity {
                                             imageEncode = "";
                                             capturedImageURI = Uri.parse("");
                                             mime="";
+                                            if (checkButton == 1) {
+                                                if (appInstalledOrNot() == 0) {
+                                                    if (checkButton == 1) {
+                                                        sendMessage(amount, "com.whatsapp");
+                                                    }
+                                                } else if (appInstalledOrNot() == 1) {
+                                                    if (checkButton == 1) {
+                                                        sendMessage(amount, "com.whatsapp.w4b");
+                                                    }
+                                                } else if (appInstalledOrNot() == 2) {
+                                                    if (checkButton == 1) {
+                                                        sendMessage(amount, "both");
+                                                    }
+                                                }
+                                            }
                                             getCustomerDetail();
 
                                         }
@@ -2177,6 +2298,69 @@ public class Activity_Customer_Details extends AppCompatActivity {
                             Log.e("progress  ", String.valueOf(progress));
                         }
                     });
+        }
+    }
+
+    private void sendMessage(String amount, String pkg) {
+        Intent waIntent = new Intent(Intent.ACTION_SEND);
+        waIntent.setType("text/plain");
+        String text="";
+        text = "Dear  '"+customer_name+"'\n"+"Your payment has been credited "+getResources().getString(R.string.rupee)+amount+" to "+getResources().getString(R.string.app_name)+".\n"+"\nThanks";
+
+        if (pkg.equalsIgnoreCase("both")) {
+            showBottomSheet(text);
+        } else {
+            waIntent.setPackage(pkg);
+            if (waIntent != null) {
+                waIntent.putExtra(Intent.EXTRA_TEXT, text);
+                startActivity(Intent.createChooser(waIntent, text));
+            } else {
+                Toast.makeText(this, "WhatsApp not found", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        }
+    }
+
+    public void showBottomSheet(String text) {
+        ActionBottomDialogFragment addPhotoBottomDialogFragment =
+                new ActionBottomDialogFragment(text);
+        addPhotoBottomDialogFragment.show(this.getSupportFragmentManager(),
+                ActionBottomDialogFragment.TAG);
+    }
+
+    @Override
+    public void onItemClick(View view,String text) {
+        if (view.getId() == R.id.button1) {
+            Intent waIntent = new Intent(Intent.ACTION_SEND);
+            waIntent.setType("text/plain");
+            if(waIntent!=null){
+                waIntent.setPackage("com.whatsapp");
+                if (waIntent != null) {
+                    waIntent.putExtra(Intent.EXTRA_TEXT, text);
+                    startActivity(Intent.createChooser(waIntent, text));
+                } else {
+                    Toast.makeText(this, "WhatsApp not found", Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }else {
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+            }
+
+        } else if (view.getId() == R.id.button2) {
+            Intent waIntent = new Intent(Intent.ACTION_SEND);
+            waIntent.setType("text/plain");
+            if(waIntent!=null){
+                waIntent.setPackage("com.whatsapp.w4b");
+                if (waIntent != null) {
+                    waIntent.putExtra(Intent.EXTRA_TEXT, text);
+                    startActivity(Intent.createChooser(waIntent, text));
+                } else {
+                    Toast.makeText(this, "WhatsApp not found", Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }else {
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -2235,7 +2419,7 @@ public class Activity_Customer_Details extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    public void addPaymentForRent(final String date, final String time, final String amount, final String id, final String remark, final String next_date) {
+    public void addPaymentForRent(final String date, final String time, final String amount, final String id, final String remark, final String next_date,int checkButton) {
         showPrd();
 
         if (String.valueOf(capturedImageURI).equals("")) {
@@ -2283,6 +2467,21 @@ public class Activity_Customer_Details extends AppCompatActivity {
                     imageEncode = "";
                     capturedImageURI = Uri.parse("");
                     mime="";
+                    if (checkButton == 1) {
+                        if (appInstalledOrNot() == 0) {
+                            if (checkButton == 1) {
+                                sendMessage(amount, "com.whatsapp");
+                            }
+                        } else if (appInstalledOrNot() == 1) {
+                            if (checkButton == 1) {
+                                sendMessage(amount, "com.whatsapp.w4b");
+                            }
+                        } else if (appInstalledOrNot() == 2) {
+                            if (checkButton == 1) {
+                                sendMessage(amount, "both");
+                            }
+                        }
+                    }
                     getCustomerDetail();
                 }
 
@@ -2352,6 +2551,21 @@ public class Activity_Customer_Details extends AppCompatActivity {
                                             imageEncode = "";
                                             capturedImageURI = Uri.parse("");
                                             mime="";
+                                            if (checkButton == 1) {
+                                                if (appInstalledOrNot() == 0) {
+                                                    if (checkButton == 1) {
+                                                        sendMessage(amount, "com.whatsapp");
+                                                    }
+                                                } else if (appInstalledOrNot() == 1) {
+                                                    if (checkButton == 1) {
+                                                        sendMessage(amount, "com.whatsapp.w4b");
+                                                    }
+                                                } else if (appInstalledOrNot() == 2) {
+                                                    if (checkButton == 1) {
+                                                        sendMessage(amount, "both");
+                                                    }
+                                                }
+                                            }
                                             getCustomerDetail();
 
                                         }
@@ -2384,6 +2598,38 @@ public class Activity_Customer_Details extends AppCompatActivity {
                         }
                     });
         }
+    }
+
+    private int appInstalledOrNot() {
+        String pkgW = "com.whatsapp";
+        String pkgWB = "com.whatsapp.w4b";
+        PackageManager pm = getPackageManager();
+        int app_installed_whatsapp = -1;
+        int app_installed_w4b = -1;
+        int common = -1;
+        try {
+            pm.getPackageInfo(pkgW, PackageManager.GET_ACTIVITIES);
+            app_installed_whatsapp = 1;
+        } catch (PackageManager.NameNotFoundException e) {
+            app_installed_whatsapp = 0;
+        }
+
+        try {
+            pm.getPackageInfo(pkgWB, PackageManager.GET_ACTIVITIES);
+            app_installed_w4b = 1;
+        } catch (PackageManager.NameNotFoundException e) {
+            app_installed_w4b = 0;
+        }
+
+        if (app_installed_w4b == 1 & app_installed_whatsapp == 1) {
+            common = 2;
+        } else if (app_installed_whatsapp == 1) {
+            common = 0;
+        } else if (app_installed_w4b == 1) {
+            common = 1;
+        }
+
+        return common;
     }
 
     public void addPaymentForRent1(final String date, final String time, final String amount, final String id, final String remark) {

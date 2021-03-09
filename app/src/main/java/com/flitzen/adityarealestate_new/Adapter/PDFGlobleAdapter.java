@@ -40,10 +40,15 @@ public class PDFGlobleAdapter extends ArrayAdapter<File> {
 
     @Override
     public int getViewTypeCount() {
-        if (al_pdf.size() > 0) {
+       /* if (al_pdf.size() > 0) {
             return al_pdf.size();
         } else {
             return 0;
+        }*/
+        if(getCount() > 0){
+            return getCount();
+        }else{
+            return super.getViewTypeCount();
         }
     }
 

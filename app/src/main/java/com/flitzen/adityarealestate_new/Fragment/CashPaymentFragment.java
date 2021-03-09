@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
@@ -81,7 +82,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class CashPaymentFragment extends Fragment {
+public class CashPaymentFragment extends Fragment implements ActionBottomDialogFragment.ItemClickListener{
     RelativeLayout tvViewPaymentPDF;
     SwipeRefreshLayout swipeRefresh;
     RecyclerView rvCashPayment;
@@ -141,6 +142,7 @@ public class CashPaymentFragment extends Fragment {
 
                 TextView btn_cancel = (TextView) promptsView.findViewById(R.id.btn_cancel);
                 Button btn_add_payment = (Button) promptsView.findViewById(R.id.btn_add_payment);
+                Button btn_add_share_payment = (Button) promptsView.findViewById(R.id.btn_add_share_payment);
 
                 txt_date.setText(Helper.getCurrentDate("dd/MM/yyyy"));
                 txt_date.setTag(Helper.getCurrentDate("yyyy-MM-dd"));
@@ -175,7 +177,28 @@ public class CashPaymentFragment extends Fragment {
                             return;
                         } else {
                             alertDialog.dismiss();
-                            addSitePayment(site_id, txt_date.getTag().toString().trim(), edt_paid_amount.getText().toString().trim(), edt_remark.getText().toString().trim());
+                            addSitePayment(site_id, txt_date.getTag().toString().trim(), edt_paid_amount.getText().toString().trim(), edt_remark.getText().toString().trim(),0);
+                        }
+                    }
+                });
+
+                btn_add_share_payment.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (txt_date.getText().toString().equals("")) {
+                            new CToast(activity).simpleToast("Select Date", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                            return;
+                        } else if (edt_paid_amount.getText().toString().equals("")) {
+                            edt_paid_amount.setError("Enter pending amount");
+                            edt_paid_amount.requestFocus();
+                            return;
+                        } else if (Integer.parseInt(edt_paid_amount.getText().toString()) > Integer.parseInt(remaining_amount)) {
+                            edt_paid_amount.setError("You enter more then pending amount");
+                            edt_paid_amount.requestFocus();
+                            return;
+                        } else {
+                            alertDialog.dismiss();
+                            addSitePayment(site_id, txt_date.getTag().toString().trim(), edt_paid_amount.getText().toString().trim(), edt_remark.getText().toString().trim(),1);
                         }
                     }
                 });
@@ -755,7 +778,7 @@ public class CashPaymentFragment extends Fragment {
         queue.add(stringRequest);
     }
 
-    public void addSitePayment(final String id, final String date, final String amount, final String remarks) {
+    public void addSitePayment(final String id, final String date, final String amount, final String remarks,int checkButton) {
         showPrd();
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         String key = rootRef.child("SitePayments").push().getKey();
@@ -772,6 +795,21 @@ public class CashPaymentFragment extends Fragment {
             public void onComplete(@NonNull Task<Void> task) {
                 hidePrd();
                 new CToast(getActivity()).simpleToast("Payment added successfully", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_success).show();
+                if(checkButton==1){
+                    if (appInstalledOrNot() == 0) {
+                        if (checkButton == 1) {
+                            sendMessage(amount, "com.whatsapp");
+                        }
+                    } else if (appInstalledOrNot() == 1) {
+                        if (checkButton == 1) {
+                            sendMessage(amount, "com.whatsapp.w4b");
+                        }
+                    } else if (appInstalledOrNot() == 2) {
+                        if (checkButton == 1) {
+                            sendMessage(amount, "both");
+                        }
+                    }
+                }
                 getSitePaymentList();
             }
 
@@ -783,6 +821,101 @@ public class CashPaymentFragment extends Fragment {
             }
 
         });
+    }
+
+    private int appInstalledOrNot() {
+        String pkgW = "com.whatsapp";
+        String pkgWB = "com.whatsapp.w4b";
+        PackageManager pm = getContext().getPackageManager();
+        int app_installed_whatsapp = -1;
+        int app_installed_w4b = -1;
+        int common = -1;
+        try {
+            pm.getPackageInfo(pkgW, PackageManager.GET_ACTIVITIES);
+            app_installed_whatsapp = 1;
+        } catch (PackageManager.NameNotFoundException e) {
+            app_installed_whatsapp = 0;
+        }
+
+        try {
+            pm.getPackageInfo(pkgWB, PackageManager.GET_ACTIVITIES);
+            app_installed_w4b = 1;
+        } catch (PackageManager.NameNotFoundException e) {
+            app_installed_w4b = 0;
+        }
+
+        if (app_installed_w4b == 1 & app_installed_whatsapp == 1) {
+            common = 2;
+        } else if (app_installed_whatsapp == 1) {
+            common = 0;
+        } else if (app_installed_w4b == 1) {
+            common = 1;
+        }
+
+        return common;
+    }
+
+    private void sendMessage(String amount, String pkg) {
+        Intent waIntent = new Intent(Intent.ACTION_SEND);
+        waIntent.setType("text/plain");
+        String text="";
+        text = "Dear  'customer"+"'\n"+"Your payment has been credited "+getResources().getString(R.string.rupee)+amount+" to "+getResources().getString(R.string.app_name)+".\n"+"\nThanks";
+
+        if (pkg.equalsIgnoreCase("both")) {
+            showBottomSheet(text);
+        } else {
+            waIntent.setPackage(pkg);
+            if (waIntent != null) {
+                waIntent.putExtra(Intent.EXTRA_TEXT, text);//
+                startActivity(Intent.createChooser(waIntent, text));
+            } else {
+                Toast.makeText(getActivity(), "WhatsApp not found", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        }
+    }
+
+    public void showBottomSheet(String text) {
+        ActionBottomDialogFragment addPhotoBottomDialogFragment =
+                new ActionBottomDialogFragment(text);
+        addPhotoBottomDialogFragment.show(getFragmentManager(),
+                ActionBottomDialogFragment.TAG);
+    }
+
+    @Override
+    public void onItemClick(View view,String text) {
+        if (view.getId() == R.id.button1) {
+            Intent waIntent = new Intent(Intent.ACTION_SEND);
+            waIntent.setType("text/plain");
+            if(waIntent!=null){
+                waIntent.setPackage("com.whatsapp");
+                if (waIntent != null) {
+                    waIntent.putExtra(Intent.EXTRA_TEXT, text);
+                    startActivity(Intent.createChooser(waIntent, text));
+                } else {
+                    Toast.makeText(getActivity(), "WhatsApp not found", Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }else {
+                Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
+            }
+
+        } else if (view.getId() == R.id.button2) {
+            Intent waIntent = new Intent(Intent.ACTION_SEND);
+            waIntent.setType("text/plain");
+            if(waIntent!=null){
+                waIntent.setPackage("com.whatsapp.w4b");
+                if (waIntent != null) {
+                    waIntent.putExtra(Intent.EXTRA_TEXT, text);
+                    startActivity(Intent.createChooser(waIntent, text));
+                } else {
+                    Toast.makeText(getActivity(), "WhatsApp not found", Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }else {
+                Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     public void addSitePayment1(final String id, final String date, final String amount, final String remarks) {

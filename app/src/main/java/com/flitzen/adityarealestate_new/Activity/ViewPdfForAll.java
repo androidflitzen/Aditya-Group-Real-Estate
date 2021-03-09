@@ -64,23 +64,26 @@ public class ViewPdfForAll extends AppCompatActivity implements OnPageChangeList
                 if (onlyLoad) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (Permission.hasPermissions(ViewPdfForAll.this, permissions)) {
-
-                            shareFileWhatsApp(myFile);
+                            shareFile(myFile);
+                           // shareFileWhatsApp(myFile);
                         } else {
                             Permission.requestPermissions(ViewPdfForAll.this, permissions, 101);
                         }
                     } else {
-                        shareFileWhatsApp(myFile);
+                        shareFile(myFile);
+                        //shareFileWhatsApp(myFile);
                     }
                 } else {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (Permission.hasPermissions(ViewPdfForAll.this, permissions)) {
-                            shareFileWhatsApp(myFile);
+                            shareFile(myFile);
+                         //   shareFileWhatsApp(myFile);
                         } else {
                             Permission.requestPermissions(ViewPdfForAll.this, permissions, 101);
                         }
                     } else {
-                        shareFileWhatsApp(myFile);
+                        shareFile(myFile);
+                        //shareFileWhatsApp(myFile);
                     }
                 }
             }

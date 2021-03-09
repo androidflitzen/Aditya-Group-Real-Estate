@@ -331,7 +331,8 @@ public class PdfViewActivity extends AppCompatActivity {
             progressDialog.dismiss();
             /*progressDialog.dismiss();
             openPDFFile(myFile);*/
-            shareFileWhatsApp(myFile);
+            shareFile(myFile);
+           // shareFileWhatsApp(myFile);
         }
     }
 

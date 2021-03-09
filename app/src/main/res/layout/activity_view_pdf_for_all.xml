@@ -79,7 +79,7 @@
                     android:layout_marginRight="@dimen/_10sdp"
                     android:padding="@dimen/_5sdp"
                     android:tint="@color/white"
-                    android:src="@drawable/ic_whatsapp"/>
+                    android:src="@drawable/ic_share"/>
 
             </RelativeLayout>
 

@@ -51,7 +51,8 @@ public class PDFUtility_Transaction_All {
         void onPDFDocumentClose(File file);
     }
 
-    public static void createPdf(@NonNull Context mContext, OnDocumentClose mCallback, List<String[]> items, @NonNull String filePath, boolean isPortrait, String CustomerName,String phoneNo,int finalAmount) throws Exception
+    public static void createPdf(@NonNull Context mContext, OnDocumentClose mCallback, List<String[]> items, @NonNull String filePath, boolean isPortrait, String CustomerName
+            ,String phoneNo,int finalAmountPay,int finalTotalAmountReceive) throws Exception
     {
 
         if(filePath.equals(""))
@@ -87,7 +88,7 @@ public class PDFUtility_Transaction_All {
         addEmptyLine(document, 2);
         document.add(createDataTable(items));
         addEmptyLine(document,2);
-        addFinalTotle(mContext,document,pdfWriter,finalAmount);
+        addFinalTotle(mContext,document,pdfWriter,finalAmountPay,finalTotalAmountReceive);
         addEmptyLine(document, 2);
 
        // document.add(createSignBox());
@@ -126,12 +127,12 @@ public class PDFUtility_Transaction_All {
         document.addHeader("DEVELOPER","RAVEESH G S");
     }
 
-    private static void addFinalTotle(Context mContext, Document document, PdfWriter pdfWriter, int finalAmount) {
+    private static void addFinalTotle(Context mContext, Document document, PdfWriter pdfWriter, int finalAmountPay,int finalTotalAmountReceive) {
 
         try {
             PdfPTable table = new PdfPTable(2);
             table.setWidthPercentage(95);
-            table.setWidths(new float[]{1.4f,0.8f});
+            table.setWidths(new float[]{0.0f,0.0f});
             table.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
             table.getDefaultCell().setVerticalAlignment(Element.ALIGN_RIGHT);
             table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_RIGHT);
@@ -139,8 +140,8 @@ public class PDFUtility_Transaction_All {
 
             PdfPCell cell = null;
 
-            {
-                /*LEFT TOP LOGO*/
+            /*{
+                *//*LEFT TOP LOGO*//*
 
                 PdfPTable logoTable = new PdfPTable(1);
                 logoTable.setWidthPercentage(100);
@@ -188,6 +189,45 @@ public class PDFUtility_Transaction_All {
                 cell.setPadding(2f);
                 table.addCell(cell);
 
+            }*/
+
+            {
+                PdfPTable logoTable = new PdfPTable(1);
+                logoTable.setWidthPercentage(100);
+                logoTable.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
+                logoTable.setHorizontalAlignment(Element.ALIGN_LEFT);
+                logoTable.getDefaultCell().setVerticalAlignment(Element.ALIGN_LEFT);
+
+                PdfTemplate template = pdfWriter.getDirectContent().createTemplate(35, 0.5f);
+                template.setColorFill(BaseColor.BLACK);
+                template.rectangle(0, 0, 35, 0.5f);
+                template.fill();
+                pdfWriter.releaseTemplate(template);
+                logoTable.addCell(Image.getInstance(template));
+
+                String total=mContext.getResources().getString(R.string.rupee)+ Helper.getFormatPrice(finalTotalAmountReceive);
+                PdfPCell logoCell1 = new PdfPCell(new Phrase("Final Total Received:               "+total, FONT_TOTAL));
+                logoCell1.setHorizontalAlignment(Element.ALIGN_LEFT);
+                logoCell1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                logoCell1.setBorder(PdfPCell.NO_BORDER);
+
+                logoTable.addCell(logoCell1);
+
+
+                PdfTemplate template2 = pdfWriter.getDirectContent().createTemplate(35, 0.5f);
+                template2.setColorFill(BaseColor.BLACK);
+                template2.rectangle(0, 0, 35, 0.5f);
+                template2.fill();
+                pdfWriter.releaseTemplate(template2);
+                logoTable.addCell(Image.getInstance(template2));
+
+                cell = new PdfPCell(logoTable);
+                cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                cell.setUseAscender(true);
+                cell.setBorder(PdfPCell.NO_BORDER);
+                cell.setPadding(2f);
+                table.addCell(cell);
             }
 
 
@@ -205,8 +245,8 @@ public class PDFUtility_Transaction_All {
                 pdfWriter.releaseTemplate(template);
                 logoTable.addCell(Image.getInstance(template));
 
-                String total=mContext.getResources().getString(R.string.rupee)+ Helper.getFormatPrice(finalAmount);
-                PdfPCell logoCell1 = new PdfPCell(new Phrase("Final Total :               "+total, FONT_TOTAL));
+                String total=mContext.getResources().getString(R.string.rupee)+ Helper.getFormatPrice(finalAmountPay);
+                PdfPCell logoCell1 = new PdfPCell(new Phrase("Final Total Payment:               "+total, FONT_TOTAL));
                 logoCell1.setHorizontalAlignment(Element.ALIGN_LEFT);
                 logoCell1.setVerticalAlignment(Element.ALIGN_MIDDLE);
                 logoCell1.setBorder(PdfPCell.NO_BORDER);
@@ -430,7 +470,7 @@ public class PDFUtility_Transaction_All {
             table1.addCell(cell);
 
             cell = new PdfPCell(new Phrase(temp[2], FONT_CELL));
-            cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
             cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
             cell.setPaddingLeft(left_right_Padding);
             cell.setPaddingRight(left_right_Padding);

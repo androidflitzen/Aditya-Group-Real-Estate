@@ -2,14 +2,8 @@ package com.flitzen.adityarealestate_new.Adapter;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.RecyclerView;
-
-
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
@@ -21,6 +15,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -88,7 +86,6 @@ public class Adapter_Sites_DeactiveList extends RecyclerView.Adapter<Adapter_Sit
         holder.txt_site_name_1.setText(ss1);
 
 
-
         //holder.txt_site_name_1.setText(itemList.get(position).getSite_name());
 
 
@@ -119,7 +116,7 @@ public class Adapter_Sites_DeactiveList extends RecyclerView.Adapter<Adapter_Sit
         holder.ivPopUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // OpenActiveSite(position);
+                // OpenActiveSite(position);
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setMessage("Are you sure active site ?");
                 builder.setCancelable(true);
@@ -186,19 +183,19 @@ public class Adapter_Sites_DeactiveList extends RecyclerView.Adapter<Adapter_Sit
         showPrd();
 
         //Delete site
-        DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         DatabaseReference drTest = FirebaseDatabase.getInstance().getReference();
         databaseReference.child("Sites").child(itemList.get(position).getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.getValue() != null) {
-                    String siteid=itemList.get(position).getId();
+                    String siteid = itemList.get(position).getId();
                     databaseReference.child("Sites").child(itemList.get(position).getKey()).removeValue().addOnCompleteListener(context, new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             hidePrd();
-                            if(task.isSuccessful()){
-                                Log.e("site delete ",siteid);
+                            if (task.isSuccessful()) {
+                                Log.e("site delete ", siteid);
 
 
                                 // Delete site related plots
@@ -207,19 +204,19 @@ public class Adapter_Sites_DeactiveList extends RecyclerView.Adapter<Adapter_Sit
                                         .addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                                for (DataSnapshot postsnapshot :dataSnapshot.getChildren())  {
+                                                for (DataSnapshot postsnapshot : dataSnapshot.getChildren()) {
 
-                                                    if(postsnapshot.child("site_id").getValue().toString().equals(siteid)){
-                                                        Log.e("plot delete ","delete");
+                                                    if (postsnapshot.child("site_id").getValue().toString().equals(siteid)) {
+                                                        Log.e("plot delete ", "delete");
                                                         // Delete plot related payments
-                                                        String id=postsnapshot.child("id").getValue().toString();
+                                                        String id = postsnapshot.child("id").getValue().toString();
                                                         drTest.child("Payments")
                                                                 .addListenerForSingleValueEvent(new ValueEventListener() {
                                                                     @Override
                                                                     public void onDataChange(DataSnapshot dataSnapshotPayment) {
-                                                                        for (DataSnapshot postsnapshotPay :dataSnapshotPayment.getChildren())  {
-                                                                            if(postsnapshotPay.child("plot_id").getValue().toString().equals(id)){
-                                                                                Log.e("payment delete ","delete");
+                                                                        for (DataSnapshot postsnapshotPay : dataSnapshotPayment.getChildren()) {
+                                                                            if (postsnapshotPay.child("plot_id").getValue().toString().equals(id)) {
+                                                                                Log.e("payment delete ", "delete");
                                                                                 postsnapshotPay.getRef().removeValue();
                                                                             }
                                                                         }
@@ -251,9 +248,9 @@ public class Adapter_Sites_DeactiveList extends RecyclerView.Adapter<Adapter_Sit
                                         .addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshotCashPay) {
-                                                for (DataSnapshot postsnapshotCashPay :dataSnapshotCashPay.getChildren())  {
-                                                    if(postsnapshotCashPay.child("site_id").getValue().toString().equals(siteid)){
-                                                        Log.e("Site Payments delete ","delete");
+                                                for (DataSnapshot postsnapshotCashPay : dataSnapshotCashPay.getChildren()) {
+                                                    if (postsnapshotCashPay.child("site_id").getValue().toString().equals(siteid)) {
+                                                        Log.e("Site Payments delete ", "delete");
                                                         postsnapshotCashPay.getRef().removeValue();
                                                     }
                                                 }
@@ -272,9 +269,9 @@ public class Adapter_Sites_DeactiveList extends RecyclerView.Adapter<Adapter_Sit
                                         .addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshotCashReceive) {
-                                                for (DataSnapshot postsnapshotCashreceive :dataSnapshotCashReceive.getChildren())  {
-                                                    if(postsnapshotCashreceive.child("site_id").getValue().toString().equals(siteid)){
-                                                        Log.e("Site Receive delete","delete");
+                                                for (DataSnapshot postsnapshotCashreceive : dataSnapshotCashReceive.getChildren()) {
+                                                    if (postsnapshotCashreceive.child("site_id").getValue().toString().equals(siteid)) {
+                                                        Log.e("Site Receive delete", "delete");
                                                         postsnapshotCashreceive.getRef().removeValue();
                                                     }
                                                 }
@@ -287,11 +284,11 @@ public class Adapter_Sites_DeactiveList extends RecyclerView.Adapter<Adapter_Sit
 
                                         });
 
+
                                 new CToast(context).simpleToast("Site delete successfully", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_success).show();
                                 notifyDataSetChanged();
 
-                            }
-                            else {
+                            } else {
                                 new CToast(context).simpleToast(task.getException().toString(), Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
                             }
 
@@ -303,8 +300,7 @@ public class Adapter_Sites_DeactiveList extends RecyclerView.Adapter<Adapter_Sit
                             new CToast(context).simpleToast(e.getMessage(), Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
                         }
                     });
-                }
-                else {
+                } else {
                     hidePrd();
                     new CToast(context).simpleToast("Site not exist", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
                 }
@@ -323,36 +319,36 @@ public class Adapter_Sites_DeactiveList extends RecyclerView.Adapter<Adapter_Sit
         showPrd();
 
         //Delete site
-        DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         DatabaseReference drTest = FirebaseDatabase.getInstance().getReference();
         databaseReference.child("Sites").child(itemList.get(position).getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.getValue() != null) {
-                    String siteid=itemList.get(position).getId();
+                    String siteid = itemList.get(position).getId();
                     databaseReference.child("Sites").child(itemList.get(position).getKey()).removeValue().addOnCompleteListener(context, new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             hidePrd();
-                            if(task.isSuccessful()){
-                                Log.e("site delete ",siteid);
+                            if (task.isSuccessful()) {
+                                Log.e("site delete ", siteid);
                                 // Delete site related plots
 
                                 databaseReference.child("Plots").orderByChild("site_id").equalTo(siteid)
                                         .addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                                for (DataSnapshot postsnapshot :dataSnapshot.getChildren())  {
-                                                    Log.e("plot delete ","delete");
+                                                for (DataSnapshot postsnapshot : dataSnapshot.getChildren()) {
+                                                    Log.e("plot delete ", "delete");
 
                                                     // Delete plot related payments
-                                                    String id=postsnapshot.child("id").getValue().toString();
+                                                    String id = postsnapshot.child("id").getValue().toString();
                                                     drTest.child("Payments").orderByChild("plot_id").equalTo(id)
                                                             .addListenerForSingleValueEvent(new ValueEventListener() {
                                                                 @Override
                                                                 public void onDataChange(DataSnapshot dataSnapshotPayment) {
-                                                                    for (DataSnapshot postsnapshotPay :dataSnapshotPayment.getChildren())  {
-                                                                        Log.e("payment delete ","delete");
+                                                                    for (DataSnapshot postsnapshotPay : dataSnapshotPayment.getChildren()) {
+                                                                        Log.e("payment delete ", "delete");
                                                                         postsnapshotPay.getRef().removeValue();
                                                                     }
                                                                 }
@@ -381,8 +377,8 @@ public class Adapter_Sites_DeactiveList extends RecyclerView.Adapter<Adapter_Sit
                                         .addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshotCashPay) {
-                                                for (DataSnapshot postsnapshotCashPay :dataSnapshotCashPay.getChildren())  {
-                                                    Log.e("Site Payments delete ","delete");
+                                                for (DataSnapshot postsnapshotCashPay : dataSnapshotCashPay.getChildren()) {
+                                                    Log.e("Site Payments delete ", "delete");
                                                     postsnapshotCashPay.getRef().removeValue();
                                                 }
                                             }
@@ -400,8 +396,8 @@ public class Adapter_Sites_DeactiveList extends RecyclerView.Adapter<Adapter_Sit
                                         .addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshotCashReceive) {
-                                                for (DataSnapshot postsnapshotCashreceive :dataSnapshotCashReceive.getChildren())  {
-                                                    Log.e("Site Receive delete","delete");
+                                                for (DataSnapshot postsnapshotCashreceive : dataSnapshotCashReceive.getChildren()) {
+                                                    Log.e("Site Receive delete", "delete");
                                                     postsnapshotCashreceive.getRef().removeValue();
                                                 }
                                             }
@@ -416,8 +412,7 @@ public class Adapter_Sites_DeactiveList extends RecyclerView.Adapter<Adapter_Sit
                                 new CToast(context).simpleToast("Site delete successfully", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_success).show();
                                 notifyDataSetChanged();
 
-                            }
-                            else {
+                            } else {
                                 new CToast(context).simpleToast(task.getException().toString(), Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
                             }
 
@@ -429,8 +424,7 @@ public class Adapter_Sites_DeactiveList extends RecyclerView.Adapter<Adapter_Sit
                             new CToast(context).simpleToast(e.getMessage(), Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
                         }
                     });
-                }
-                else {
+                } else {
                     hidePrd();
                     new CToast(context).simpleToast("Site not exist", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
                 }
@@ -474,18 +468,18 @@ public class Adapter_Sites_DeactiveList extends RecyclerView.Adapter<Adapter_Sit
     private void toactiveSiteApi(final int position) {
 
         showPrd();
+        String siteID = itemList.get(position).getId();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         Query query = databaseReference.child("Sites").orderByKey();
         databaseReference.keepSynced(true);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot npsnapshot) {
-                hidePrd();
                 try {
                     if (npsnapshot.exists()) {
                         for (DataSnapshot dataSnapshot : npsnapshot.getChildren()) {
 
-                            if (dataSnapshot.child("id").getValue().toString().equals(itemList.get(position).getId())) {
+                            if (dataSnapshot.child("id").getValue().toString().equals(siteID)) {
 
                                 DatabaseReference cineIndustryRef = databaseReference.child("Sites").child(dataSnapshot.getKey());
                                 Map<String, Object> map = new HashMap<>();
@@ -493,6 +487,64 @@ public class Adapter_Sites_DeactiveList extends RecyclerView.Adapter<Adapter_Sit
                                 Task<Void> voidTask = cineIndustryRef.updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
+
+                                        // Payment status change
+                                        databaseReference.child("Plots")
+                                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                                        for (DataSnapshot postsnapshot : dataSnapshot.getChildren()) {
+
+                                                            if (postsnapshot.child("site_id").getValue().toString().equals(siteID)) {
+
+                                                                // Change payment status plot related payments
+                                                                String id = postsnapshot.child("id").getValue().toString();
+                                                                databaseReference.child("Payments")
+                                                                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                            @Override
+                                                                            public void onDataChange(DataSnapshot dataSnapshotPayment) {
+                                                                                for (DataSnapshot postsnapshotPay : dataSnapshotPayment.getChildren()) {
+                                                                                    if (postsnapshotPay.child("plot_id").getValue().toString().equals(id)) {
+                                                                                        DatabaseReference cineIndustryRef = databaseReference.child("Payments").child(postsnapshotPay.getKey());
+                                                                                        Map<String, Object> map = new HashMap<>();
+                                                                                        map.put("payment_status", 0);
+                                                                                        Task<Void> voidTask = cineIndustryRef.updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                            @Override
+                                                                                            public void onSuccess(Void aVoid) {
+
+                                                                                            }
+                                                                                        }).addOnFailureListener(new OnFailureListener() {
+                                                                                            @Override
+                                                                                            public void onFailure(@NonNull Exception e) {
+                                                                                                hidePrd();
+                                                                                                new CToast(context).simpleToast(e.getMessage(), Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                                                                                            }
+                                                                                        });
+                                                                                    }
+                                                                                }
+                                                                                notifyDataSetChanged();
+                                                                            }
+
+                                                                            @Override
+                                                                            public void onCancelled(DatabaseError databaseError) {
+                                                                                new CToast(context).simpleToast(databaseError.getMessage(), Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                                                                                Log.w("TAG: ", databaseError.getMessage());
+                                                                            }
+
+                                                                        });
+                                                            }
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(DatabaseError databaseError) {
+                                                        Log.w("TAG: ", databaseError.getMessage());
+                                                        new CToast(context).simpleToast(databaseError.getMessage(), Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_fail).show();
+                                                    }
+
+                                                });
+
+
                                         hidePrd();
                                         new CToast(context).simpleToast("Site activate successfully", Toast.LENGTH_SHORT).setBackgroundColor(R.color.msg_success).show();
                                         notifyDataSetChanged();
@@ -508,6 +560,7 @@ public class Adapter_Sites_DeactiveList extends RecyclerView.Adapter<Adapter_Sit
                         }
                     }
                 } catch (Exception e) {
+                    hidePrd();
                     Log.e("exception   ", e.toString());
                     e.printStackTrace();
                 }
@@ -525,7 +578,7 @@ public class Adapter_Sites_DeactiveList extends RecyclerView.Adapter<Adapter_Sit
     private void toactiveSiteApi1(final int position) {
 
         showPrd();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, API.TODOACTIVESITES + "site_id="+itemList.get(position).getId(), new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, API.TODOACTIVESITES + "site_id=" + itemList.get(position).getId(), new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -574,7 +627,7 @@ public class Adapter_Sites_DeactiveList extends RecyclerView.Adapter<Adapter_Sit
 
         TextView txt_site_name, txt_site_name_1, txt_site_address, txt_site_size, txt_site_price;
         View view_main;
-        ImageView plot_soldout,ivDeleteplot;
+        ImageView plot_soldout, ivDeleteplot;
         SwitchMaterial ivPopUp;
 
         public ViewHolder(@NonNull View itemView) {
